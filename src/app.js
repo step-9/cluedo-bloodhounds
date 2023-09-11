@@ -6,7 +6,8 @@ const {
 } = require("./handlers/resource-handler");
 const {
   handleJoinRequest,
-  serveLobbyPage
+  serveLobbyPage,
+  serveLobbyDetails
 } = require("./handlers/lobby-handler");
 
 const createApp = () => {
@@ -21,6 +22,7 @@ const createApp = () => {
   app.get("/join", serveGameJoiningPage);
   app.post("/join", handleJoinRequest);
   app.get("/lobby", serveLobbyPage);
+  app.get("/lobby-details", serveLobbyDetails);
 
   return app;
 };

@@ -19,4 +19,10 @@ const serveLobbyPage = (req, res) => {
   res.sendFile("lobby.html", { root: "private/pages" });
 };
 
-module.exports = { handleJoinRequest, serveLobbyPage };
+const serveLobbyDetails = (req, res) => {
+  const { lobby } = req.app.context;
+  const lobbyDetails = lobby.getAllPlayers();
+  res.json(lobbyDetails);
+};
+
+module.exports = { handleJoinRequest, serveLobbyPage, serveLobbyDetails };

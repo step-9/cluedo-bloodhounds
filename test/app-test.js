@@ -71,4 +71,21 @@ describe("App", () => {
         .end(done);
     });
   });
+
+  describe("GET /lobby-details", () => {
+    it("should give a list of players with player name and id", (_, done) => {
+      const app = createApp();
+      const lobby = new Lobby({ maxPlayers: 3 });
+      app.context = { lobby };
+
+      lobby.registerPlayer({ name: "milan" });
+
+      request(app)
+        .get("/lobby-details")
+        .expect(200)
+        .expect("content-type", /application\/json/)
+        .expect([{ playerId: 1, name: "milan" }])
+        .end(done);
+    });
+  });
 });
