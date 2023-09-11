@@ -1,5 +1,6 @@
 const express = require("express");
-const { requestLogger } = require("./middlewares/logger");
+const morgan = require("morgan");
+
 const {
   serveHomePage,
   serveGameJoiningPage
@@ -14,7 +15,7 @@ const { serveGamePage } = require("./handlers/game-handler");
 const createApp = () => {
   const app = express();
 
-  app.use(requestLogger);
+  app.use(morgan(":method :url :response-time ms"));
   app.use(express.json());
   app.use(express.urlencoded());
   app.use(express.static("public"));
