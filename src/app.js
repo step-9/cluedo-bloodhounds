@@ -4,7 +4,10 @@ const {
   serveHomePage,
   serveGameJoiningPage
 } = require("./handlers/resource-handler");
-const { handleJoinRequest } = require("./handlers/lobby-handler");
+const {
+  handleJoinRequest,
+  serveLobbyPage
+} = require("./handlers/lobby-handler");
 
 const createApp = () => {
   const app = express();
@@ -17,6 +20,7 @@ const createApp = () => {
   app.get("/", serveHomePage);
   app.get("/join", serveGameJoiningPage);
   app.post("/join", handleJoinRequest);
+  app.get("/lobby", serveLobbyPage);
 
   return app;
 };

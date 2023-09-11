@@ -11,4 +11,8 @@ const handleJoinRequest = (req, res) => {
   res.status(201).json({ playerId, isFull });
 };
 
-module.exports = { handleJoinRequest };
+const serveLobbyPage = (req, res) => {
+  res.sendFile("lobby.html", { root: "private/pages" });
+};
+
+module.exports = { handleJoinRequest, serveLobbyPage };

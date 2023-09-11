@@ -4,7 +4,7 @@ const { createApp } = require("../src/app");
 const Lobby = require("../src/models/lobby");
 
 describe("App", () => {
-  describe("GET /", (_, done) => {
+  describe("GET /", () => {
     const app = createApp();
 
     it("Should serve the homepage", (_, done) => {
@@ -16,7 +16,7 @@ describe("App", () => {
     });
   });
 
-  describe("GET /join", (_, done) => {
+  describe("GET /join", () => {
     const app = createApp();
 
     it("Should serve the joininig page", (_, done) => {
@@ -28,7 +28,7 @@ describe("App", () => {
     });
   });
 
-  describe("POST /join", (_, done) => {
+  describe("POST /join", () => {
     let app, lobby;
 
     beforeEach(() => {
@@ -56,6 +56,18 @@ describe("App", () => {
         .send({ name: "Gourab" })
         .expect(406)
         .expect("content-type", /application\/json/)
+        .end(done);
+    });
+  });
+
+  describe("GET /lobby", () => {
+    it("should serve the lobby page", (_, done) => {
+      const app = createApp();
+
+      request(app)
+        .get("/lobby")
+        .expect(200)
+        .expect("content-type", /text\/html/)
         .end(done);
     });
   });
