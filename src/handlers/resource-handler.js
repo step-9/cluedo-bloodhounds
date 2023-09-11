@@ -3,7 +3,7 @@ const serveHomePage = (req, res) => {
 };
 
 const serveGameJoiningPage = (req, res) => {
-  res.sendFile("/joining-page.html", { root: "private" });
+  res.sendFile("/joining-page.html", { root: "private/pages" });
 };
 
 module.exports = { serveHomePage, serveGameJoiningPage };
