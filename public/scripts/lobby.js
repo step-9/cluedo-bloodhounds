@@ -1,5 +1,6 @@
-const getLobbyDetails = () => fetch("/lobby-details");
+const getLobbyDetails = () => fetch("/lobby-details").then(res => res.json());
 const getWaitingAreaContainer = () => document.querySelector(".waiting-area");
+const removeAllChilds = container => container.replaceChildren();
 
 const toPlayerCardHtml = ({ name }) => {
   const playerCardTemplate = [
@@ -16,16 +17,32 @@ const toPlayerCardHtml = ({ name }) => {
 
 const renderLobby = playerDetails => {
   const waitingAreaContainer = getWaitingAreaContainer();
+  removeAllChilds(waitingAreaContainer);
   const playerDetailsHtml = playerDetails.map(toPlayerCardHtml);
   waitingAreaContainer.append(...playerDetailsHtml);
 };
 
+const isNewData = (prevLobbyDetails, currentLobbyDetails) =>
+  prevLobbyDetails.length !== currentLobbyDetails.length;
+
 const main = () => {
   showLoader();
 
-  getLobbyDetails()
-    .then(res => res.json())
-    .then(renderLobby);
+  let currentLobbyDetails = [];
+
+  const storeAndRenderLobbyDetails = lobbyDetails => {
+    currentLobbyDetails = lobbyDetails;
+    renderLobby(lobbyDetails);
+  };
+
+  getLobbyDetails().then(storeAndRenderLobbyDetails);
+
+  setInterval(() => {
+    getLobbyDetails().then(lobbyDetails => {
+      if (isNewData(currentLobbyDetails, lobbyDetails))
+        storeAndRenderLobbyDetails(lobbyDetails);
+    });
+  }, 500);
 };
 
 window.onload = main;
