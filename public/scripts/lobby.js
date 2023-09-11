@@ -15,6 +15,12 @@ const toPlayerCardHtml = ({ name }) => {
   return generateElement(playerCardTemplate);
 };
 
+const sendGamePageRequest = () => {
+  setTimeout(() => {
+    window.location.href = "/game";
+  }, 500);
+};
+
 const renderLobby = playerDetails => {
   const waitingAreaContainer = getWaitingAreaContainer();
   removeAllChilds(waitingAreaContainer);
@@ -24,6 +30,10 @@ const renderLobby = playerDetails => {
 
 const isNewData = (prevLobbyDetails, currentLobbyDetails) =>
   prevLobbyDetails.length !== currentLobbyDetails.length;
+
+const startGameWhenPlayersJoined = currentLobbyDetails => {
+  if (currentLobbyDetails.length === 3) sendGamePageRequest();
+};
 
 const main = () => {
   showLoader();
@@ -41,6 +51,8 @@ const main = () => {
     getLobbyDetails().then(lobbyDetails => {
       if (isNewData(currentLobbyDetails, lobbyDetails))
         storeAndRenderLobbyDetails(lobbyDetails);
+
+      startGameWhenPlayersJoined(currentLobbyDetails);
     });
   }, 500);
 };

@@ -74,9 +74,14 @@ body {
 }
 
 .message {
+  position: relative;
+  top: 15px;
+  right: 15px;
   grid-area: message;
+  padding: 2px;
+  font-size: 0.7em;
   border-radius: 10px;
-  border: 2px solid black;
+  border: 1px solid black;
 }
 
 .hide {
