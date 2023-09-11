@@ -15,4 +15,16 @@ describe("App", () => {
         .end(done);
     });
   });
+
+  describe("GET /join", (_, done) => {
+    const app = createApp();
+
+    it("Should give serve the joininig page", (_, done) => {
+      request(app)
+        .get("/join")
+        .expect(200)
+        .expect("content-type", /text\/html/)
+        .end(done);
+    });
+  });
 });

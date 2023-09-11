@@ -1,6 +1,9 @@
 const express = require("express");
 const { requestLogger } = require("./middlewares/logger");
-const { serveHomePage } = require("./handlers/resource-handler");
+const {
+  serveHomePage,
+  serveGameJoiningPage
+} = require("./handlers/resource-handler");
 
 const createApp = () => {
   const app = express();
@@ -11,6 +14,7 @@ const createApp = () => {
   app.use(express.static("public"));
 
   app.get("/", serveHomePage);
+  app.get("/join", serveGameJoiningPage);
 
   return app;
 };
