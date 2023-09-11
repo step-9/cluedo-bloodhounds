@@ -20,6 +20,5 @@ function execute () {
   echo -e "\n$GREEN $args passed $ENDCOLOR"
 }
 
-execute npm run test
 execute npm run coverage
 execute npm run lint
