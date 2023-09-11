@@ -1,4 +1,4 @@
-class Room {
+class Lobby {
   #players;
   #maxPlayers;
 
@@ -17,4 +17,4 @@ class Room {
   }
 }
 
-module.exports = Room;
+module.exports = Lobby;
