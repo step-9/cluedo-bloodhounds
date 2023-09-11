@@ -1,0 +1,14 @@
+{
+  "all": true,
+  "reporter": ["html", "text"],
+  "statements": 90,
+  "check-coverage": "true",
+  "exclude": [
+    "main.js",
+    "coverage/**",
+    ".eslintrc.js",
+    "public/scripts/**",
+    ".prettierrc.js",
+    "test/**"
+  ]
+}

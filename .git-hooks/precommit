@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+RED="\e[31m"
+GREEN="\e[32m"
+ENDCOLOR="\e[0m"
+
+function execute () {
+  local command=$1
+  local args=$@
+  shift;
+  $command $@
+
+  test_result=$?
+  if [ $test_result -ne 0 ]
+  then
+    echo -e "\n$RED $args failed $ENDCOLOR"
+    exit 1
+  fi
+
+  echo -e "\n$GREEN $args passed $ENDCOLOR"
+}
+
+execute npm run test
+execute npm run coverage
+execute npm run lint

@@ -1,0 +1,24 @@
+{
+  "name": "cluedo-bloodhounds",
+  "version": "1.0.0",
+  "description": "A multiplayer cluedo game",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "dev": "node --watch main.js",
+    "setup": "./bin/setup.sh",
+    "test": "node --test",
+    "lint": "eslint .",
+    "coverage": "nyc npm run test"
+  },
+  "keywords": [
+    "cluedo"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.49.0",
+    "nyc": "^15.1.0",
+    "prettier": "^3.0.3"
+  }
+}
