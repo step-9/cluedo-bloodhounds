@@ -8,7 +8,11 @@ const handleJoinRequest = (req, res) => {
   const { isFull, playerId } = lobby.registerPlayer({ name });
 
   if (isFull) return sendRoomFullError(req, res);
-  res.status(201).json({ playerId, isFull });
+
+  res.status(201);
+  res.cookie("name", name);
+  res.cookie("playerId", playerId);
+  res.json({ playerId, isFull, redirectUri: "/lobby" });
 };
 
 const serveLobbyPage = (req, res) => {
