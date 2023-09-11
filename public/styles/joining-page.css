@@ -59,14 +59,14 @@
   box-shadow: 0 0 15px 2px white;
 }
 
-#name {
+#join-game-input-name {
   font-size: 1.2em;
-  width: 10em;
+  width: 13em;
 }
 
 #join-game-dialog {
-  width: 16%;
-  height: 25%;
+  width: 23%;
+  height: 35%;
   margin: 15em auto;
   padding: 2em;
   background-color: hsl(0, 0%, 0%, 95%);
@@ -79,6 +79,13 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+}
+
+button {
+  border-radius: 8px;
+  border: 2px solid white;
+  background-color: hsl(0, 0%, 5%);
+  color: white;
 }
 
 .name-label {
