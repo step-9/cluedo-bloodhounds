@@ -3,20 +3,19 @@
 <head>
   <title>Play Game</title>
   <link rel="stylesheet" href="/styles/joining-page.css">
+  <script src="/scripts/join.js"></script>
 </head>
 
 <body>
   <main id="page-wrapper">
     <dialog id='join-game-dialog'>
-      <form id='join-game-form'>
-        <label for="name">Name:</label>
-        <input type="text" name="name" id="name">
+      <label for="name" class='name-label'>Enter your Name:</label>
+      <input type="text" name="name" id="name">
 
-        <div>
-          <button value='cancel' formmethod='dialog'>Cancel</button>
-          <button id='confirmBtn' value='default'>Confirm</button>
-        </div>
-      </form>
+      <div class='dialog-btn-container'>
+        <button value='cancel' formmethod='dialog' id='close-join-game-dialog'>Cancel</button>
+        <button id='confirmBtn' value='default'>Confirm</button>
+      </div>
     </dialog>
 
     <button id='join-game-btn'>Join Game</button>

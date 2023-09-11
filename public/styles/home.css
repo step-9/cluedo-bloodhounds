@@ -28,12 +28,14 @@
   background-color: rgba(0, 0, 0, 0.527);
   border: 2px solid white;
   border-radius: 5px;
-  padding: 1em;
+  display: grid;
+  place-content: center;
 
   & a {
     color: white;
+    padding: 0.7em 1.5em;
     text-decoration: none;
-    font-size: 2em;
+    font-size: 1.5em;
   }
 }
 
