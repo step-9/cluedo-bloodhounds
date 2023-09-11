@@ -12,8 +12,15 @@ class Lobby {
 
     if (noOfPlayers >= this.#maxPlayers) return { isFull: true };
 
-    this.#players.push(name);
-    return { playerId: noOfPlayers + 1, isFull: false };
+    const playerId = noOfPlayers + 1;
+    this.#players.push({ playerId, name });
+
+    return { playerId, isFull: false };
+  }
+
+  getAllPlayers() {
+    const toPlayerDetails = ({ name, playerId }) => ({ name, playerId });
+    return this.#players.map(toPlayerDetails);
   }
 }
 

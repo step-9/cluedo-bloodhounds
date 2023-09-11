@@ -28,4 +28,20 @@ describe("Lobby", () => {
       assert.strictEqual(isFull, true);
     });
   });
+
+  describe("getAllPlayers", () => {
+    it("should give all player details present in the lobby", () => {
+      const lobby = new Lobby({ maxPlayers: 3 });
+      const names = ["milan", "raj", "sourov"];
+      names.forEach(name => lobby.registerPlayer({ name }));
+
+      const expectedPlayerDetails = [
+        { name: "milan", playerId: 1 },
+        { name: "raj", playerId: 2 },
+        { name: "sourov", playerId: 3 }
+      ];
+
+      assert.deepStrictEqual(lobby.getAllPlayers(), expectedPlayerDetails);
+    });
+  });
 });
