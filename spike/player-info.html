@@ -1,0 +1,64 @@
+<html>
+
+<head>
+  <title>Player-Icon</title>
+  <style>
+    .center-align {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body {
+      font-size: 20px;
+      font-family: sans-serif;
+    }
+
+    .player-info {
+      height: 100px;
+      width: 250px;
+      display: grid;
+      grid-template-rows: 60% 40%;
+      grid-template-columns: 50% 50%;
+      grid-template-areas:
+        "icon name"
+        "icon message";
+    }
+
+    .icon-container {
+      grid-area: icon;
+    }
+
+    .icon {
+      width: 75%;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      background-color: blue;
+    }
+
+    .name {
+      font-weight: 600;
+      font-size: 1.2em;
+      grid-area: name;
+      align-self: flex-end;
+    }
+
+    .message {
+      grid-area: message;
+      border-radius: 10px;
+      border: 2px solid black;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="player-info">
+    <div class="icon-container center-align">
+      <div class="icon"></div>
+    </div>
+    <div class="name">Sourav</div>
+    <div class="message center-align">I have a clue</div>
+  </div>
+</body>
+
+</html>
