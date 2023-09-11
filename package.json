@@ -9,7 +9,7 @@
     "setup": "./bin/setup.sh",
     "test": "node --test",
     "lint": "eslint .",
-    "coverage": "nyc npm run test"
+    "coverage": "nyc npm test"
   },
   "keywords": [
     "cluedo"
