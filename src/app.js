@@ -10,7 +10,7 @@ const {
   serveLobbyPage,
   serveLobbyDetails
 } = require("./handlers/lobby-handler");
-const { serveGamePage } = require("./handlers/game-handler");
+const createGameRouter = require("./routers/game-router");
 
 const createApp = () => {
   const app = express();
@@ -25,7 +25,7 @@ const createApp = () => {
   app.post("/join", handleJoinRequest);
   app.get("/lobby", serveLobbyPage);
   app.get("/lobby-details", serveLobbyDetails);
-  app.get("/game", serveGamePage);
+  app.use(createGameRouter());
 
   return app;
 };
