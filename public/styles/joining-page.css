@@ -60,8 +60,10 @@
 }
 
 #join-game-input-name {
-  font-size: 1.2em;
-  width: 13em;
+  font-size: 1.1em;
+  padding: 0.3em;
+  width: 80%;
+  border-radius: 5px;
 }
 
 #join-game-dialog {
@@ -69,8 +71,9 @@
   height: 35%;
   margin: 15em auto;
   padding: 2em;
-  background-color: hsl(0, 0%, 0%, 95%);
+  background-color: rgb(34, 41, 53, 0.98);
   border: 2px solid white;
+  border-radius: 10px;
   box-shadow: 0px 0px 15px 5px hsl(0, 0%, 80%);
 }
 
@@ -83,9 +86,14 @@
 
 button {
   border-radius: 8px;
+  font-size: 1.1em;
   border: 2px solid white;
   background-color: hsl(0, 0%, 5%);
   color: white;
+}
+
+button:hover {
+  box-shadow: 0 0 4px white;
 }
 
 .name-label {
@@ -96,7 +104,12 @@ button {
 .dialog-btn-container {
   width: 80%;
   display: flex;
+  gap: 1em;
   justify-content: space-around;
+}
+
+.dialog-btn-container * {
+  flex-grow: 1;
 }
 
 .dialog-btn-container * {
