@@ -17,6 +17,7 @@ module.exports = {
     "no-unreachable-loop": "error",
     "no-unused-private-class-members": "error",
     "no-unused-vars": ["warn", { destructuredArrayIgnorePattern: "^_" }],
+
     "id-length": [
       "error",
       {
@@ -39,6 +40,19 @@ module.exports = {
       }
     ]
   },
+  overrides: [
+    {
+      files: [
+        "public/scripts/html-generator.js",
+        "public/scripts/loader.js",
+        "public/scripts/lobby.js"
+      ],
+      rules: {
+        "no-undef": "off",
+        "no-unused-vars": "off"
+      }
+    }
+  ],
 
   parserOptions: {
     ecmaVersion: "latest"

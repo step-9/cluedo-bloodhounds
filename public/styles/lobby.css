@@ -1,0 +1,68 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+}
+
+#page-wrapper {
+  width: 100%;
+  height: 100%;
+  background-image: url(/images/play-now-page-bg.png);
+  background-size: cover;
+  display: grid;
+  place-content: center;
+}
+
+.page-header {
+  position: absolute;
+  color: white;
+  width: 100%;
+  top: 4.2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+
+.page-header h1 {
+  font-weight: 300;
+  text-align: center;
+}
+
+.waiting-area {
+  width: 60em;
+  height: 30em;
+  background-color: hsl(60, 56%, 91%, 60%);
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  gap: 3em;
+  padding: 3em;
+}
+
+.card {
+  width: 12%;
+  height: 38%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: hsl(60, 56%, 91%, 80%);
+  border: 2px solid black;
+}
+
+.avatar {
+  width: 80%;
+}
