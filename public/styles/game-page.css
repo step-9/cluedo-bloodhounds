@@ -82,8 +82,27 @@ body {
   grid-area: message;
   padding: 2px;
   font-size: 0.7em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   border-radius: 10px;
-  border: 1px solid white;
+  background-color: white;
+  color: black;
+}
+
+.message::before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 10px solid white;
+  border-right: 10px solid transparent;
+  border-top: 10px solid white;
+  border-bottom: 10px solid transparent;
+  left: -13px;
+  top: -4px;
+  rotate: 110deg;
 }
 
 .hide {
