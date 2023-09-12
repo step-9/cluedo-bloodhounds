@@ -17,7 +17,7 @@ const serveInitialGameState = (req, res) => {
       { title: "Lounge", type: "room" },
       { title: "Peacock", type: "suspect" }
     ],
-    currentPlayerId: 2
+    playerId: 2
   };
 
   res.json(initialGameState);
