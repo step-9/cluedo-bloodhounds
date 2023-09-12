@@ -1,3 +1,5 @@
+const toPlayerInfo = player => player.info();
+
 class Players {
   #players;
   #currentPlayerId;
@@ -26,6 +28,10 @@ class Players {
     if (!playerToStrand) return new Error("Invalid Player Id");
 
     playerToStrand.strand();
+  }
+
+  info() {
+    return this.#players.map(toPlayerInfo);
   }
 }
 

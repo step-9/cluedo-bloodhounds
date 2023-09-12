@@ -49,4 +49,42 @@ describe("Players", () => {
       assert.ok(result instanceof Error);
     });
   });
+
+  describe("info", () => {
+    it("Should give the info off all the players", () => {
+      const [gourab, milan, riya] = createPlayers(["gourab", "milan", "riya"]);
+
+      const players = new Players([gourab, milan, riya]);
+      const expectedPlayersDetails = [
+        {
+          cards: [],
+          character: undefined,
+          currentPosition: undefined,
+          id: 1,
+          isStranded: false,
+          lastSuspicionPosition: null,
+          name: "gourab"
+        },
+        {
+          cards: [],
+          character: undefined,
+          currentPosition: undefined,
+          id: 2,
+          isStranded: false,
+          lastSuspicionPosition: null,
+          name: "milan"
+        },
+        {
+          cards: [],
+          character: undefined,
+          currentPosition: undefined,
+          id: 3,
+          isStranded: false,
+          lastSuspicionPosition: null,
+          name: "riya"
+        }
+      ];
+      assert.deepStrictEqual(players.info(), expectedPlayersDetails);
+    });
+  });
 });
