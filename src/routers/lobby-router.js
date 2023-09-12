@@ -1,5 +1,4 @@
 const express = require("express");
-const { serveGameJoiningPage } = require("../handlers/resource-handler");
 const {
   handleJoinRequest,
   serveLobbyPage,
@@ -9,10 +8,9 @@ const {
 const createLobbyRouter = () => {
   const lobbyRouter = express.Router();
 
-  lobbyRouter.get("/join", serveGameJoiningPage);
+  lobbyRouter.get("/", serveLobbyPage);
   lobbyRouter.post("/join", handleJoinRequest);
-  lobbyRouter.get("/lobby", serveLobbyPage);
-  lobbyRouter.get("/lobby/details", serveLobbyDetails);
+  lobbyRouter.get("/details", serveLobbyDetails);
 
   return lobbyRouter;
 };

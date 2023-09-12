@@ -17,7 +17,7 @@ const read = inputBox => {
 };
 
 const sendJoinLobbyRequest = requestInfo => {
-  return fetch("/join", {
+  return fetch("/lobby/join", {
     method: "POST",
     body: JSON.stringify(requestInfo),
     headers: { "content-type": "application/json" }

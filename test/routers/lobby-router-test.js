@@ -26,7 +26,7 @@ describe("POST /join", () => {
 
   it("Should serve the joininig page", (_, done) => {
     request(app)
-      .post("/join")
+      .post("/lobby/join")
       .send({ name: "Gourab" })
       .expect(201)
       .expect("content-type", /application\/json/)
@@ -39,7 +39,7 @@ describe("POST /join", () => {
     lobby.registerPlayer({ name: "sumo" });
 
     request(app)
-      .post("/join")
+      .post("/lobby/join")
       .send({ name: "Gourab" })
       .expect(406)
       .expect("content-type", /application\/json/)

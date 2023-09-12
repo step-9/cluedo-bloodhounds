@@ -1,7 +1,10 @@
 const express = require("express");
 const morgan = require("morgan");
 
-const { serveHomePage } = require("./handlers/resource-handler");
+const {
+  serveHomePage,
+  serveGameJoiningPage
+} = require("./handlers/resource-handler");
 const createGameRouter = require("./routers/game-router");
 const createLobbyRouter = require("./routers/lobby-router");
 
@@ -14,7 +17,8 @@ const createApp = () => {
   app.use(express.static("public"));
 
   app.get("/", serveHomePage);
-  app.use(createLobbyRouter());
+  app.get("/join", serveGameJoiningPage);
+  app.use("/lobby", createLobbyRouter());
   app.use("/game", createGameRouter());
 
   return app;
