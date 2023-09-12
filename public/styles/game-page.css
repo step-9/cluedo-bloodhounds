@@ -67,7 +67,7 @@ body {
 }
 
 .name {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.2em;
   grid-area: name;
   align-self: flex-end;
@@ -125,17 +125,51 @@ body {
 .card {
   width: 125px;
   height: 165px;
-  flex: 0 0 125px;
+}
+
+.card:hover {
+  z-index: 2;
+  scale: 1.2;
+  border: 2px solid white;
 }
 
 #cards {
   width: 100%;
-  padding: 2em;
-  gap: 1em;
   display: flex;
   align-items: center;
-  overflow-x: auto;
+  justify-content: center;
+  position: relative;
   border: 1px solid black;
+}
+
+#card-1 {
+  position: absolute;
+  right: 15%;
+}
+
+#card-2 {
+  position: absolute;
+  right: 25%;
+}
+
+#card-3 {
+  position: absolute;
+  right: 35%;
+}
+
+#card-4 {
+  position: absolute;
+  right: 45%;
+}
+
+#card-5 {
+  position: absolute;
+  right: 55%;
+}
+
+#card-6 {
+  position: absolute;
+  right: 65%;
 }
 
 #clue-chart {
