@@ -88,4 +88,26 @@ describe("Players", () => {
       assert.deepStrictEqual(players.info(), expectedPlayersDetails);
     });
   });
+
+  describe("add", () => {
+    it("Should add a new Player", () => {
+      const gourab = new Player({ id: 1, name: "gourab", cards: [] });
+      const players = new Players();
+      players.add(gourab);
+
+      const expectedPlayersInfo = [
+        {
+          cards: [],
+          id: 1,
+          name: "gourab",
+          character: undefined,
+          isStranded: false,
+          currentPosition: undefined,
+          lastSuspicionPosition: null
+        }
+      ];
+
+      assert.deepStrictEqual(players.info(), expectedPlayersInfo);
+    });
+  });
 });

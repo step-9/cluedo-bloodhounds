@@ -4,9 +4,13 @@ class Players {
   #players;
   #currentPlayerId;
 
-  constructor(players) {
+  constructor(players = []) {
     this.#players = players;
     this.#currentPlayerId = 0;
+  }
+
+  add(player) {
+    this.#players.push(player);
   }
 
   getNextPlayer() {
