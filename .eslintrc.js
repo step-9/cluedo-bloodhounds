@@ -45,7 +45,11 @@ module.exports = {
       files: [
         "public/scripts/html-generator.js",
         "public/scripts/loader.js",
-        "public/scripts/lobby.js"
+        "public/scripts/lobby.js",
+        "public/scripts/view.js",
+        "public/scripts/game-page.js",
+        "public/scripts/game-controller.js",
+        "public/scripts/game-service.js"
       ],
       rules: {
         "no-undef": "off",
