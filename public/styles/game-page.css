@@ -26,8 +26,8 @@ body {
 
 #left-pane {
   display: grid;
-  gap: 1em;
-  grid-template-rows: 10% 90%;
+  gap: 0.5em;
+  grid-template-rows: 10% auto 10%;
   height: 100%;
 }
 
@@ -41,11 +41,26 @@ body {
 }
 
 #players {
-  padding: 1em;
-  gap: 1em;
+  padding-top: 2em;
+  gap: 0.5em;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+#dices {
+  gap: 0.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white;
+}
+
+.dice {
+  width: 60px;
+  aspect-ratio: 1/1;
+  border: 1px solid white;
+  border-radius: 10px;
 }
 
 #board {
@@ -121,7 +136,7 @@ body {
 
 #right-pane {
   display: grid;
-  grid-template-rows: 5% 25% auto 15%;
+  grid-template-rows: 5% 25% auto;
 }
 
 #help {
@@ -200,18 +215,6 @@ body {
 
 #s-w > div {
   border: 1px solid white;
-}
-
-#game-controls {
-  gap: 1em;
-  border: 1px solid white;
-}
-
-.dice {
-  width: 80px;
-  height: 80px;
-  border: 1px solid white;
-  border-radius: 10px;
 }
 
 .scarlet {
