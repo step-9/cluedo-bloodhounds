@@ -74,4 +74,24 @@ describe("GET /lobby/details", () => {
       .expect({ isFull: false, lobbyDetails: [{ playerId: 1, name: "milan" }] })
       .end(done);
   });
+
+  it("Should start game when lobby is full and the game is not started", (context, done) => {
+    const app = createApp();
+
+    const status = context.mock.fn(() => ({ isGameStarted: false }));
+    const isFull = context.mock.fn(() => true);
+    const getAllPlayers = context.mock.fn(() => "Mock Data");
+    const startGame = context.mock.fn();
+
+    const lobby = { status, startGame, isFull, getAllPlayers };
+
+    app.context = { lobby };
+
+    request(app)
+      .get("/lobby/details")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .expect({ isFull: true, lobbyDetails: "Mock Data" })
+      .end(done);
+  });
 });

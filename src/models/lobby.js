@@ -1,9 +1,11 @@
 class Lobby {
   #players;
   #maxPlayers;
+  #isGameStarted;
 
   constructor({ maxPlayers }) {
     this.#players = [];
+    this.#isGameStarted = false;
     this.#maxPlayers = maxPlayers || 6;
   }
 
@@ -19,6 +21,11 @@ class Lobby {
     return { playerId, isFull: false };
   }
 
+  startGame(game) {
+    this.#isGameStarted = true;
+    game.start();
+  }
+
   getAllPlayers() {
     const toPlayerDetails = ({ name, playerId }) => ({ name, playerId });
     return this.#players.map(toPlayerDetails);
@@ -26,6 +33,14 @@ class Lobby {
 
   isFull() {
     return this.#players.length >= this.#maxPlayers;
+  }
+
+  status() {
+    return {
+      players: this.getAllPlayers(),
+      isFull: this.isFull(),
+      isGameStarted: this.#isGameStarted
+    };
   }
 }
 

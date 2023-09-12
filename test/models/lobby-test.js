@@ -46,4 +46,16 @@ describe("Lobby", () => {
       assert.deepStrictEqual(lobby.getAllPlayers(), expectedPlayerDetails);
     });
   });
+
+  describe("startGame", () => {
+    it("Should Start Game", context => {
+      const start = context.mock.fn();
+      const game = { start };
+
+      const lobby = new Lobby({ maxPlayers: 3 });
+      lobby.startGame(game);
+      
+      assert.ok(lobby.status().isGameStarted);
+    });
+  });
 });
