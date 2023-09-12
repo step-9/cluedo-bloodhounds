@@ -72,6 +72,10 @@ body {
   align-self: center;
   justify-self: center;
   border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .name {
@@ -115,30 +119,6 @@ body {
   display: none;
 }
 
-.red {
-  background-color: red;
-}
-
-.mustard {
-  background-color: hsl(60, 90%, 40%);
-}
-
-.white {
-  background-color: #ddd;
-}
-
-.green {
-  background-color: green;
-}
-
-.blue {
-  background-color: blue;
-}
-
-.purple {
-  background-color: purple;
-}
-
 #right-pane {
   display: grid;
   grid-template-rows: 5% 25% auto 15%;
@@ -153,7 +133,10 @@ body {
 .card {
   width: 125px;
   height: 165px;
-  border: 1px solid #ddd;
+  color: black;
+  text-align: center;
+  background-color: #ddd;
+  border: 1px solid black;
 }
 
 .card:hover {
@@ -171,32 +154,32 @@ body {
   border: 1px solid white;
 }
 
-#card-1 {
+#cards > div:nth-child(1) {
   position: absolute;
   right: 15%;
 }
 
-#card-2 {
+#cards > div:nth-child(2) {
   position: absolute;
   right: 25%;
 }
 
-#card-3 {
+#cards > div:nth-child(3) {
   position: absolute;
   right: 35%;
 }
 
-#card-4 {
+#cards > div:nth-child(4) {
   position: absolute;
   right: 45%;
 }
 
-#card-5 {
+#cards > div:nth-child(5) {
   position: absolute;
   right: 55%;
 }
 
-#card-6 {
+#cards > div:nth-child(6) {
   position: absolute;
   right: 65%;
 }
@@ -232,9 +215,25 @@ body {
 }
 
 .scarlet {
-  background: url("/images/cluedo-logo.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  border: 7px solid red;
+  background-color: red;
+}
+
+.mustard {
+  background-color: hsl(60, 90%, 40%);
+}
+
+.white {
+  background-color: #ddd;
+}
+
+.green {
+  background-color: green;
+}
+
+.peacock {
+  background-color: blue;
+}
+
+.plum {
+  background-color: purple;
 }

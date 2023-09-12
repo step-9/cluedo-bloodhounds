@@ -10,16 +10,12 @@ class View {
     this.#htmlGenerator = htmlGenerator;
   }
 
-  #removeChildren(element) {
-    element.innerHTML = "";
-  }
-
   #renderPlayerInfo({ name, playerId, character }) {
     const playerInfoElement = this.#htmlGenerator([
       "div",
-      { class: "player-info" },
+      { class: "player-info", id: playerId },
       [
-        ["div", { class: `icon ${character}` }, []],
+        ["div", { class: `icon ${character}` }, character],
         ["div", { class: "name" }, name],
         ["div", { class: "message hide" }, []]
       ]
@@ -28,8 +24,16 @@ class View {
     this.#playersContainer.appendChild(playerInfoElement);
   }
 
-  setupGame({ players }) {
-    this.#removeChildren(this.#playersContainer);
+  #renderCard({ title }) {
+    const cardElement = document.createElement("div");
+    cardElement.classList.add("card");
+    cardElement.innerText = title;
+
+    this.#cardsContainer.appendChild(cardElement);
+  }
+
+  setupGame({ players, cards }) {
     players.forEach(player => this.#renderPlayerInfo(player));
+    cards.forEach(card => this.#renderCard(card));
   }
 }
