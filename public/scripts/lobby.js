@@ -43,12 +43,15 @@ const main = () => {
 
   getLobbyDetails().then(storeAndRenderLobbyDetails);
 
-  setInterval(() => {
+  const pollingInterval = setInterval(() => {
     getLobbyDetails().then(({ isFull, lobbyDetails }) => {
       if (isNewData(currentLobbyDetails, lobbyDetails))
         storeAndRenderLobbyDetails({ lobbyDetails });
 
-      if (isFull) sendGamePageRequest();
+      if (isFull) {
+        clearInterval(pollingInterval);
+        sendGamePageRequest();
+      }
     });
   }, 500);
 };
