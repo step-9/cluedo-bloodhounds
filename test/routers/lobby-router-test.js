@@ -71,7 +71,7 @@ describe("GET /lobby/details", () => {
       .get("/lobby/details")
       .expect(200)
       .expect("content-type", /application\/json/)
-      .expect([{ playerId: 1, name: "milan" }])
+      .expect({ isFull: false, lobbyDetails: [{ playerId: 1, name: "milan" }] })
       .end(done);
   });
 });

@@ -23,6 +23,10 @@ class Lobby {
     const toPlayerDetails = ({ name, playerId }) => ({ name, playerId });
     return this.#players.map(toPlayerDetails);
   }
+
+  isFull() {
+    return this.#players.length >= this.#maxPlayers;
+  }
 }
 
 module.exports = Lobby;

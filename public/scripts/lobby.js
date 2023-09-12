@@ -31,16 +31,12 @@ const renderLobby = playerDetails => {
 const isNewData = (prevLobbyDetails, currentLobbyDetails) =>
   prevLobbyDetails.length !== currentLobbyDetails.length;
 
-const startGameWhenPlayersJoined = currentLobbyDetails => {
-  if (currentLobbyDetails.length === 3) sendGamePageRequest();
-};
-
 const main = () => {
   showLoader();
 
   let currentLobbyDetails = [];
 
-  const storeAndRenderLobbyDetails = lobbyDetails => {
+  const storeAndRenderLobbyDetails = ({ lobbyDetails }) => {
     currentLobbyDetails = lobbyDetails;
     renderLobby(lobbyDetails);
   };
@@ -48,11 +44,11 @@ const main = () => {
   getLobbyDetails().then(storeAndRenderLobbyDetails);
 
   setInterval(() => {
-    getLobbyDetails().then(lobbyDetails => {
+    getLobbyDetails().then(({ isFull, lobbyDetails }) => {
       if (isNewData(currentLobbyDetails, lobbyDetails))
-        storeAndRenderLobbyDetails(lobbyDetails);
+        storeAndRenderLobbyDetails({ lobbyDetails });
 
-      startGameWhenPlayersJoined(currentLobbyDetails);
+      if (isFull) sendGamePageRequest();
     });
   }, 500);
 };

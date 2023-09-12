@@ -22,7 +22,8 @@ const serveLobbyPage = (req, res) => {
 const serveLobbyDetails = (req, res) => {
   const { lobby } = req.app.context;
   const lobbyDetails = lobby.getAllPlayers();
-  res.json(lobbyDetails);
+  const isFull = lobby.isFull();
+  res.json({ isFull, lobbyDetails });
 };
 
 module.exports = { handleJoinRequest, serveLobbyPage, serveLobbyDetails };
