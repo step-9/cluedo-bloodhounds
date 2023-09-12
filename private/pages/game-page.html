@@ -15,26 +15,261 @@
     <section id="left-pane">
       <img src="/images/cluedo-logo.png" alt="cluedo-logo" id="cluedo-logo">
       <div id="players"></div>
-      <div id="dices">
-        <div class="dice"></div>
-        <div class="dice"></div>
-      </div>
     </section>
 
-    <section id="board" class="center-align">
+    <section id="board">
       <img src="/svg/board.svg" width="100%" height="100%" />
     </section>
     <section id="right-pane">
-      <div id="help" class="center-align">Help</div>
+      <div id="help">Help</div>
 
       <div id="cards"></div>
-
-      <div id="clue-chart">
-        <div id="s-w">
-          <div class="center-align">Suspects</div>
-          <div class="center-align">Weapons</div>
+      <div id="clue-chart-container">
+        <h3>Clue Sheet</h3>
+        <div id="clue-sheet">
+          <section id="suspects">
+            <h4 class="clue-section-heading">Suspects</h4>
+            <table class="clue-table">
+              <thead>
+                <th>Suspect</th>
+                <th>M.S</th>
+                <th>C.M</th>
+                <th>M.W</th>
+                <th>R.G</th>
+                <th>M.P</th>
+                <th>P.P</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Scarlet</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Mustard</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>White</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Green</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Peacock</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Plum</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section id="weapons">
+            <h4 class="clue-section-heading">Weapons</h4>
+            <table class="clue-table">
+              <thead>
+                <th>Weapon</th>
+                <th>M.S</th>
+                <th>C.M</th>
+                <th>M.W</th>
+                <th>R.G</th>
+                <th>M.P</th>
+                <th>P.P</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Rope</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Dagger</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Revolver</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Spanner</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Lead Pipe</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Candle stick</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <section id="rooms">
+            <h4 class="clue-section-heading">Rooms</h4>
+            <table class="clue-table">
+              <thead>
+                <th>Room</th>
+                <th>M.S</th>
+                <th>C.M</th>
+                <th>M.W</th>
+                <th>R.G</th>
+                <th>M.P</th>
+                <th>P.P</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Library</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Study</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Hall</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Lounge</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Kitchen</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Ball Room</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Dining Room</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Conservatory</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                  <td>Billiard Room</td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox"></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
         </div>
-        <div class="center-align">Rooms</div>
+      </div>
+
+      <div id="dices">
+        <div class="dice"></div>
+        <div class="dice"></div>
       </div>
     </section>
   </div>
