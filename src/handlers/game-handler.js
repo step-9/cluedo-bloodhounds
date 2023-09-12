@@ -9,7 +9,15 @@ const serveInitialGameState = (req, res) => {
       { name: "milan", playerId: 2, character: "Mustard" },
       { name: "sourov", playerId: 3, character: "Green" }
     ],
-    cards: ["Mustard", "Dagger", "Rope", "Conservatory", "Lounge", "Peacock"]
+    cards: [
+      { title: "Mustard", type: "suspect" },
+      { title: "Dagger", type: "weapon" },
+      { title: "Rope", type: "weapon" },
+      { title: "Conservatory", type: "room" },
+      { title: "Lounge", type: "room" },
+      { title: "Peacock", type: "suspect" }
+    ],
+    currentPlayerId: 2
   };
 
   res.json(initialGameState);
