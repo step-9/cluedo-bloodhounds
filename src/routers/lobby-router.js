@@ -8,11 +8,11 @@ const {
 
 const createLobbyRouter = () => {
   const lobbyRouter = express.Router();
-  
+
   lobbyRouter.get("/join", serveGameJoiningPage);
   lobbyRouter.post("/join", handleJoinRequest);
   lobbyRouter.get("/lobby", serveLobbyPage);
-  lobbyRouter.get("/lobby-details", serveLobbyDetails);
+  lobbyRouter.get("/lobby/details", serveLobbyDetails);
 
   return lobbyRouter;
 };

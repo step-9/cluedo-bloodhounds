@@ -1,4 +1,4 @@
-const getLobbyDetails = () => fetch("/lobby-details").then(res => res.json());
+const getLobbyDetails = () => fetch("/lobby/details").then(res => res.json());
 const getWaitingAreaContainer = () => document.querySelector(".waiting-area");
 const removeAllChilds = container => container.replaceChildren();
 
