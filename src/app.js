@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 
 const {
   serveHomePage,
@@ -14,6 +15,7 @@ const createApp = () => {
   app.use(morgan(":method :url :response-time ms"));
   app.use(express.json());
   app.use(express.urlencoded());
+  app.use(cookieParser());
   app.use(express.static("public"));
 
   app.get("/", serveHomePage);
