@@ -66,3 +66,7 @@
 .avatar {
   width: 80%;
 }
+
+.loader {
+  font-size: 3em;
+}

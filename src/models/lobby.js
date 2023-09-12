@@ -10,7 +10,8 @@ class Lobby {
   registerPlayer({ name }) {
     const noOfPlayers = this.#players.length;
 
-    if (noOfPlayers >= this.#maxPlayers) return { isFull: true };
+    if (noOfPlayers >= this.#maxPlayers)
+      return { isFull: true, playerId: null };
 
     const playerId = noOfPlayers + 1;
     this.#players.push({ playerId, name });
