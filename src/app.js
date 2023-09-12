@@ -15,7 +15,7 @@ const createApp = () => {
 
   app.get("/", serveHomePage);
   app.use(createLobbyRouter());
-  app.use(createGameRouter());
+  app.use("/game", createGameRouter());
 
   return app;
 };

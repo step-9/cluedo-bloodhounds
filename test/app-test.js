@@ -100,4 +100,16 @@ describe("App", () => {
         .end(done);
     });
   });
+
+  describe("GET /game/initial-state", () => {
+    it("should give the initial state of the game", (_, done) => {
+      const app = createApp();
+
+      request(app)
+        .get("/game/initial-state")
+        .expect(200)
+        .expect("content-type", /application\/json/)
+        .end(done);
+    });
+  });
 });
