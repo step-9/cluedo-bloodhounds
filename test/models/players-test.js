@@ -84,6 +84,7 @@ describe("Players", () => {
           name: "riya"
         }
       ];
+
       assert.deepStrictEqual(players.info(), expectedPlayersDetails);
     });
   });

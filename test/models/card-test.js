@@ -23,12 +23,14 @@ describe("Card", () => {
     it("Should not match for another card with different title", () => {
       const card1 = new Card("room", "lounge");
       const card2 = new Card("room", "conservatory");
+
       assert.strictEqual(card1.matches(card2), false);
     });
 
     it("Should not match for another card with different type", () => {
       const card1 = new Card("room", "lounge");
       const card2 = new Card("suspect", "white");
+
       assert.strictEqual(card1.matches(card2), false);
     });
   });

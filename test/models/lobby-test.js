@@ -7,6 +7,7 @@ describe("Lobby", () => {
     it("should register player when the lobby is not full", () => {
       const lobby = new Lobby({ maxPlayers: 3 });
       const { isFull, playerId } = lobby.registerPlayer({ name: "gourab" });
+
       assert.strictEqual(isFull, false);
       assert.strictEqual(playerId, 1);
     });
@@ -15,6 +16,7 @@ describe("Lobby", () => {
       const lobby = new Lobby({ maxPlayers: 1 });
       lobby.registerPlayer({ name: "milan" });
       const { isFull } = lobby.registerPlayer({ name: "gourab" });
+
       assert.strictEqual(isFull, true);
     });
 
