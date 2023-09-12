@@ -31,8 +31,12 @@ body {
 }
 
 #left-pane > header {
-  font-size: 2em;
   border-bottom: 2px solid white;
+}
+
+#cluedo-logo {
+  width: 100%;
+  border-bottom: 1px solid white;
 }
 
 #players {
@@ -46,6 +50,7 @@ body {
 #board {
   width: 900px;
   border: 1px solid white;
+  padding-right: 1.2em;
 }
 
 .player-info {
