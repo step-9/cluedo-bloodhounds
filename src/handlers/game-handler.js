@@ -5,9 +5,9 @@ const serveGamePage = (req, res) => {
 const serveInitialGameState = (req, res) => {
   const initialGameState = {
     players: [
-      { name: "gourab", playerId: 1, character: "Scarlet" },
-      { name: "milan", playerId: 2, character: "Mustard" },
-      { name: "sourov", playerId: 3, character: "Green" }
+      { name: "gourab", id: 1, character: "Scarlet" },
+      { name: "milan", id: 2, character: "Mustard" },
+      { name: "sourov", id: 3, character: "Green" }
     ],
     cards: [
       { title: "Mustard", type: "suspect" },
