@@ -26,6 +26,7 @@ body {
 
 #left-pane {
   display: grid;
+  gap: 1em;
   grid-template-rows: 10% 90%;
   height: 100%;
 }
@@ -64,16 +65,12 @@ body {
     "icon message";
 }
 
-.icon-container {
-  grid-area: icon;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .icon {
+  grid-area: icon;
   width: 80px;
   aspect-ratio: 1/1;
+  align-self: center;
+  justify-self: center;
   border-radius: 50%;
 }
 
@@ -232,4 +229,12 @@ body {
   height: 80px;
   border: 1px solid white;
   border-radius: 10px;
+}
+
+.scarlet {
+  background: url("/images/cluedo-logo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 7px solid red;
 }

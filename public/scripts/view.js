@@ -19,20 +19,16 @@ class View {
       "div",
       { class: "player-info" },
       [
-        [
-          "div",
-          { class: "icon-container" },
-          [["div", { class: "icon red" }, []]]
-        ],
+        ["div", { class: `icon ${character}` }, []],
         ["div", { class: "name" }, name],
-        ["div", { class: "message" }, []]
+        ["div", { class: "message hide" }, []]
       ]
     ]);
 
     this.#playersContainer.appendChild(playerInfoElement);
   }
 
-  start({ players }) {
+  setupGame({ players }) {
     this.#removeChildren(this.#playersContainer);
     players.forEach(player => this.#renderPlayerInfo(player));
   }

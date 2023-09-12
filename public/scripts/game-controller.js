@@ -8,8 +8,8 @@ class GameController {
   }
 
   start() {
-    this.#gameService.getInitialData(data => {
-      this.#view.start(data);
+    this.#gameService.getInitialData(initialState => {
+      this.#view.setupGame(initialState);
     });
   }
 }
