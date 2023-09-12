@@ -1,6 +1,5 @@
 class View {
   #playersContainer;
-  //eslint-disable-next-line no-unused-private-class-members
   #cardsContainer;
   #htmlGenerator;
 
@@ -10,10 +9,10 @@ class View {
     this.#htmlGenerator = htmlGenerator;
   }
 
-  #renderPlayerInfo({ name, playerId, character }) {
+  #renderPlayerInfo({ name, id, character }) {
     const playerInfoElement = this.#htmlGenerator([
       "div",
-      { class: "player-info", id: playerId },
+      { class: "player-info", id },
       [
         ["div", { class: `icon ${character}` }, character],
         ["div", { class: "name" }, name],
@@ -32,8 +31,20 @@ class View {
     this.#cardsContainer.appendChild(cardElement);
   }
 
-  setupGame({ players, cards }) {
-    players.forEach(player => this.#renderPlayerInfo(player));
+  #arrangePlayers(players, playerId) {
+    const indexOfPlayer = players.findIndex(({ id }) => id === playerId);
+    const playersInOrder = players.slice(indexOfPlayer);
+    playersInOrder.push(...players.slice(0, indexOfPlayer));
+
+    return playersInOrder;
+  }
+
+  setupGame({ players, cards, playerId }) {
+    const playersInOrder = this.#arrangePlayers(players, playerId);
+    const [firstPlayer] = playersInOrder;
+    firstPlayer.name = firstPlayer.name + " (you)"; 
+
+    playersInOrder.forEach(player => this.#renderPlayerInfo(player));
     cards.forEach(card => this.#renderCard(card));
   }
 }
