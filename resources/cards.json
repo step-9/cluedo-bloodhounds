@@ -1,6 +1,6 @@
 {
-  "suspects": ["Mustard", "Plum", "Green", "Peacock", "Scarlett", "White"],
-  "weapons": [
+  "suspect": ["Mustard", "Plum", "Green", "Peacock", "Scarlett", "White"],
+  "weapon": [
     "Dagger",
     "Candlestick",
     "Revolver",
@@ -8,7 +8,7 @@
     "Lead Pipe",
     "Spanner"
   ],
-  "rooms": [
+  "room": [
     "Hall",
     "Lounge",
     "Dining Room",
@@ -16,6 +16,7 @@
     "Ball Room",
     "Conservatory",
     "Billiard Room",
-    "Library Study"
+    "Library",
+    "Study"
   ]
 }
