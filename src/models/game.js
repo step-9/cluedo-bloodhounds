@@ -1,8 +1,8 @@
 const Player = require("./player");
 
 const getCharacterAssigner = characters => {
-  return ({ name, playerId }, playerIndex) => {
-    return { name, id: +playerId, character: characters[playerIndex] };
+  return (playerInfo, playerIndex) => {
+    return { ...playerInfo, character: characters[playerIndex] };
   };
 };
 

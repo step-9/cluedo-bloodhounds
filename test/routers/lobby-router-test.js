@@ -80,7 +80,9 @@ describe("GET /lobby/details", () => {
 
     const status = context.mock.fn(() => ({ isGameStarted: false }));
     const isFull = context.mock.fn(() => true);
-    const getAllPlayers = context.mock.fn(() => "Mock Data");
+    const getAllPlayers = context.mock.fn(() => [
+      { name: "gourab", playerId: 1 }
+    ]);
     const startGame = context.mock.fn();
 
     const lobby = { status, startGame, isFull, getAllPlayers };
@@ -91,7 +93,7 @@ describe("GET /lobby/details", () => {
       .get("/lobby/details")
       .expect(200)
       .expect("content-type", /application\/json/)
-      .expect({ isFull: true, lobbyDetails: "Mock Data" })
+      .expect({ isFull: true, lobbyDetails: [{ name: "gourab", playerId: 1 }] })
       .end(done);
   });
 });

@@ -5,7 +5,7 @@ const Game = require("../../src/models/game");
 describe("Game", () => {
   describe("start", () => {
     it("should start the game", context => {
-      const playersInfo = [{ playerId: 1, name: "milan", cards: [] }];
+      const playersInfo = [{ id: 1, name: "milan", cards: [] }];
       const players = {
         add: context.mock.fn()
       };

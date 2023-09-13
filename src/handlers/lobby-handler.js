@@ -25,6 +25,9 @@ const serveLobbyPage = (req, res) => {
   res.sendFile("lobby.html", { root: "private/pages" });
 };
 
+const formatLobbyDetails = lobbyDetails =>
+  lobbyDetails.map(({ name, playerId }) => ({ name, id: +playerId }));
+
 const startGame = (lobbyDetails, req) => {
   const cardsData = require("../../resources/cards.json");
   const { lobby } = req.app.context;
@@ -33,7 +36,7 @@ const startGame = (lobbyDetails, req) => {
   const cards = new Cards(cardsLookup, lodash);
   const players = new Players();
   const game = new Game({
-    playersInfo: lobbyDetails,
+    playersInfo: formatLobbyDetails(lobbyDetails),
     cards,
     players,
     characters: cardsData.suspect,
