@@ -1,6 +1,6 @@
 const serveGamePage = (req, res) => {
   const { lobby } = req.app.context;
-  if (!lobby.status().isGameStarted) return res.status(302).redirect("/");
+  if (!lobby.status().isGameStarted) return res.status(302).redirect("/join");
   res.sendFile("game-page.html", { root: "private/pages" });
 };
 
