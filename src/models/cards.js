@@ -30,7 +30,7 @@ class Cards {
     return Object.fromEntries(typeCardPairs);
   }
 
-  #distribute(cards, noOfPlayers) {
+  #deal(cards, noOfPlayers) {
     const hands = new Array(noOfPlayers).fill().map(() => []);
     const handCycler = cycle(hands);
 
@@ -45,7 +45,7 @@ class Cards {
   shuffleRemaining(noOfPlayers) {
     const remainingCards = Object.values(this.#remainingCards).flat();
     const shuffledCards = this.#shuffler.shuffle(remainingCards);
-    return this.#distribute(shuffledCards, noOfPlayers);
+    return this.#deal(shuffledCards, noOfPlayers);
   }
 }
 
