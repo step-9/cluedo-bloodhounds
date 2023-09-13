@@ -14,7 +14,7 @@ class View {
       "div",
       { class: "player-info", id },
       [
-        ["div", { class: `icon ${character}` }, character],
+        ["div", { class: `icon ${character}` }, []],
         ["div", { class: "name" }, name],
         ["div", { class: "message hide" }, []]
       ]
@@ -42,7 +42,7 @@ class View {
   setupGame({ players, cards, playerId }) {
     const playersInOrder = this.#arrangePlayers(players, playerId);
     const [firstPlayer] = playersInOrder;
-    firstPlayer.name = firstPlayer.name + " (you)"; 
+    firstPlayer.name = firstPlayer.name + " (you)";
 
     playersInOrder.forEach(player => this.#renderPlayerInfo(player));
     cards.forEach(card => this.#renderCard(card));

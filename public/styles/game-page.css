@@ -49,11 +49,11 @@ body {
 }
 
 #board {
-  width: 900px;
+  width: 875px;
+  padding: 0 0.5em;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-right: 1.2em;
   border: 1px solid white;
 }
 
@@ -164,6 +164,7 @@ body {
   height: 100%;
   display: grid;
   grid-template-rows: 5% auto;
+  border: 1px solid white;
 }
 
 #cards-container > h3 {
