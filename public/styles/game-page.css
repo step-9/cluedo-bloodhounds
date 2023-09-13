@@ -50,7 +50,7 @@ body {
 
 #board {
   width: 875px;
-  padding: 0 0.5em;
+  padding: 0 1.5em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -87,6 +87,8 @@ body {
   font-size: 1.2em;
   grid-area: name;
   align-self: flex-end;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .message {
@@ -242,14 +244,18 @@ body {
   border-collapse: collapse;
 }
 
+.clue-table > thead :first-child {
+  text-align: left;
+}
+
 .clue-table th:first-child {
   width: 30%;
 }
 
 .clue-table td,
 th {
-  padding: 0.25em 0;
-  text-align: center;
+  padding: 0.25em 0.5em;
+  /* text-align: center; */
   border: 1px solid white;
 }
 
