@@ -51,7 +51,7 @@ class Game {
 
   status() {
     return {
-      players: this.#playersInfo
+      players: this.#players.info()
     };
   }
 

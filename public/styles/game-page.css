@@ -255,7 +255,6 @@ body {
 .clue-table td,
 th {
   padding: 0.25em 0.5em;
-  /* text-align: center; */
   border: 1px solid white;
 }
 
