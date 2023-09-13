@@ -20,8 +20,8 @@ body {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr auto 2.5fr;
-  background-color: hsl(240, 89%, 25%);
+  grid-template-columns: 1fr auto 2fr;
+  background-color: #444;
 }
 
 #left-pane {
@@ -82,6 +82,7 @@ body {
 }
 
 .name {
+  text-transform: capitalize;
   font-weight: 500;
   font-size: 1.2em;
   grid-area: name;
@@ -123,25 +124,33 @@ body {
 }
 
 #right-pane {
-  display: grid;
-  grid-template-rows: 5% 25% 55% 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 #help {
   display: flex;
   align-items: center;
   justify-content: right;
-  padding-right: 2em;
-  border: 1px solid white;
+  padding-right: 1em;
+}
+
+#inference-container {
+  display: grid;
+  grid-template-columns: 30% 70%;
 }
 
 .card {
   width: 125px;
   height: 165px;
+  cursor: pointer;
+  text-transform: capitalize;
   color: black;
-  display: grid;
-  place-content: center;
+  text-align: center;
+  padding-top: 1em;
   background-color: #ddd;
+  border-radius: 5px;
   border: 2px solid black;
 }
 
@@ -151,48 +160,62 @@ body {
   border: 2px solid white;
 }
 
-#cards {
-  width: 100%;
+#cards-container {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 5% auto;
+}
+
+#cards-container > h3 {
   display: flex;
-  align-items: center;
   justify-content: center;
-  position: relative;
+  align-items: center;
   border: 1px solid white;
+}
+
+#cards {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
 }
 
 #cards > div:nth-child(1) {
   position: absolute;
-  left: 35%;
+  top: 10%;
 }
 
 #cards > div:nth-child(2) {
   position: absolute;
-  left: 40%;
+  top: 20%;
 }
 
 #cards > div:nth-child(3) {
   position: absolute;
-  left: 45%;
+  top: 30%;
 }
 
 #cards > div:nth-child(4) {
   position: absolute;
-  left: 50%;
+  top: 40%;
 }
 
 #cards > div:nth-child(5) {
   position: absolute;
-  left: 55%;
+  top: 50%;
 }
 
 #cards > div:nth-child(6) {
   position: absolute;
-  left: 60%;
+  top: 60%;
 }
 
 #clue-chart-container {
   align-self: center;
   border: 1px solid white;
+  color: black;
+  background-color: hsl(60, 56%, 91%, 65%);
 }
 
 #clue-chart-container > h3 {
@@ -202,24 +225,8 @@ body {
 }
 
 #clue-sheet {
-  display: grid;
-  height: fit-content;
-  grid-template: 50% 50%/50% 50%;
-  grid-template-areas:
-    "suspects rooms"
-    "weapons rooms";
-}
-
-#suspects {
-  grid-area: suspects;
-}
-
-#weapons {
-  grid-area: weapons;
-}
-
-#rooms {
-  grid-area: rooms;
+  display: flex;
+  flex-direction: column;
 }
 
 .clue-section-heading {
@@ -230,7 +237,12 @@ body {
 
 .clue-table {
   width: 100%;
+  color: black;
   border-collapse: collapse;
+}
+
+.clue-table th:first-child {
+  width: 30%;
 }
 
 .clue-table td,
@@ -244,37 +256,55 @@ th {
   gap: 0.5em;
   display: flex;
   align-items: center;
-  justify-content: center;
-  border: 1px solid white;
+  padding-left: 2em;
 }
 
 .dice {
   width: 60px;
   height: 60px;
   border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: whitesmoke;
   border: 1px solid white;
 }
 
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: black;
+}
+
 .scarlet {
+  text-transform: capitalize;
   background-color: red;
 }
 
 .mustard {
+  text-transform: capitalize;
+  color: black;
   background-color: hsl(60, 90%, 40%);
 }
 
 .white {
+  text-transform: capitalize;
+  color: black;
   background-color: #ddd;
 }
 
 .green {
+  text-transform: capitalize;
   background-color: green;
 }
 
 .peacock {
+  text-transform: capitalize;
   background-color: blue;
 }
 
 .plum {
+  text-transform: capitalize;
   background-color: purple;
 }
