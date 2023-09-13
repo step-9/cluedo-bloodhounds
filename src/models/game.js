@@ -1,5 +1,17 @@
 const Player = require("./player");
 
+const getCharacterAssigner = characters => {
+  return ({ name, playerId }, playerIndex) => {
+    return { name, id: +playerId, character: characters[playerIndex] };
+  };
+};
+
+const getCardsAssigner = cards => {
+  return (playerInfo, playerIndex) => {
+    return { ...playerInfo, cards: cards[playerIndex] };
+  };
+};
+
 class Game {
   #cards;
   #playersInfo;
@@ -18,13 +30,7 @@ class Game {
   #assignCharacters() {
     this.#playersInfo = this.#shuffler
       .shuffle(this.#playersInfo)
-      .map(({ name, playerId }, playerIndex) => {
-        return {
-          name,
-          id: +playerId,
-          character: this.#characters[playerIndex]
-        };
-      });
+      .map(getCharacterAssigner(this.#characters));
 
     return this.#playersInfo;
   }
@@ -35,14 +41,12 @@ class Game {
   }
 
   #shuffleAndDistribute() {
-    const shuffledCardChunks = this.#cards.shuffleRemaining(
-      this.#playersInfo.length
-    );
+    const noOfPlayers = this.#playersInfo.length;
+    const shuffledCardChunks = this.#cards.shuffleRemaining(noOfPlayers);
 
-    this.#playersInfo = this.#playersInfo.map((playerInfo, playerIndex) => ({
-      ...playerInfo,
-      cards: shuffledCardChunks[playerIndex]
-    }));
+    this.#playersInfo = this.#playersInfo.map(
+      getCardsAssigner(shuffledCardChunks)
+    );
   }
 
   status() {
