@@ -52,24 +52,24 @@ class View {
     return playersInOrder;
   }
 
-  #createEndTurnButton() {
+  #createButton(value, id) {
     return this.#htmlGenerator([
       "input",
       {
         type: "button",
-        id: "end-turn-btn",
-        value: "End Turn",
+        id,
+        value,
         class: "button"
       },
       []
     ]);
   }
 
-  #deleteEndTurnButton() {
-    const endTurnBtn = document.querySelector("#end-turn-btn");
-    if (!endTurnBtn) return;
+  #deleteButton(buttonId) {
+    const button = document.querySelector(`#${buttonId}`);
+    if (!button) return;
 
-    endTurnBtn.remove();
+    button.remove();
   }
 
   #renderBoard(svg) {
@@ -94,11 +94,11 @@ class View {
 
   #renderEndTurnButton(isYourTurn) {
     if (!isYourTurn) {
-      this.#deleteEndTurnButton();
+      this.#deleteButton("end-turn-btn");
       return;
     }
 
-    const endTurnBtn = this.#createEndTurnButton();
+    const endTurnBtn = this.#createButton("End Turn", "end-turn-btn");
 
     endTurnBtn.onclick = () => {
       const { onEndTurn } = this.#listeners;
@@ -106,6 +106,22 @@ class View {
     };
 
     this.#bottomPane.appendChild(endTurnBtn);
+  }
+
+  #renderAccuseButton(isYourTurn) {
+    if (!isYourTurn) {
+      this.#deleteButton("accuse-btn");
+      return;
+    }
+
+    const accuseBtn = this.#createButton("Accuse", "accuse-btn");
+
+    accuseBtn.onclick = () => {
+      const { accuse } = this.#listeners;
+      accuse();
+    };
+
+    this.#bottomPane.appendChild(accuseBtn);
   }
 
   setupGame({ players, cards, playerId }, boardSvg) {
@@ -120,6 +136,7 @@ class View {
 
   renderGameState({ isYourTurn, currentPlayerId }) {
     this.#renderEndTurnButton(isYourTurn);
+    this.#renderAccuseButton(isYourTurn);
     this.#highlightCurrentPlayer(currentPlayerId);
   }
 }

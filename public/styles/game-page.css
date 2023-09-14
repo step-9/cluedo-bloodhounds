@@ -309,7 +309,7 @@ th {
   background-color: red;
 }
 
-#end-turn-btn:hover {
+.button:hover {
   cursor: pointer;
 }
 
