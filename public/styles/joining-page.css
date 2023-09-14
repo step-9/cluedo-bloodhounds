@@ -39,6 +39,15 @@
   box-shadow: 0 0 15px 2px white;
 }
 
+#join-game-confirm-btn {
+  color: hsl(120, 100%, 15%);
+  background-color: lightgreen;
+}
+#close-join-game-dialog {
+  color: hsl(0, 100%, 15%);
+  background-color: hsl(0, 100%, 70%);
+}
+
 #back-to-home {
   background-color: rgba(0, 0, 0, 0.527);
   border: 2px solid white;
