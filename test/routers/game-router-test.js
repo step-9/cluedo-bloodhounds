@@ -141,3 +141,15 @@ describe("PATCH /game/move-pawn", () => {
       .end(done);
   });
 });
+
+describe("GET /game/cards", () => {
+  it("should give cards info", (context, done) => {
+    const app = createApp();
+
+    request(app)
+      .get("/game/cards")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .end(done);
+  });
+});

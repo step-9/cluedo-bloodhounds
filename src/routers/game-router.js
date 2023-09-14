@@ -4,7 +4,8 @@ const {
   serveInitialGameState,
   serveGameState,
   handleEndTurnRequest,
-  handleMovePawnRequest
+  handleMovePawnRequest,
+  serveCardsInfo
 } = require("../handlers/game-handler");
 
 const createGameRouter = () => {
@@ -15,6 +16,7 @@ const createGameRouter = () => {
   gameRouter.get("/state", serveGameState);
   gameRouter.post("/end-turn", handleEndTurnRequest);
   gameRouter.patch("/move-pawn", handleMovePawnRequest);
+  gameRouter.get("/cards", serveCardsInfo);
 
   return gameRouter;
 };

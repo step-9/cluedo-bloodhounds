@@ -1,3 +1,4 @@
+const cardsInfo = require("../../resources/cards.json");
 const redirectToJoinPage = (_, res) => res.status(302).redirect("/join");
 
 const serveGamePage = (req, res) => {
@@ -47,10 +48,15 @@ const handleMovePawnRequest = (req, res) => {
   res.json({});
 };
 
+const serveCardsInfo = (req, res) => {
+  res.json(cardsInfo);
+};
+
 module.exports = {
   serveGamePage,
   serveInitialGameState,
   serveGameState,
   handleEndTurnRequest,
-  handleMovePawnRequest
+  handleMovePawnRequest,
+  serveCardsInfo
 };
