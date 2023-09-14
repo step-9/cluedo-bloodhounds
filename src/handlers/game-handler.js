@@ -18,4 +18,22 @@ const serveGameState = (req, res) => {
   res.json(game.state());
 };
 
-module.exports = { serveGamePage, serveInitialGameState, serveGameState };
+const respondNotYourTurn = (_, res) =>
+  res.status(401).json({ error: "not your turn" });
+
+const handleEndTurnRequest = (req, res) => {
+  const { game } = req.app.context;
+  const { playerId } = req.cookies;
+  const { currentPlayerId } = game.state();
+  if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
+
+  game.changeTurn();
+  res.end();
+};
+
+module.exports = {
+  serveGamePage,
+  serveInitialGameState,
+  serveGameState,
+  handleEndTurnRequest
+};

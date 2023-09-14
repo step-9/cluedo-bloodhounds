@@ -64,3 +64,34 @@ describe("GET /game/state", () => {
       .end(done);
   });
 });
+
+describe("GET /game/end-turn", () => {
+  it("Should give error if its not player turn", (context, done) => {
+    const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
+    const game = { state };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .post("/game/end-turn")
+      .set("Cookie", "playerId=2")
+      .expect(401)
+      .expect("content-type", /application\/json/)
+      .expect({ error: "not your turn" })
+      .end(done);
+  });
+
+  it("Should change the turn if its player's turn", (context, done) => {
+    const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
+    const changeTurn = context.mock.fn();
+    const game = { state, changeTurn };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .post("/game/end-turn")
+      .set("Cookie", "playerId=1")
+      .expect(200)
+      .end(done);
+  });
+});

@@ -2,7 +2,8 @@ const express = require("express");
 const {
   serveGamePage,
   serveInitialGameState,
-  serveGameState
+  serveGameState,
+  handleEndTurnRequest
 } = require("../handlers/game-handler");
 
 const createGameRouter = () => {
@@ -11,6 +12,7 @@ const createGameRouter = () => {
   gameRouter.get("/", serveGamePage);
   gameRouter.get("/initial-state", serveInitialGameState);
   gameRouter.get("/state", serveGameState);
+  gameRouter.post("/end-turn", handleEndTurnRequest);
 
   return gameRouter;
 };
