@@ -1,10 +1,20 @@
 class GameService {
   constructor() {}
 
-  getInitialData(onData) {
+  getInitialData(onResponse) {
     fetch("/game/initial-state")
       .then(res => res.json())
-      .then(onData);
+      .then(onResponse);
+  }
+
+  getGameState(onResponse) {
+    fetch("/game/state")
+      .then(res => res.json())
+      .then(onResponse);
+  }
+
+  endTurn() {
+    fetch("/game/end-turn", { method: "POST" });
   }
 
   getBoardStructure(onData) {

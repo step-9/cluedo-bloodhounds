@@ -17,7 +17,7 @@ const serveGameState = (req, res) => {
   const { game } = req.app.context;
   const { playerId } = req.cookies;
   const { currentPlayerId } = game.state();
-  const isYourTurn = +playerId !== currentPlayerId;
+  const isYourTurn = +playerId === currentPlayerId;
 
   res.json({ currentPlayerId, isYourTurn });
 };

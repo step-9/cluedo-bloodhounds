@@ -2,11 +2,24 @@ class View {
   #playersContainer;
   #cardsContainer;
   #htmlGenerator;
+  #bottomPane;
+  #listeners;
 
-  constructor(playersContainer, cardsContainer, htmlGenerator) {
+  constructor({
+    playersContainer,
+    cardsContainer,
+    bottomPane,
+    generateElement
+  }) {
     this.#playersContainer = playersContainer;
     this.#cardsContainer = cardsContainer;
-    this.#htmlGenerator = htmlGenerator;
+    this.#bottomPane = bottomPane;
+    this.#htmlGenerator = generateElement;
+    this.#listeners = {};
+  }
+
+  addListener(eventName, callback) {
+    this.#listeners[eventName] = callback;
   }
 
   #renderPlayerInfo({ name, id, character }) {
@@ -39,6 +52,21 @@ class View {
     return playersInOrder;
   }
 
+  #createEndTurnButton() {
+    return this.#htmlGenerator([
+      "input",
+      { type: "button", id: "end-turn-btn", value: "End Turn" },
+      []
+    ]);
+  }
+
+  #deleteEndTurnButton() {
+    const endTurnBtn = document.querySelector("#end-turn-btn");
+    if (!endTurnBtn) return;
+
+    endTurnBtn.remove();
+  }
+
   setupGame({ players, cards, playerId }) {
     const playersInOrder = this.#arrangePlayers(players, playerId);
     const [firstPlayer] = playersInOrder;
@@ -46,5 +74,22 @@ class View {
 
     playersInOrder.forEach(player => this.#renderPlayerInfo(player));
     cards.forEach(card => this.#renderCard(card));
+  }
+
+  renderGameState({ isYourTurn, currentPlayerId }) {
+    console.log(currentPlayerId);
+    if (!isYourTurn) {
+      this.#deleteEndTurnButton();
+      return;
+    }
+
+    const endTurnBtn = this.#createEndTurnButton();
+
+    endTurnBtn.onclick = () => {
+      const { onEndTurn } = this.#listeners;
+      onEndTurn();
+    };
+
+    this.#bottomPane.appendChild(endTurnBtn);
   }
 }

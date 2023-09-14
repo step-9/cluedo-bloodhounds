@@ -258,6 +258,12 @@ th {
   border: 1px solid white;
 }
 
+#bottom-pane {
+  display: flex;
+  gap: 2em;
+  align-items: center;
+}
+
 #dices {
   gap: 0.5em;
   display: flex;
@@ -281,6 +287,15 @@ th {
   height: 10px;
   border-radius: 50%;
   background-color: black;
+}
+
+#end-turn-btn {
+  width: 100px;
+  height: 40px;
+  font-size: 0.8em;
+  color: white;
+  background-color: red;
+  border-radius: 7px;
 }
 
 .scarlet {
