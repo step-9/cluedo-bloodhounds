@@ -1,8 +1,4 @@
-const lodash = require("lodash");
-const Game = require("../models/game");
-const { createCards } = require("../utils/card-generator");
-const Cards = require("../models/cards");
-const Players = require("../models/players");
+const { startGame } = require("../game-setup");
 
 const sendRoomFullError = (_, res) =>
   res.status(406).send({ error: "Room is Full" });
@@ -23,29 +19,6 @@ const handleJoinRequest = (req, res) => {
 
 const serveLobbyPage = (req, res) => {
   res.sendFile("lobby.html", { root: "private/pages" });
-};
-
-const formatLobbyDetails = lobbyDetails =>
-  lobbyDetails.map(({ name, playerId }) => ({ name, id: +playerId }));
-
-const startGame = (lobbyDetails, req) => {
-  const cardsData = require("../../resources/cards.json");
-  const { lobby } = req.app.context;
-
-  const cardsLookup = createCards(cardsData);
-  const cards = new Cards(cardsLookup, lodash);
-  const players = new Players();
-  const game = new Game({
-    playersInfo: formatLobbyDetails(lobbyDetails),
-    cards,
-    players,
-    characters: cardsData.suspect,
-    shuffler: lodash
-  });
-
-  req.app.context.game = game;
-
-  lobby.startGame(game);
 };
 
 const serveLobbyDetails = (req, res) => {
