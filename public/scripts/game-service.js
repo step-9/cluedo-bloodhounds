@@ -3,7 +3,10 @@ class GameService {
 
   getGameState(onResponse) {
     fetch("/game/state")
-      .then(res => res.json())
+      .then(res => {
+        if (res.redirected) return window.location.replace(res.url);
+        return res.json();
+      })
       .then(onResponse);
   }
 

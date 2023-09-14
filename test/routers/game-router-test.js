@@ -50,11 +50,13 @@ describe("GET /game/initial-state", () => {
 });
 
 describe("GET /game/state", () => {
-  it("Should give the game state", (context, done) => {
+  it("Should give the game state if the game is already started", (context, done) => {
     const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
+    const status = context.mock.fn(() => ({ isGameStarted: true }));
+    const lobby = { status };
     const game = { state };
     const app = createApp();
-    app.context = { game };
+    app.context = { game, lobby };
 
     request(app)
       .get("/game/state")
@@ -62,6 +64,21 @@ describe("GET /game/state", () => {
       .set("Cookie", "playerId=3")
       .expect("content-type", /application\/json/)
       .expect({ currentPlayerId: 1, isYourTurn: false })
+      .end(done);
+  });
+
+  it("Should redirect to joining page when the game has not started", (context, done) => {
+    const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
+    const status = context.mock.fn(() => ({ isGameStarted: false }));
+    const lobby = { status };
+    const game = { state };
+    const app = createApp();
+    app.context = { game, lobby };
+
+    request(app)
+      .get("/game/state")
+      .expect(302)
+      .set("Cookie", "playerId=3")
       .end(done);
   });
 });
