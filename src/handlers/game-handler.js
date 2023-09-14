@@ -39,9 +39,18 @@ const handleEndTurnRequest = (req, res) => {
   res.end();
 };
 
+const handleMovePawnRequest = (req, res) => {
+  const { game } = req.app.context;
+  const { playerId } = req.cookies;
+  const tileCoordinates = req.body;
+
+  res.json({});
+};
+
 module.exports = {
   serveGamePage,
   serveInitialGameState,
   serveGameState,
-  handleEndTurnRequest
+  handleEndTurnRequest,
+  handleMovePawnRequest
 };

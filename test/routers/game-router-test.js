@@ -1,6 +1,7 @@
 const request = require("supertest");
 const { describe, it } = require("node:test");
 const { createApp } = require("../../src/app");
+const Game = require("../../src/models/game");
 
 describe("GET /game", () => {
   it("should redirect to homepage when game not started", (context, done) => {
@@ -110,6 +111,33 @@ describe("GET /game/end-turn", () => {
       .post("/game/end-turn")
       .set("Cookie", "playerId=1")
       .expect(200)
+      .end(done);
+  });
+});
+
+describe("PATCH /game/move-pawn", () => {
+  it("should move the pawn if the given tile is valid", (context, done) => {
+    const players = {
+      add: context.mock.fn(),
+      info: context.mock.fn(() => "Mock Data"),
+      getNextPlayer: context.mock.fn(() => ({
+        info: () => ({ id: 1 })
+      }))
+    };
+
+    const game = new Game({ players });
+    const app = createApp();
+    app.context = { game };
+
+    game.start();
+
+    request(app)
+      .patch("/game/move-pawn")
+      .set("Cookie", "playerId=1")
+      .send([1, 2])
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .expect({})
       .end(done);
   });
 });
