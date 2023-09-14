@@ -35,11 +35,6 @@ class Game {
     return this.#playersInfo;
   }
 
-  getCardsOfPlayer(playerId) {
-    const player = this.#players.findPlayer(+playerId);
-    return player.info().cards;
-  }
-
   #shuffleAndDistribute() {
     const noOfPlayers = this.#playersInfo.length;
     const shuffledCardChunks = this.#cards.shuffleRemaining(noOfPlayers);
@@ -49,7 +44,12 @@ class Game {
     );
   }
 
-  status() {
+  getCardsOfPlayer(playerId) {
+    const player = this.#players.findPlayer(+playerId);
+    return player.info().cards;
+  }
+
+  playersInfo() {
     return {
       players: this.#players.info()
     };

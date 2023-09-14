@@ -7,7 +7,7 @@ const serveGamePage = (req, res) => {
 const serveInitialGameState = (req, res) => {
   const { game } = req.app.context;
   const { playerId } = req.cookies;
-  const { players } = game.status();
+  const { players } = game.playersInfo();
   const cards = game.getCardsOfPlayer(playerId);
 
   res.json({ players, cards, playerId: +playerId });

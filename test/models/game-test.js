@@ -31,7 +31,7 @@ describe("Game", () => {
         players: "Mock Data"
       };
 
-      assert.deepStrictEqual(game.status(), expectedGameStatus);
+      assert.deepStrictEqual(game.playersInfo(), expectedGameStatus);
     });
   });
 
