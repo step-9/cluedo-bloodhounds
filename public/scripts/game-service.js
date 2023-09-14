@@ -22,6 +22,10 @@ class GameService {
     return fetch("/svg/board.svg").then(res => res.text());
   }
 
+  getCardsInfo() {
+    return fetch("/game/cards").then(res => res.json());
+  }
+
   sendMovePawnReq(tileId) {
     fetch("/game/move-pawn", {
       method: "PATCH",
