@@ -21,10 +21,10 @@ const serveGameState = (req, res) => {
   if (!lobby.status().isGameStarted) return redirectToJoinPage(req, res);
 
   const { playerId } = req.cookies;
-  const { currentPlayerId } = game.state();
+  const { currentPlayerId, isAccusing } = game.state();
   const isYourTurn = +playerId === currentPlayerId;
 
-  res.json({ currentPlayerId, isYourTurn });
+  res.json({ currentPlayerId, isYourTurn, isAccusing });
 };
 
 const respondNotYourTurn = (_, res) =>
@@ -54,11 +54,22 @@ const serveCardsInfo = (req, res) => {
   res.json(cardsInfo);
 };
 
+const handleStartAccusationRequest = (req, res) => {
+  const { game } = req.app.context;
+  const { playerId } = req.cookies;
+  const { currentPlayerId } = game.state();
+  if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
+
+  game.toggleIsAccusing();
+  res.end();
+};
+
 module.exports = {
   serveGamePage,
   serveInitialGameState,
   serveGameState,
   handleEndTurnRequest,
   handleMovePawnRequest,
-  serveCardsInfo
+  serveCardsInfo,
+  handleStartAccusationRequest
 };

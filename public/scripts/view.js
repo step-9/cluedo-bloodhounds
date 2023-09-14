@@ -29,7 +29,7 @@ class View {
       [
         ["div", { class: `icon ${character}`, id: `avatar-${id}` }, character],
         ["div", { class: "name" }, name],
-        ["div", { class: "message hide" }, []]
+        ["div", { class: "message hide", id: `message-${id}` }, []]
       ]
     ]);
 
@@ -92,11 +92,17 @@ class View {
     currentPlayer.classList.add("highlight");
   }
 
+  #isButtonPresent(buttonId) {
+    return document.querySelector(`#${buttonId}`);
+  }
+
   #renderEndTurnButton(isYourTurn) {
     if (!isYourTurn) {
       this.#deleteButton("end-turn-btn");
       return;
     }
+
+    if (isYourTurn && this.#isButtonPresent("end-turn-btn")) return;
 
     const endTurnBtn = this.#createButton("End Turn", "end-turn-btn");
 
@@ -114,14 +120,27 @@ class View {
       return;
     }
 
+    if (isYourTurn && this.#isButtonPresent("accuse-btn")) return;
+
     const accuseBtn = this.#createButton("Accuse", "accuse-btn");
 
     accuseBtn.onclick = () => {
-      const { accuse } = this.#listeners;
-      accuse();
+      const { startAccusation } = this.#listeners;
+      startAccusation();
     };
 
     this.#bottomPane.appendChild(accuseBtn);
+  }
+
+  #renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId) {
+    if (!isAccusing) return;
+    if (isYourTurn) return;
+
+    const accusingPlayer = document.querySelector(
+      `#message-${currentPlayerId}`
+    );
+    accusingPlayer.classList.toggle("hide");
+    accusingPlayer.innerText = "I am Accusing";
   }
 
   setupGame({ players, cards, playerId }, boardSvg) {
@@ -134,9 +153,12 @@ class View {
     cards.forEach(card => this.#renderCard(card));
   }
 
-  renderGameState({ isYourTurn, currentPlayerId }) {
+  renderGameState(gameState) {
+    const { isYourTurn, currentPlayerId, isAccusing } = gameState;
+    this.#highlightCurrentPlayer(currentPlayerId);
+
+    this.#renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId);
     this.#renderEndTurnButton(isYourTurn);
     this.#renderAccuseButton(isYourTurn);
-    this.#highlightCurrentPlayer(currentPlayerId);
   }
 }

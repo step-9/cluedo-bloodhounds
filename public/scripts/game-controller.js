@@ -40,8 +40,8 @@ class GameController {
       this.#sendMovePawnReq(rawTileId)
     );
 
-    this.#view.addListener("accuse", accusationCombination =>
-      console.log("Accuse to be added")
+    this.#view.addListener("startAccusation", () =>
+      this.#gameService.startAccusation()
     );
 
     this.#gameService.getCardsInfo().then(cardsInfo => {

@@ -53,7 +53,10 @@ describe("Game", () => {
 
       game.start();
 
-      assert.deepStrictEqual(game.state(), { currentPlayerId: 1 });
+      assert.deepStrictEqual(game.state(), {
+        currentPlayerId: 1,
+        isAccusing: false
+      });
     });
   });
 
@@ -70,7 +73,19 @@ describe("Game", () => {
       game.start();
       game.changeTurn();
 
-      assert.deepStrictEqual(game.state(), { currentPlayerId: 1 });
+      assert.deepStrictEqual(game.state(), {
+        currentPlayerId: 1,
+        isAccusing: false
+      });
+    });
+  });
+
+  describe("toggleIsAccusing", () => {
+    it("should toggle the isAccusing status", context => {
+      const game = new Game({ players: {} });
+      game.toggleIsAccusing();
+
+      assert.ok(game.state().isAccusing);
     });
   });
 });

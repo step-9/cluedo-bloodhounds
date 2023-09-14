@@ -26,6 +26,10 @@ class GameService {
     return fetch("/game/cards").then(res => res.json());
   }
 
+  startAccusation() {
+    return fetch("/game/start-accusation", { method: "POST" });
+  }
+
   sendMovePawnReq(tileId) {
     fetch("/game/move-pawn", {
       method: "PATCH",

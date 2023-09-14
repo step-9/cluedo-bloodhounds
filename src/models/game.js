@@ -2,11 +2,13 @@ class Game {
   #board;
   #players;
   #currentPlayerId;
+  #isAccusing;
 
   constructor({ players, board }) {
     this.#board = board;
     this.#players = players;
     this.#currentPlayerId = null;
+    this.#isAccusing = false;
   }
 
   getCardsOfPlayer(playerId) {
@@ -19,8 +21,15 @@ class Game {
     this.#currentPlayerId = currentPlayer.info().id;
   }
 
+  toggleIsAccusing() {
+    this.#isAccusing = !this.#isAccusing;
+  }
+
   state() {
-    return { currentPlayerId: this.#currentPlayerId };
+    return {
+      currentPlayerId: this.#currentPlayerId,
+      isAccusing: this.#isAccusing
+    };
   }
 
   movePawn(tileCoordinates, playerId) {

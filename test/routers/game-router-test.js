@@ -255,3 +255,34 @@ describe("GET /game/cards", () => {
       .end(done);
   });
 });
+
+describe("GET /game/start-accusation", () => {
+  it("Should give error if its not player turn", (context, done) => {
+    const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
+    const game = { state };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .post("/game/start-accusation")
+      .set("Cookie", "playerId=2")
+      .expect(401)
+      .expect("content-type", /application\/json/)
+      .expect({ error: "not your turn" })
+      .end(done);
+  });
+
+  it("Should set the isAccusation status true when its players turn", (context, done) => {
+    const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
+    const toggleIsAccusing = context.mock.fn();
+    const game = { state, toggleIsAccusing };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .post("/game/start-accusation")
+      .set("Cookie", "playerId=1")
+      .expect(200)
+      .end(done);
+  });
+});
