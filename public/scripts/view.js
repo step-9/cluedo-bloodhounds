@@ -89,8 +89,7 @@ class View {
     cards.forEach(card => this.#renderCard(card));
   }
 
-  renderGameState({ isYourTurn, currentPlayerId }) {
-    console.log(currentPlayerId);
+  renderGameState({ isYourTurn }) {
     if (!isYourTurn) {
       this.#deleteEndTurnButton();
       return;

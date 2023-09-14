@@ -2,11 +2,11 @@ const toPlayerInfo = player => player.info();
 
 class Players {
   #players;
-  #currentPlayerId;
+  #currentPlayerIndex;
 
   constructor(players = []) {
     this.#players = players;
-    this.#currentPlayerId = 0;
+    this.#currentPlayerIndex = -1;
   }
 
   add(player) {
@@ -15,8 +15,8 @@ class Players {
 
   getNextPlayer() {
     const noOfPlayers = this.#players.length;
-    this.#currentPlayerId += 1;
-    const nextPlayer = this.#players[noOfPlayers % this.#currentPlayerId];
+    this.#currentPlayerIndex = (this.#currentPlayerIndex + 1) % noOfPlayers;
+    const nextPlayer = this.#players[this.#currentPlayerIndex];
 
     if (nextPlayer.info().isStranded) return this.getNextPlayer();
     return nextPlayer;

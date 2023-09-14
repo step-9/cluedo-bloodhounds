@@ -298,6 +298,10 @@ th {
   border-radius: 7px;
 }
 
+#end-turn-btn:hover {
+  cursor: pointer;
+}
+
 .scarlet {
   text-transform: capitalize;
   background-color: red;
