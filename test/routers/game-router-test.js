@@ -48,3 +48,19 @@ describe("GET /game/initial-state", () => {
       .end(done);
   });
 });
+
+describe("GET /game/state", () => {
+  it("Should give the game state", (context, done) => {
+    const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
+    const game = { state };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .get("/game/state")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .expect({ currentPlayerId: 1 })
+      .end(done);
+  });
+});

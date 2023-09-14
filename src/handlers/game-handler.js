@@ -13,4 +13,9 @@ const serveInitialGameState = (req, res) => {
   res.json({ players, cards, playerId: +playerId, currentPlayerId });
 };
 
-module.exports = { serveGamePage, serveInitialGameState };
+const serveGameState = (req, res) => {
+  const { game } = req.app.context;
+  res.json(game.state());
+};
+
+module.exports = { serveGamePage, serveInitialGameState, serveGameState };

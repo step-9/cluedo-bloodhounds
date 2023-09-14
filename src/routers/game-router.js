@@ -1,7 +1,8 @@
 const express = require("express");
 const {
   serveGamePage,
-  serveInitialGameState
+  serveInitialGameState,
+  serveGameState
 } = require("../handlers/game-handler");
 
 const createGameRouter = () => {
@@ -9,6 +10,7 @@ const createGameRouter = () => {
 
   gameRouter.get("/", serveGamePage);
   gameRouter.get("/initial-state", serveInitialGameState);
+  gameRouter.get("/state", serveGameState);
 
   return gameRouter;
 };
