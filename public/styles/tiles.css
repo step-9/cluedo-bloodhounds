@@ -1,0 +1,28 @@
+.tile {
+  fill: #e6ccb2;
+  border-radius: 50%;
+}
+
+.mustard-pawn {
+  fill: yellow;
+}
+
+.scarlet-pawn {
+  fill: red;
+}
+
+.white-pawn {
+  fill: white;
+}
+
+.green-pawn {
+  fill: green;
+}
+
+.peacock-pawn {
+  fill: #0000ff;
+}
+
+.plum-pawn {
+  fill: #800080;
+}
