@@ -2,8 +2,8 @@ class View {
   #playersContainer;
   #cardsContainer;
   #htmlGenerator;
-  #bottomPane;
   #listeners;
+  #bottomPane;
 
   constructor({
     playersContainer,
@@ -13,8 +13,8 @@ class View {
   }) {
     this.#playersContainer = playersContainer;
     this.#cardsContainer = cardsContainer;
-    this.#bottomPane = bottomPane;
     this.#htmlGenerator = generateElement;
+    this.#bottomPane = bottomPane;
     this.#listeners = {};
   }
 
@@ -67,7 +67,20 @@ class View {
     endTurnBtn.remove();
   }
 
-  setupGame({ players, cards, playerId }) {
+  #renderBoard(svg) {
+    const boardContainer = document.querySelector("#board");
+    boardContainer.innerHTML = svg;
+    const tileElements = boardContainer.querySelectorAll("rect");
+
+    tileElements.forEach(tile => {
+      tile.onclick = () => {
+        this.#listeners.movePawn(tile.id);
+      };
+    });
+  }
+
+  setupGame({ players, cards, playerId }, boardSvg) {
+    this.#renderBoard(boardSvg);
     const playersInOrder = this.#arrangePlayers(players, playerId);
     const [firstPlayer] = playersInOrder;
     firstPlayer.name = firstPlayer.name + " (you)";

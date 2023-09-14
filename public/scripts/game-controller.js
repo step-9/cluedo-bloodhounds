@@ -26,11 +26,22 @@ class GameController {
     });
   }
 
+  #sendMovePawnReq(rawTileId) {
+    const tileId = rawTileId.split(",").map(x => parseInt(x));
+
+    this.#gameService.sendMovePawnReq(tileId);
+  }
+
   start() {
     this.#view.addListener("onEndTurn", () => this.#endTurn());
+    this.#view.addListener("movePawn", rawTileId =>
+      this.#sendMovePawnReq(rawTileId)
+    );
 
-    this.#gameService.getInitialData(initialState => {
-      this.#view.setupGame(initialState);
+    this.#gameService.getInitialData().then(initialState => {
+      this.#gameService.getBoardStructure().then(boardSvg => {
+        this.#view.setupGame(initialState, boardSvg);
+      });
     });
 
     setInterval(() => this.#fetchAndRenderCurrentState(), 1000);
