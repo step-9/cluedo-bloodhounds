@@ -59,8 +59,9 @@ describe("GET /game/state", () => {
     request(app)
       .get("/game/state")
       .expect(200)
+      .set("Cookie", "playerId=3")
       .expect("content-type", /application\/json/)
-      .expect({ currentPlayerId: 1 })
+      .expect({ currentPlayerId: 1, isYourTurn: true })
       .end(done);
   });
 });
