@@ -34,6 +34,7 @@ class GameController {
 
   start() {
     this.#view.addListener("onEndTurn", () => this.#endTurn());
+
     this.#view.addListener("movePawn", rawTileId =>
       this.#sendMovePawnReq(rawTileId)
     );
@@ -41,9 +42,10 @@ class GameController {
     this.#gameService.getInitialData().then(initialState => {
       this.#gameService.getBoardStructure().then(boardSvg => {
         this.#view.setupGame(initialState, boardSvg);
+        this.#fetchAndRenderCurrentState();
       });
     });
 
-    setInterval(() => this.#fetchAndRenderCurrentState(), 1000);
+    setInterval(() => this.#fetchAndRenderCurrentState(), 500);
   }
 }
