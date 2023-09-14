@@ -51,6 +51,15 @@ class Game {
     return player.info().cards;
   }
 
+  changeTurn() {
+    const currentPlayer = this.#players.getNextPlayer();
+    this.#currentPlayerId = currentPlayer.info().id;
+  }
+
+  state() {
+    return { currentPlayerId: this.#currentPlayerId };
+  }
+
   playersInfo() {
     return {
       players: this.#players.info(),

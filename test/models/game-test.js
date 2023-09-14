@@ -53,4 +53,65 @@ describe("Game", () => {
       assert.deepStrictEqual(game.getCardsOfPlayer(1), []);
     });
   });
+
+  describe("status", () => {
+    it("Should give the current player id as the game state", context => {
+      const playersInfo = [{ id: 1, name: "milan", cards: [] }];
+      const players = {
+        add: context.mock.fn(),
+        getNextPlayer: context.mock.fn(() => ({
+          info: () => ({ id: 1 })
+        }))
+      };
+      const characters = ["Mustard"];
+      const shuffler = { shuffle: context.mock.fn(() => playersInfo) };
+      const cards = {
+        getKillingCombination: context.mock.fn(),
+        shuffleRemaining: context.mock.fn(() => [])
+      };
+
+      const game = new Game({
+        players,
+        playersInfo,
+        cards,
+        characters,
+        shuffler
+      });
+
+      game.start();
+
+      assert.deepStrictEqual(game.state(), { currentPlayerId: 1 });
+    });
+  });
+
+  describe("change turn", () => {
+    it("should change the current player to the next player", context => {
+      const playersInfo = [{ id: 1, name: "milan", cards: [] }];
+      const players = {
+        add: context.mock.fn(),
+        getNextPlayer: context.mock.fn(() => ({
+          info: () => ({ id: 1 })
+        }))
+      };
+      const characters = ["Mustard"];
+      const shuffler = { shuffle: context.mock.fn(() => playersInfo) };
+      const cards = {
+        getKillingCombination: context.mock.fn(),
+        shuffleRemaining: context.mock.fn(() => [])
+      };
+
+      const game = new Game({
+        players,
+        playersInfo,
+        cards,
+        characters,
+        shuffler
+      });
+
+      game.start();
+      game.changeTurn();
+
+      assert.deepStrictEqual(game.state(), { currentPlayerId: 1 });
+    });
+  });
 });
