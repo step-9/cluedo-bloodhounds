@@ -18,6 +18,7 @@ class Game {
   #characters;
   #players;
   #shuffler;
+  #currentPlayerId;
 
   constructor({ players, playersInfo, cards, characters, shuffler }) {
     this.#cards = cards;
@@ -25,6 +26,7 @@ class Game {
     this.#playersInfo = playersInfo;
     this.#players = players;
     this.#shuffler = shuffler;
+    this.#currentPlayerId = null;
   }
 
   #assignCharacters() {
@@ -51,7 +53,8 @@ class Game {
 
   playersInfo() {
     return {
-      players: this.#players.info()
+      players: this.#players.info(),
+      currentPlayerId: this.#currentPlayerId
     };
   }
 
@@ -62,6 +65,8 @@ class Game {
     this.#playersInfo.forEach(playerInfo =>
       this.#players.add(new Player(playerInfo))
     );
+    const currentPlayer = this.#players.getNextPlayer();
+    this.#currentPlayerId = currentPlayer.info().id;
   }
 }
 

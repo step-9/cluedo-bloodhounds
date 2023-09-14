@@ -8,7 +8,10 @@ describe("Game", () => {
       const playersInfo = [{ id: 1, name: "milan", cards: [] }];
       const players = {
         add: context.mock.fn(),
-        info: context.mock.fn(() => "Mock Data")
+        info: context.mock.fn(() => "Mock Data"),
+        getNextPlayer: context.mock.fn(() => ({
+          info: () => ({ id: 1 })
+        }))
       };
       const characters = ["Mustard"];
       const shuffler = { shuffle: context.mock.fn(() => playersInfo) };
@@ -28,7 +31,8 @@ describe("Game", () => {
       game.start();
 
       const expectedGameStatus = {
-        players: "Mock Data"
+        players: "Mock Data",
+        currentPlayerId: 1
       };
 
       assert.deepStrictEqual(game.playersInfo(), expectedGameStatus);
