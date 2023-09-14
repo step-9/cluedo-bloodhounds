@@ -55,7 +55,12 @@ class View {
   #createEndTurnButton() {
     return this.#htmlGenerator([
       "input",
-      { type: "button", id: "end-turn-btn", value: "End Turn" },
+      {
+        type: "button",
+        id: "end-turn-btn",
+        value: "End Turn",
+        class: "button"
+      },
       []
     ]);
   }

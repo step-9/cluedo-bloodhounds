@@ -293,13 +293,20 @@ th {
   background-color: black;
 }
 
-#end-turn-btn {
+.button {
   width: 100px;
   height: 40px;
   font-size: 0.8em;
   color: white;
-  background-color: red;
   border-radius: 7px;
+}
+
+#accuse-btn {
+  background-color: hsl(120, 73%, 50%);
+}
+
+#end-turn-btn {
+  background-color: red;
 }
 
 #end-turn-btn:hover {
