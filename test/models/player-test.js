@@ -41,6 +41,15 @@ describe("Player", () => {
     });
   });
 
+  describe("updatePosition", () => {
+    it("should update the current position of the player", () => {
+      const player = new Player({ cards: [], position: { x: 0, y: 0 } });
+      player.updatePosition({ x: 8, y: 9 });
+
+      assert.deepStrictEqual(player.getPosition(), { x: 8, y: 9 });
+    });
+  });
+
   describe("answerSuspicion", () => {
     it("should give the matching cards if any", () => {
       const mustard = new Card("suspect", "Mustard");

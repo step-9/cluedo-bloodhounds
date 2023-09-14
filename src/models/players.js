@@ -26,12 +26,23 @@ class Players {
     return this.#players.find(player => player.info().id === playerId);
   }
 
+  updatePlayerPosition(playerId, newPosition) {
+    const player = this.findPlayer(playerId);
+    if (player) player.updatePosition(newPosition);
+  }
+
   strandPlayer(playerId) {
     const playerToStrand = this.findPlayer(playerId);
 
     if (!playerToStrand) return new Error("Invalid Player Id");
 
     playerToStrand.strand();
+  }
+
+  getPlayersPositions() {
+    return Object.fromEntries(
+      this.info().map(({ id, currentPosition }) => [id, currentPosition])
+    );
   }
 
   info() {

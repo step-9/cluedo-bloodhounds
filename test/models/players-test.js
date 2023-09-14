@@ -50,6 +50,47 @@ describe("Players", () => {
     });
   });
 
+  describe("updatePlayerPosition", () => {
+    it("should update the current position of the player mentioned by player id", () => {
+      const gourab = new Player({
+        name: "gourab",
+        id: 1,
+        position: { x: 0, y: 0 },
+        cards: []
+      });
+      const players = new Players([gourab]);
+
+      players.updatePlayerPosition(1, { x: 8, y: 9 });
+      players.updatePlayerPosition(4, { x: 4, y: 9 });
+
+      assert.deepStrictEqual(gourab.getPosition(), { x: 8, y: 9 });
+    });
+  });
+
+  describe("getPlayersPositions", () => {
+    it("should update the current position of the player mentioned by player id", () => {
+      const gourab = new Player({
+        name: "gourab",
+        id: 1,
+        position: { x: 0, y: 0 },
+        cards: []
+      });
+      const raj = new Player({
+        name: "raj",
+        id: 2,
+        cards: [],
+        position: { x: 6, y: 8 }
+      });
+
+      const players = new Players([gourab, raj]);
+
+      assert.deepStrictEqual(players.getPlayersPositions(), {
+        1: { x: 0, y: 0 },
+        2: { x: 6, y: 8 }
+      });
+    });
+  });
+
   describe("info", () => {
     it("Should give the info off all the players", () => {
       const [gourab, milan, riya] = createPlayers(["gourab", "milan", "riya"]);

@@ -19,6 +19,14 @@ class Player {
     this.#isStranded = false;
   }
 
+  getPosition() {
+    return this.#currentPosition;
+  }
+
+  updatePosition(newPosition) {
+    this.#currentPosition = newPosition;
+  }
+
   strand() {
     this.#isStranded = true;
     return this;
