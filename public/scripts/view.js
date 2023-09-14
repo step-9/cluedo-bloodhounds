@@ -25,9 +25,9 @@ class View {
   #renderPlayerInfo({ name, id, character }) {
     const playerInfoElement = this.#htmlGenerator([
       "div",
-      { class: "player-info", id },
+      { class: "player-info", id: `player-${id}` },
       [
-        ["div", { class: `icon ${character}` }, character],
+        ["div", { class: `icon ${character}`, id: `avatar-${id}` }, character],
         ["div", { class: "name" }, name],
         ["div", { class: "message hide" }, []]
       ]
@@ -79,17 +79,15 @@ class View {
     });
   }
 
-  setupGame({ players, cards, playerId }, boardSvg) {
-    this.#renderBoard(boardSvg);
-    const playersInOrder = this.#arrangePlayers(players, playerId);
-    const [firstPlayer] = playersInOrder;
-    firstPlayer.name = firstPlayer.name + " (you)";
+  #highlightCurrentPlayer(currentPlayerId) {
+    const players = document.querySelectorAll(".icon");
+    players.forEach(player => player.classList.remove("highlight"));
 
-    playersInOrder.forEach(player => this.#renderPlayerInfo(player));
-    cards.forEach(card => this.#renderCard(card));
+    const currentPlayer = document.querySelector(`#avatar-${currentPlayerId}`);
+    currentPlayer.classList.add("highlight");
   }
 
-  renderGameState({ isYourTurn }) {
+  #renderEndTurnButton(isYourTurn) {
     if (!isYourTurn) {
       this.#deleteEndTurnButton();
       return;
@@ -103,5 +101,20 @@ class View {
     };
 
     this.#bottomPane.appendChild(endTurnBtn);
+  }
+
+  setupGame({ players, cards, playerId }, boardSvg) {
+    this.#renderBoard(boardSvg);
+    const playersInOrder = this.#arrangePlayers(players, playerId);
+    const [firstPlayer] = playersInOrder;
+    firstPlayer.name = firstPlayer.name + " (you)";
+
+    playersInOrder.forEach(player => this.#renderPlayerInfo(player));
+    cards.forEach(card => this.#renderCard(card));
+  }
+
+  renderGameState({ isYourTurn, currentPlayerId }) {
+    this.#renderEndTurnButton(isYourTurn);
+    this.#highlightCurrentPlayer(currentPlayerId);
   }
 }
