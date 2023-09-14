@@ -6,4 +6,10 @@ class GameService {
       .then(res => res.json())
       .then(onData);
   }
+
+  getBoardStructure(onData) {
+    fetch("/svg/board.svg")
+      .then(res => res.text())
+      .then(onData);
+  }
 }
