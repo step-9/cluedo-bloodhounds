@@ -44,8 +44,10 @@ const handleMovePawnRequest = (req, res) => {
   const { game } = req.app.context;
   const { playerId } = req.cookies;
   const tileCoordinates = req.body;
+  const { isMoved } = game.movePawn(tileCoordinates, +playerId);
 
-  res.json({});
+  if (isMoved) return res.json({});
+  res.sendStatus(400);
 };
 
 const serveCardsInfo = (req, res) => {

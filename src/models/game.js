@@ -1,8 +1,10 @@
 class Game {
+  #board;
   #players;
   #currentPlayerId;
 
-  constructor({ players }) {
+  constructor({ players, board }) {
+    this.#board = board;
     this.#players = players;
     this.#currentPlayerId = null;
   }
@@ -19,6 +21,18 @@ class Game {
 
   state() {
     return { currentPlayerId: this.#currentPlayerId };
+  }
+
+  movePawn(tileCoordinates, playerId) {
+    console.log(tileCoordinates, playerId, this.#currentPlayerId);
+    if (playerId !== this.#currentPlayerId) return { isMoved: false };
+
+    const tileInfo = this.#board.getTileInfo(tileCoordinates);
+    if ("isRoomTile" in tileInfo) {
+      if (tileInfo.isRoomTile === false) return { isMoved: true };
+    }
+
+    return { isMoved: false };
   }
 
   playersInfo() {

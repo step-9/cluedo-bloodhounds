@@ -45,14 +45,14 @@ const setupGame = (playersData, cards, shuffler) => {
 };
 
 const startGame = (lobbyDetails, req) => {
-  const { lobby } = req.app.context;
+  const { lobby, board } = req.app.context;
   const cardsLookup = createCards(cardsData);
   const cards = new Cards(cardsLookup, lodash);
 
   const playersInfo = formatLobbyDetails(lobbyDetails);
   const { players, killingCombination } = setupGame(playersInfo, cards, lodash);
 
-  const game = new Game({ players, cards, killingCombination });
+  const game = new Game({ players, cards, killingCombination, board });
   req.app.context.game = game;
 
   lobby.startGame(game);

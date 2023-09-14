@@ -2,6 +2,7 @@ const request = require("supertest");
 const { describe, it } = require("node:test");
 const { createApp } = require("../../src/app");
 const Game = require("../../src/models/game");
+const Board = require("../../src/models/board");
 
 describe("GET /game", () => {
   it("should redirect to homepage when game not started", (context, done) => {
@@ -125,7 +126,13 @@ describe("PATCH /game/move-pawn", () => {
       }))
     };
 
-    const game = new Game({ players });
+    const board = new Board({
+      blockedTiles: [],
+      rooms: {},
+      dimensions: { length: 24, breadth: 25 }
+    });
+
+    const game = new Game({ players, board });
     const app = createApp();
     app.context = { game };
 
@@ -134,10 +141,105 @@ describe("PATCH /game/move-pawn", () => {
     request(app)
       .patch("/game/move-pawn")
       .set("Cookie", "playerId=1")
-      .send([1, 2])
+      .send({ x: 1, y: 2 })
       .expect(200)
       .expect("content-type", /application\/json/)
       .expect({})
+      .end(done);
+  });
+
+  it("should not move the pawn to a blockedTile", (context, done) => {
+    const players = {
+      add: context.mock.fn(),
+      info: context.mock.fn(() => "Mock Data"),
+      getNextPlayer: context.mock.fn(() => ({
+        info: () => ({ id: 1 })
+      }))
+    };
+
+    const board = new Board({
+      blockedTiles: [{ x: 1, y: 2 }],
+      rooms: {},
+      dimensions: { length: 24, breadth: 25 }
+    });
+
+    const game = new Game({ players, board });
+    const app = createApp();
+    app.context = { game };
+
+    game.start();
+
+    request(app)
+      .patch("/game/move-pawn")
+      .set("Cookie", "playerId=1")
+      .send({ x: 1, y: 2 })
+      .expect(400)
+      .end(done);
+  });
+
+  it("should not move the pawn to a room", (context, done) => {
+    const players = {
+      add: context.mock.fn(),
+      info: context.mock.fn(() => "Mock Data"),
+      getNextPlayer: context.mock.fn(() => ({
+        info: () => ({ id: 1 })
+      }))
+    };
+
+    const board = new Board({
+      blockedTiles: [{ x: 1, y: 2 }],
+      rooms: {
+        hall: {
+          tileRows: [
+            [
+              { x: 0, y: 0 },
+              { x: 0, y: 10 }
+            ]
+          ]
+        }
+      },
+      dimensions: { length: 24, breadth: 25 }
+    });
+
+    const game = new Game({ players, board });
+    const app = createApp();
+    app.context = { game };
+
+    game.start();
+
+    request(app)
+      .patch("/game/move-pawn")
+      .set("Cookie", "playerId=1")
+      .send({ x: 0, y: 2 })
+      .expect(400)
+      .end(done);
+  });
+
+  it("should not move the pawn if the it's not the player's turn", (context, done) => {
+    const players = {
+      add: context.mock.fn(),
+      info: context.mock.fn(() => "Mock Data"),
+      getNextPlayer: context.mock.fn(() => ({
+        info: () => ({ id: 1 })
+      }))
+    };
+
+    const board = new Board({
+      blockedTiles: [{ x: 1, y: 2 }],
+      rooms: {},
+      dimensions: { length: 24, breadth: 25 }
+    });
+
+    const game = new Game({ players, board });
+    const app = createApp();
+    app.context = { game };
+
+    game.start();
+
+    request(app)
+      .patch("/game/move-pawn")
+      .set("Cookie", "playerId=2")
+      .expect(400)
       .end(done);
   });
 });

@@ -28,9 +28,9 @@ class GameController {
   }
 
   #sendMovePawnReq(rawTileId) {
-    const tileId = rawTileId.split(",").map(x => parseInt(x));
+    const [x, y] = rawTileId.split(",").map(num => parseInt(num));
 
-    this.#gameService.sendMovePawnReq(tileId);
+    this.#gameService.sendMovePawnReq({ x, y });
   }
 
   start() {

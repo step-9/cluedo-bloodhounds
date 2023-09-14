@@ -29,7 +29,8 @@ class GameService {
   sendMovePawnReq(tileId) {
     fetch("/game/move-pawn", {
       method: "PATCH",
-      body: JSON.stringify(tileId)
+      body: JSON.stringify(tileId),
+      headers: { "content-type": "application/json" }
     });
   }
 }

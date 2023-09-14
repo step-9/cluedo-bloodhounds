@@ -26,7 +26,7 @@ class Board {
   #isInsideRoom({ x, y }) {
     const rooms = Object.entries(this.#rooms);
 
-    return rooms.some(([name, { tileRows }]) => {
+    return rooms.some(([_, { tileRows }]) => {
       return tileRows.some(([rowStart, rowEnd]) => {
         return (
           x >= rowStart.x && x <= rowEnd.x && y >= rowStart.y && y <= rowEnd.y
