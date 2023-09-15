@@ -7,8 +7,9 @@ class Game {
   #strandedPlayerIds;
   #isPlayerMovable;
   #shouldEndTurn;
+  #killingCombination;
 
-  constructor({ players, board }) {
+  constructor({ players, board, killingCombination }) {
     this.#board = board;
     this.#players = players;
     this.#currentPlayerId = null;
@@ -16,6 +17,7 @@ class Game {
     this.#isGameWon = false;
     this.#strandedPlayerIds = [];
     this.#isPlayerMovable = true;
+    this.#killingCombination = killingCombination;
   }
 
   #areAllPlayersStranded() {
@@ -82,6 +84,26 @@ class Game {
     return {
       players: this.#players.info(),
       currentPlayerId: this.#currentPlayerId
+    };
+  }
+
+  validateAccuse(playerId, combination) {
+    const killingCombinationCards = Object.entries(this.#killingCombination);
+
+    this.#isGameWon = killingCombinationCards.every(([type, card]) =>
+      card.matches(combination[type])
+    );
+
+    const killingCombination = killingCombinationCards.map(([type, card]) => {
+      return [type, card.info().title];
+    });
+
+    if (!this.#isGameWon) this.#strandedPlayerIds.push(playerId);
+    this.#isAccusing = false;
+
+    return {
+      isWon: this.#isGameWon,
+      killingCombination: Object.fromEntries(killingCombination)
     };
   }
 

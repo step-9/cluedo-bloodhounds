@@ -1,4 +1,5 @@
 const cardsInfo = require("../../resources/cards.json");
+const Card = require("../models/card");
 const redirectToHomePage = (_, res) => res.status(302).redirect("/");
 
 const serveGamePage = (req, res) => {
@@ -64,6 +65,20 @@ const handleStartAccusationRequest = (req, res) => {
   res.end();
 };
 
+const createCard = ([type, title]) => new Card(type, title);
+
+const handleAccusation = (req, res) => {
+  const { game } = req.app.context;
+  const { playerId } = req.cookies;
+  const { currentPlayerId } = game.state();
+  if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
+
+  const combinationCards = Object.entries(req.body).map(createCard);
+  const result = game.validateAccuse(playerId, combinationCards);
+
+  res.json(result);
+};
+
 module.exports = {
   serveGamePage,
   serveInitialGameState,
@@ -71,5 +86,6 @@ module.exports = {
   handleEndTurnRequest,
   handleMovePawnRequest,
   serveCardsInfo,
-  handleStartAccusationRequest
+  handleStartAccusationRequest,
+  handleAccusation
 };

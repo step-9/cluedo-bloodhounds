@@ -6,7 +6,8 @@ const {
   handleEndTurnRequest,
   handleMovePawnRequest,
   serveCardsInfo,
-  handleStartAccusationRequest
+  handleStartAccusationRequest,
+  handleAccusation
 } = require("../handlers/game-handler");
 
 const createGameRouter = () => {
@@ -19,6 +20,7 @@ const createGameRouter = () => {
   gameRouter.patch("/move-pawn", handleMovePawnRequest);
   gameRouter.get("/cards", serveCardsInfo);
   gameRouter.patch("/accusation-state", handleStartAccusationRequest);
+  gameRouter.post("/accuse", handleAccusation);
 
   return gameRouter;
 };

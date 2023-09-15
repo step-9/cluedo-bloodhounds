@@ -1,6 +1,7 @@
 const { describe, it } = require("node:test");
 const assert = require("assert");
 const Game = require("../../src/models/game");
+const Card = require("../../src/models/card");
 
 describe("Game", () => {
   describe("start", () => {
@@ -89,6 +90,81 @@ describe("Game", () => {
       game.toggleIsAccusing();
 
       assert.ok(game.state().isAccusing);
+    });
+  });
+
+  describe("validateAccuse", () => {
+    it("should declare the winner and end the game as combination matches", context => {
+      const dagger = new Card("weapon", "dagger");
+      const mustard = new Card("suspect", "mustard");
+      const lounge = new Card("room", "lounge");
+
+      const killingCombination = {
+        weapon: dagger,
+        room: lounge,
+        suspect: mustard
+      };
+
+      const game = new Game({
+        players: {
+          getCharacterPositions: () => {},
+          info: context.mock.fn(() => [])
+        },
+        killingCombination
+      });
+
+      const playerId = 1;
+      const accusationResult = game.validateAccuse(
+        playerId,
+        killingCombination
+      );
+
+      const expectedAccusationResult = {
+        isWon: true,
+        killingCombination: {
+          weapon: "dagger",
+          room: "lounge",
+          suspect: "mustard"
+        }
+      };
+
+      assert.deepStrictEqual(accusationResult, expectedAccusationResult);
+    });
+
+    it("should make the player stranded as the combination is wrong", context => {
+      const dagger = new Card("weapon", "dagger");
+      const mustard = new Card("suspect", "mustard");
+      const plum = new Card("suspect", "plum");
+      const lounge = new Card("room", "lounge");
+
+      const killingCombination = {
+        weapon: dagger,
+        room: lounge,
+        suspect: plum
+      };
+
+      const game = new Game({
+        players: {
+          getCharacterPositions: () => {},
+          info: context.mock.fn(() => [])
+        },
+        killingCombination
+      });
+
+      const playerId = 1;
+      const playerAccusation = { ...killingCombination, suspect: mustard };
+      const accusationResult = game.validateAccuse(playerId, playerAccusation);
+
+      const expectedAccusationResult = {
+        isWon: false,
+        killingCombination: {
+          weapon: "dagger",
+          room: "lounge",
+          suspect: "plum"
+        }
+      };
+
+      assert.deepStrictEqual(accusationResult, expectedAccusationResult);
     });
   });
 });

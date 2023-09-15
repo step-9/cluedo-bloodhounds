@@ -291,3 +291,42 @@ describe("GET /game/start-accusation", () => {
       .end(done);
   });
 });
+
+describe("POST /game/accuse", () => {
+  it("Should end the game as the combination is correct", (context, done) => {
+    const killingCombination = {
+      weapon: "dagger",
+      suspect: "mustard",
+      room: "lounge"
+    };
+    const validateAccuse = () => ({ isWon: true, killingCombination });
+    const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
+    const game = { validateAccuse, state };
+    const app = createApp({});
+    app.context = { game };
+
+    request(app)
+      .post("/game/accuse")
+      .send({ weapon: "dagger", suspect: "mustard", room: "lounge" })
+      .set("Cookie", "playerId=1")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .expect({ isWon: true, killingCombination })
+      .end(done);
+  });
+
+  it("Should give error if its not player turn", (context, done) => {
+    const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
+    const game = { state };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .post("/game/accuse")
+      .set("Cookie", "playerId=2")
+      .expect(401)
+      .expect("content-type", /application\/json/)
+      .expect({ error: "not your turn" })
+      .end(done);
+  });
+});
