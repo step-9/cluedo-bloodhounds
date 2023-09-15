@@ -37,7 +37,10 @@ class GameController {
 
     this.#view.addListener("movePawn", rawTileId =>
       this.#sendMovePawnReq(rawTileId).then(res => {
-        if (res.ok) this.#view.disableMove();
+        if (res.ok) {
+          this.#view.displayEndButton();
+          this.#view.disableMove();
+        }
       })
     );
 

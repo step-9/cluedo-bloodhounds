@@ -100,19 +100,13 @@ class View {
     return document.querySelector(`#${buttonId}`);
   }
 
-  #renderEndTurnButton(isYourTurn) {
-    if (!isYourTurn) {
-      this.#deleteButton("end-turn-btn");
-      return;
-    }
-
-    if (isYourTurn && this.#isButtonPresent("end-turn-btn")) return;
-
+  #renderEndTurnButton() {
     const endTurnBtn = this.#createButton("End Turn", "end-turn-btn");
 
     endTurnBtn.onclick = () => {
       const { onEndTurn } = this.#listeners;
       onEndTurn();
+      endTurnBtn.remove();
     };
 
     this.#bottomPane.appendChild(endTurnBtn);
@@ -251,13 +245,16 @@ class View {
     boardContainer.classList.remove("disable-click");
   }
 
+  displayEndButton() {
+    this.#renderEndTurnButton();
+  }
+
   renderGameState(gameState) {
     const { isYourTurn, currentPlayerId, isAccusing, characterPositions } =
       gameState;
     this.#highlightCurrentPlayer(currentPlayerId);
 
     this.#renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId);
-    this.#renderEndTurnButton(isYourTurn);
     this.#renderAccuseButton(isYourTurn);
     if (isYourTurn) this.enableMove();
     this.#updateCharacterPositions(characterPositions);
