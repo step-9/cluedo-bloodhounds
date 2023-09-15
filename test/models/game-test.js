@@ -1,7 +1,6 @@
 const { describe, it } = require("node:test");
 const assert = require("assert");
 const Game = require("../../src/models/game");
-const Card = require("../../src/models/card");
 
 describe("Game", () => {
   describe("start", () => {
@@ -95,9 +94,9 @@ describe("Game", () => {
 
   describe("validateAccuse", () => {
     it("should declare the winner and end the game as combination matches", context => {
-      const dagger = new Card("weapon", "dagger");
-      const mustard = new Card("suspect", "mustard");
-      const lounge = new Card("room", "lounge");
+      const mustard = { type: "suspect", title: "mustard" };
+      const dagger = { type: "weapon", title: "dagger" };
+      const lounge = { type: "room", title: "lounge" };
 
       const killingCombination = {
         weapon: dagger,
@@ -114,10 +113,11 @@ describe("Game", () => {
       });
 
       const playerId = 1;
-      const accusationResult = game.validateAccuse(
-        playerId,
-        killingCombination
-      );
+      const accusationResult = game.validateAccuse(playerId, {
+        weapon: "dagger",
+        room: "lounge",
+        suspect: "mustard"
+      });
 
       const expectedAccusationResult = {
         isWon: true,
@@ -132,10 +132,10 @@ describe("Game", () => {
     });
 
     it("should make the player stranded as the combination is wrong", context => {
-      const dagger = new Card("weapon", "dagger");
-      const mustard = new Card("suspect", "mustard");
-      const plum = new Card("suspect", "plum");
-      const lounge = new Card("room", "lounge");
+      const mustard = { type: "suspect", title: "mustard" };
+      const plum = { type: "suspect", title: "plum" };
+      const lounge = { type: "room", title: "lounge" };
+      const dagger = { type: "weapon", title: "dagger" };
 
       const killingCombination = {
         weapon: dagger,

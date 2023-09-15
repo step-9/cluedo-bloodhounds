@@ -4,14 +4,14 @@ const { chunk } = require("lodash");
 const Cards = require("../../src/models/cards");
 
 const createCardList = () => {
-  const weapons = ["Dagger", "Rope", "Spanner"];
-  const suspects = ["White", "Green", "Plum"];
-  const rooms = ["Hall", "Study", "Library"];
+  const weapons = ["dagger", "rope", "spanner"];
+  const suspects = ["white", "green", "plum"];
+  const rooms = ["hall", "study", "library"];
 
   return { weapons, suspects, rooms };
 };
 
-describe("Cards", () => {
+describe("cards", () => {
   describe("getKillingCombination", () => {
     it("should give 1 random cards of each type", context => {
       const cardList = createCardList();
@@ -21,9 +21,9 @@ describe("Cards", () => {
       const cards = new Cards(cardList, mockShuffler);
 
       assert.deepStrictEqual(cards.getKillingCombination(), {
-        weapons: "Rope",
-        suspects: "Green",
-        rooms: "Study"
+        weapons: "rope",
+        suspects: "green",
+        rooms: "study"
       });
     });
   });
@@ -38,8 +38,8 @@ describe("Cards", () => {
       };
       const cards = new Cards(cardList, mockShuffler);
       const distributedCards = [
-        ["Dagger", "Spanner", "Green", "Hall", "Library"],
-        ["Rope", "White", "Plum", "Study"]
+        ["dagger", "spanner", "green", "hall", "library"],
+        ["rope", "white", "plum", "study"]
       ];
 
       assert.deepStrictEqual(cards.shuffleRemaining(2), distributedCards);

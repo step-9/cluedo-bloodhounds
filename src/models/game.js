@@ -90,12 +90,12 @@ class Game {
   validateAccuse(playerId, combination) {
     const killingCombinationCards = Object.entries(this.#killingCombination);
 
-    this.#isGameWon = killingCombinationCards.every(([type, card]) =>
-      card.matches(combination[type])
-    );
+    this.#isGameWon = killingCombinationCards.every(([type, card]) => {
+      return card.title === combination[type];
+    });
 
     const killingCombination = killingCombinationCards.map(([type, card]) => {
-      return [type, card.info().title];
+      return [type, card.title];
     });
 
     if (!this.#isGameWon) {
@@ -104,6 +104,7 @@ class Game {
     }
 
     this.#isAccusing = false;
+    this.#shouldEndTurn = true;
 
     return {
       isWon: this.#isGameWon,

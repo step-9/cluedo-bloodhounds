@@ -1,5 +1,3 @@
-const toCardInfo = card => card.info();
-
 class Player {
   #id;
   #name;
@@ -33,16 +31,20 @@ class Player {
   }
 
   #includesCard(cardToFind) {
-    return this.#cards.find(card => card.matches(cardToFind));
+    return this.#cards.find(card => {
+      const isTypeMatches = cardToFind.type === card.type;
+      const isTitleMatches = cardToFind.title === card.title;
+      return isTypeMatches && isTitleMatches;
+    });
   }
 
   answerSuspicion(cards) {
     const matchingCards = cards.filter(card => this.#includesCard(card));
-    return matchingCards.map(toCardInfo);
+    return matchingCards;
   }
 
   info() {
-    const cards = this.#cards.map(toCardInfo);
+    const cards = this.#cards;
     return {
       cards,
       id: this.#id,

@@ -3,7 +3,6 @@ const lodash = require("lodash");
 const Cards = require("./models/cards");
 const Game = require("./models/game");
 const Players = require("./models/players");
-const { createCards } = require("./utils/card-generator");
 const Player = require("./models/player");
 const cardsData = require("../resources/cards.json");
 const initialPositions = require("../resources/initial-positions.json");
@@ -16,7 +15,7 @@ const getCardsAssigner = cards => {
 
 const getCharacterAssigner = characters => {
   return (playerInfo, playerIndex) => {
-    const character = characters[playerIndex];
+    const character = characters[playerIndex].title;
     return {
       ...playerInfo,
       character,
@@ -52,8 +51,7 @@ const setupGame = (playersData, cards, shuffler) => {
 
 const startGame = (lobbyDetails, req) => {
   const { lobby, board } = req.app.context;
-  const cardsLookup = createCards(cardsData);
-  const cards = new Cards(cardsLookup, lodash);
+  const cards = new Cards(cardsData, lodash);
 
   const playersInfo = formatLobbyDetails(lobbyDetails);
   const { players, killingCombination } = setupGame(playersInfo, cards, lodash);
