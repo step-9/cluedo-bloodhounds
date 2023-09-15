@@ -3,6 +3,8 @@ class Game {
   #players;
   #currentPlayerId;
   #isAccusing;
+  #isGameWon;
+  #strandedPlayerIds;
   #isPlayerMovable;
 
   constructor({ players, board }) {
@@ -10,6 +12,8 @@ class Game {
     this.#players = players;
     this.#currentPlayerId = null;
     this.#isAccusing = false;
+    this.#isGameWon = false;
+    this.#strandedPlayerIds = [];
     this.#isPlayerMovable = true;
   }
 
@@ -32,6 +36,8 @@ class Game {
     return {
       currentPlayerId: this.#currentPlayerId,
       isAccusing: this.#isAccusing,
+      isGameWon: this.#isGameWon,
+      strandedPlayerIds: this.#strandedPlayerIds,
       characterPositions: this.#players.getCharacterPositions()
     };
   }

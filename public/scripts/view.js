@@ -278,6 +278,7 @@ class View {
   }
 
   renderGameState(gameState) {
+    console.log(gameState);
     const { isYourTurn, currentPlayerId, isAccusing, characterPositions } =
       gameState;
 

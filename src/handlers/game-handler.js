@@ -21,10 +21,11 @@ const serveGameState = (req, res) => {
   if (!lobby.status().isGameStarted) return redirectToHomePage(req, res);
 
   const { playerId } = req.cookies;
-  const { currentPlayerId, isAccusing, characterPositions } = game.state();
+  const state = game.state();
+  const { currentPlayerId } = state;
   const isYourTurn = +playerId === currentPlayerId;
 
-  res.json({ currentPlayerId, isYourTurn, isAccusing, characterPositions });
+  res.json({ isYourTurn, ...state });
 };
 
 const respondNotYourTurn = (_, res) =>
