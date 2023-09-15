@@ -2,6 +2,7 @@ class GameController {
   #view;
   #gameService;
   #lastGameState;
+  #playersNames;
 
   constructor(gameService, view) {
     this.#gameService = gameService;
@@ -31,6 +32,12 @@ class GameController {
     return this.#gameService.sendMovePawnReq({ x, y });
   }
 
+  #storePlayerNames(playersData) {
+    this.#playersNames = playersData.reduce((playerNames, { id, name }) => {
+      return { ...playerNames, [id]: name };
+    }, {});
+  }
+
   start() {
     this.#view.addListener("onEndTurn", () => this.#endTurn());
 
@@ -53,6 +60,8 @@ class GameController {
     });
 
     this.#gameService.getInitialData().then(initialState => {
+      this.#storePlayerNames(initialState.players);
+      console.log(this.#playersNames);
       this.#gameService.getBoardStructure().then(boardSvg => {
         this.#view.setupGame(initialState, boardSvg);
         this.#fetchAndRenderCurrentState();
