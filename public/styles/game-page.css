@@ -331,11 +331,11 @@ th {
   background-color: hsla(60, 56%, 91%, 0.956);
 }
 
-#accusation-result {
+.result-container {
   color: black;
 }
 
-#accusation-result:modal {
+.result-container:modal {
   display: flex;
   flex-direction: column;
   justify-content: center;
