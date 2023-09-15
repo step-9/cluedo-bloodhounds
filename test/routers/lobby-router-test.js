@@ -3,18 +3,6 @@ const { describe, it, beforeEach } = require("node:test");
 const { createApp } = require("../../src/app");
 const Lobby = require("../../src/models/lobby");
 
-describe("GET /join", () => {
-  const app = createApp();
-
-  it("Should serve the joininig page", (_, done) => {
-    request(app)
-      .get("/join")
-      .expect(200)
-      .expect("content-type", /text\/html/)
-      .end(done);
-  });
-});
-
 describe("POST /join", () => {
   let app, lobby;
 

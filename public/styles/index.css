@@ -18,7 +18,7 @@
 #page-wrapper {
   width: 100%;
   height: 100%;
-  background-image: url(/images/play-now-page-bg.png);
+  background-image: url(/images/home-page-bg.png);
   background-size: cover;
   display: grid;
   place-content: center;
@@ -40,12 +40,13 @@
 }
 
 #join-game-confirm-btn {
-  color: hsl(120, 100%, 15%);
-  background-color: lightgreen;
+  color: white;
+  background-color: hsl(158.3deg 31.54% 29.22%);
 }
+
 #close-join-game-dialog {
-  color: hsl(0, 100%, 15%);
-  background-color: hsl(0, 100%, 70%);
+  color: white;
+  background-color: rgb(253, 95, 106);
 }
 
 #back-to-home {

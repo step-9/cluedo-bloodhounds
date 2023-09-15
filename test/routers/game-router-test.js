@@ -16,7 +16,7 @@ describe("GET /game", () => {
     };
     app.context = { lobby };
 
-    request(app).get("/game").expect(302).expect("location", "/join").end(done);
+    request(app).get("/game").expect(302).expect("location", "/").end(done);
   });
 
   it("should serve the game page when the game has started", (context, done) => {

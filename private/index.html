@@ -1,16 +1,29 @@
 <html lang="en">
+  <head>
+    <title>Play Game</title>
+    <link rel="stylesheet" href="/styles/index.css" />
+    <script src="/scripts/join.js"></script>
+  </head>
 
-<head>
-  <title>Cluedo</title>
-  <link rel="stylesheet" href="/styles/home.css">
-</head>
+  <body>
+    <main id="page-wrapper">
+      <dialog id="join-game-dialog">
+        <label for="join-game-input-name" class="name-label">Enter Name:</label>
+        <input type="text" name="name" id="join-game-input-name" />
 
-<body>
-  <main id="page-wrapper">
-    <div id='play-now-btn'>
-      <a href="/join">Play Game</a>
-    </div>
-  </main>
-</body>
+        <div class="dialog-btn-container">
+          <button
+            value="cancel"
+            formmethod="dialog"
+            id="close-join-game-dialog"
+          >
+            Cancel
+          </button>
+          <button id="join-game-confirm-btn" value="default">Join</button>
+        </div>
+      </dialog>
 
+      <button id="join-game-btn">Join Game</button>
+    </main>
+  </body>
 </html>

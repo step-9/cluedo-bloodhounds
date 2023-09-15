@@ -1,9 +1,9 @@
 const cardsInfo = require("../../resources/cards.json");
-const redirectToJoinPage = (_, res) => res.status(302).redirect("/join");
+const redirectToHomePage = (_, res) => res.status(302).redirect("/");
 
 const serveGamePage = (req, res) => {
   const { lobby } = req.app.context;
-  if (!lobby.status().isGameStarted) return redirectToJoinPage(req, res);
+  if (!lobby.status().isGameStarted) return redirectToHomePage(req, res);
   res.sendFile("game-page.html", { root: "private/pages" });
 };
 
@@ -18,7 +18,7 @@ const serveInitialGameState = (req, res) => {
 
 const serveGameState = (req, res) => {
   const { game, lobby } = req.app.context;
-  if (!lobby.status().isGameStarted) return redirectToJoinPage(req, res);
+  if (!lobby.status().isGameStarted) return redirectToHomePage(req, res);
 
   const { playerId } = req.cookies;
   const { currentPlayerId, isAccusing, characterPositions } = game.state();
