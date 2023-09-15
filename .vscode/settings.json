@@ -11,5 +11,8 @@
 
   "javascript.format.semicolons": "insert",
   "javascript.preferences.quoteStyle": "double",
-  "javascript.updateImportsOnFileMove.enabled": "always"
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
