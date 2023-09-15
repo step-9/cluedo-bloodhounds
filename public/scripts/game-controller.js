@@ -28,7 +28,6 @@ class GameController {
 
   #sendMovePawnReq(rawTileId) {
     const [x, y] = rawTileId.split(",").map(num => parseInt(num));
-
     return this.#gameService.sendMovePawnReq({ x, y });
   }
 
@@ -47,6 +46,10 @@ class GameController {
     this.#view.addListener("startAccusation", () =>
       this.#gameService.startAccusation()
     );
+
+    this.#view.addListener("accuse", accusationCombination => {
+      console.log(accusationCombination);
+    });
 
     this.#gameService.getCardsInfo().then(cardsInfo => {
       this.#view.setupAccuseDialog(cardsInfo);

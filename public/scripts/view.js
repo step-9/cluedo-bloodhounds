@@ -124,6 +124,8 @@ class View {
 
     accuseBtn.onclick = () => {
       const { startAccusation } = this.#listeners;
+      const accuseDialog = document.querySelector("#accusation-popup");
+      accuseDialog.showModal();
       startAccusation();
     };
 
@@ -181,7 +183,7 @@ class View {
     const selectElement = this.#htmlGenerator([
       "select",
       { name, id, required: "true" },
-      []
+      [["option", { value: "" }, name]]
     ]);
     const optionElements = options.map(option =>
       this.#createOptionElement(option)
@@ -206,7 +208,7 @@ class View {
     );
 
     const selectSuspectElement = this.#createSelectElement(
-      "weapons",
+      "suspects",
       "select-suspect",
       suspect
     );
@@ -218,10 +220,31 @@ class View {
     );
   }
 
+  #readFormData() {
+    const room = document.querySelector("#select-room").value;
+    const weapon = document.querySelector("#select-weapon").value;
+    const suspect = document.querySelector("#select-suspect").value;
+
+    return { room, weapon, suspect };
+  }
+
+  #setupAccusationForm(accusationForm, dialog) {
+    accusationForm.onsubmit = event => {
+      event.preventDefault();
+      const accusationCombination = this.#readFormData();
+      const { accuse } = this.#listeners;
+
+      accuse(accusationCombination);
+      dialog.close();
+    };
+  }
+
   #createAccuseDialog(cardsInfo) {
     const dialog = this.#createAccuseDialogFrame();
     const selections = dialog.querySelector(".selections");
+    const accusationForm = dialog.querySelector("#accuse-form");
     this.#createAndAddSelections(selections, cardsInfo);
+    this.#setupAccusationForm(accusationForm, dialog);
     return dialog;
   }
 
@@ -252,8 +275,8 @@ class View {
   renderGameState(gameState) {
     const { isYourTurn, currentPlayerId, isAccusing, characterPositions } =
       gameState;
-    this.#highlightCurrentPlayer(currentPlayerId);
 
+    this.#highlightCurrentPlayer(currentPlayerId);
     this.#renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId);
     this.#renderAccuseButton(isYourTurn);
     if (isYourTurn) this.enableMove();
@@ -262,7 +285,6 @@ class View {
 
   setupAccuseDialog(cardsInfo) {
     const accuseDialog = this.#createAccuseDialog(cardsInfo);
-    console.log(cardsInfo);
     this.#middlePane.append(accuseDialog);
   }
 
