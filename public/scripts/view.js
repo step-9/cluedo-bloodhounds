@@ -101,6 +101,8 @@ class View {
   }
 
   #renderEndTurnButton() {
+    if (this.#isButtonPresent("end-turn-btn")) return;
+
     const endTurnBtn = this.#createButton("End Turn", "end-turn-btn");
 
     endTurnBtn.onclick = () => {
@@ -121,6 +123,7 @@ class View {
     }
 
     if (isYourTurn && isAccusing) {
+      console.log(accuseDialog);
       accuseDialog.showModal();
     }
 
@@ -285,10 +288,10 @@ class View {
       characterPositions,
       shouldEndTurn
     } = gameState;
-    
+
     this.#highlightCurrentPlayer(currentPlayerId);
-    this.#renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId);
-    this.#renderAccuseButton(isYourTurn);
+    this.#renderAccusationMessage(isYourTurn);
+    this.#renderAccuseButton(isYourTurn, isAccusing, currentPlayerId);
 
     if (isYourTurn) {
       if (shouldEndTurn) this.#renderEndTurnButton();
