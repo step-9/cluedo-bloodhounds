@@ -441,3 +441,7 @@ select {
   pointer-events: none;
   cursor: not-allowed;
 }
+
+.stranded-player {
+  filter: opacity(0.3);
+}

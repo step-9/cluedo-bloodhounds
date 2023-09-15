@@ -269,6 +269,16 @@ class View {
     return dialog;
   }
 
+  #disableStrandedPlayers(strandedPlayerIds) {
+    strandedPlayerIds.forEach(strandedPlayerId => {
+      const playerIconElement = document.querySelector(
+        `#avatar-${strandedPlayerId}`
+      );
+
+      playerIconElement.classList.add("stranded-player");
+    });
+  }
+
   setupGame({ players, cards, playerId }, boardSvg) {
     this.#renderBoard(boardSvg);
     const playersInOrder = this.#arrangePlayers(players, playerId);
@@ -300,9 +310,11 @@ class View {
       isAccusing,
       characterPositions,
       shouldEndTurn,
-      canAccuse
+      canAccuse,
+      strandedPlayerIds
     } = gameState;
 
+    this.#disableStrandedPlayers(strandedPlayerIds);
     this.#highlightCurrentPlayer(currentPlayerId);
     this.#renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId);
     this.#renderAccuseButton(isYourTurn, isAccusing, currentPlayerId);
