@@ -2,7 +2,6 @@ class GameController {
   #view;
   #gameService;
   #lastGameState;
-  #cardsInfo;
 
   constructor(gameService, view) {
     this.#gameService = gameService;
@@ -45,8 +44,7 @@ class GameController {
     );
 
     this.#gameService.getCardsInfo().then(cardsInfo => {
-      this.#cardsInfo = cardsInfo;
-      console.log(this.#cardsInfo);
+      this.#view.setupAccuseDialog(cardsInfo);
     });
 
     this.#gameService.getInitialData().then(initialState => {

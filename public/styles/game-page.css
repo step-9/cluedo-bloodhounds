@@ -48,13 +48,16 @@ body {
   align-items: center;
 }
 
-#board {
-  width: 875px;
+#middle-pane {
   padding: 0 2em;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid white;
+}
+
+#board {
+  width: 875px;
 }
 
 .player-info {
@@ -311,6 +314,58 @@ th {
 
 .button:hover {
   cursor: pointer;
+}
+
+#accusation-popup {
+  position: absolute;
+  left: 28%;
+  width: 500px;
+  height: 300px;
+
+  border-radius: 10px;
+  background-color: hsla(60, 56%, 91%, 0.956);
+  box-shadow: 0px 0px 10px 10px rgb(201, 28, 28);
+}
+
+#accusation-popup:modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3em;
+}
+
+#accusation-popup > h3 {
+  color: black;
+}
+
+#selections {
+  display: flex;
+  gap: 1.5em;
+}
+
+#accusation-popup #buttons {
+  display: flex;
+  gap: 2em;
+}
+
+#accuse-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3em;
+}
+
+#accuse-form select {
+  width: 100px;
+  height: 30px;
+  font-size: 0.8em;
+  cursor: pointer;
+}
+
+#accuse-confirm-btn {
+  color: darkgreen;
+  background-color: lightgreen;
 }
 
 .scarlet {

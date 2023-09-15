@@ -161,4 +161,8 @@ class View {
     this.#renderEndTurnButton(isYourTurn);
     this.#renderAccuseButton(isYourTurn);
   }
+
+  setupAccuseDialog(cardsInfo) {
+    console.log(cardsInfo);
+  }
 }
