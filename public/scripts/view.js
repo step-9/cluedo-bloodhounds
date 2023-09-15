@@ -112,10 +112,16 @@ class View {
     this.#bottomPane.appendChild(endTurnBtn);
   }
 
-  #renderAccuseButton(isYourTurn) {
+  #renderAccuseButton(isYourTurn, isAccusing) {
+    const accuseDialog = document.querySelector("#accusation-popup");
+
     if (!isYourTurn) {
       this.#deleteButton("accuse-btn");
       return;
+    }
+
+    if (isYourTurn && isAccusing) {
+      accuseDialog.showModal();
     }
 
     if (isYourTurn && this.#isButtonPresent("accuse-btn")) return;
@@ -124,7 +130,6 @@ class View {
 
     accuseBtn.onclick = () => {
       const { startAccusation } = this.#listeners;
-      const accuseDialog = document.querySelector("#accusation-popup");
       accuseDialog.showModal();
       startAccusation();
     };
@@ -278,7 +283,7 @@ class View {
 
     this.#highlightCurrentPlayer(currentPlayerId);
     this.#renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId);
-    this.#renderAccuseButton(isYourTurn);
+    this.#renderAccuseButton(isYourTurn, isAccusing);
     if (isYourTurn) this.enableMove();
     this.#updateCharacterPositions(characterPositions);
   }
