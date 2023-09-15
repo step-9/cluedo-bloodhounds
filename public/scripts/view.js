@@ -142,14 +142,20 @@ class View {
     this.#bottomPane.appendChild(accuseBtn);
   }
 
-  #renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId) {
-    if (!isAccusing) return;
-    if (isYourTurn) return;
+  #hideAllMessages() {
+    const messageElements = document.querySelectorAll(".message");
+    messageElements.forEach(element => element.classList.add("hide"));
+  }
 
+  #renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId) {
     const accusingPlayer = document.querySelector(
       `#message-${currentPlayerId}`
     );
-    accusingPlayer.classList.toggle("hide");
+
+    if (!isAccusing) return this.#hideAllMessages();
+    if (isYourTurn) return;
+
+    accusingPlayer.classList.remove("hide");
     accusingPlayer.innerText = "I am Accusing";
   }
 
