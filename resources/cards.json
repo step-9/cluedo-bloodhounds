@@ -1,29 +1,22 @@
 {
-  "suspect": [
-    { "type": "suspect", "title": "scarlet" },
-    { "type": "suspect", "title": "mustard" },
-    { "type": "suspect", "title": "white" },
-    { "type": "suspect", "title": "green" },
-    { "type": "suspect", "title": "peacock" },
-    { "type": "suspect", "title": "plum" }
-  ],
+  "suspect": ["scarlet", "mustard", "white", "green", "peacock", "plum"],
   "weapon": [
-    { "type": "weapon", "title": "dagger" },
-    { "type": "weapon", "title": "candlestick" },
-    { "type": "weapon", "title": "revolver" },
-    { "type": "weapon", "title": "rope" },
-    { "type": "weapon", "title": "lead Pipe" },
-    { "type": "weapon", "title": "spanner" }
+    "dagger",
+    "candlestick",
+    "revolver",
+    "rope",
+    "lead Pipe",
+    "spanner"
   ],
   "room": [
-    { "type": "room", "title": "hall" },
-    { "type": "room", "title": "lounge" },
-    { "type": "room", "title": "dining room" },
-    { "type": "room", "title": "kitchen" },
-    { "type": "room", "title": "ball room" },
-    { "type": "room", "title": "conservatory" },
-    { "type": "room", "title": "billiard room" },
-    { "type": "room", "title": "library" },
-    { "type": "room", "title": "study" }
+    "hall",
+    "lounge",
+    "dining room",
+    "kitchen",
+    "ball room",
+    "conservatory",
+    "billiard room",
+    "library",
+    "study"
   ]
 }

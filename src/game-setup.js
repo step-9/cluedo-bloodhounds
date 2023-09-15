@@ -7,6 +7,17 @@ const Player = require("./models/player");
 const cardsData = require("../resources/cards.json");
 const initialPositions = require("../resources/initial-positions.json");
 
+const makeCards = cardsData => {
+  const { suspect, weapon, room } = cardsData;
+  const cards = {};
+  cards.suspect = suspect.map(title => ({ type: "suspect", title }));
+  cards.weapon = weapon.map(title => ({ type: "weapon", title }));
+  cards.room = room.map(title => ({ type: "room", title }));
+
+  console.log(cards);
+  return cards;
+};
+
 const getCardsAssigner = cards => {
   return (playerInfo, playerIndex) => {
     return { ...playerInfo, cards: cards[playerIndex] };
@@ -15,7 +26,8 @@ const getCardsAssigner = cards => {
 
 const getCharacterAssigner = characters => {
   return (playerInfo, playerIndex) => {
-    const character = characters[playerIndex].title;
+    const character = characters[playerIndex];
+
     return {
       ...playerInfo,
       character,
@@ -36,6 +48,7 @@ const shuffleAndDealCards = (playersData, cards) => {
 
 const assignCharacters = (playersData, shuffler) => {
   const characters = cardsData.suspect;
+  console.log(characters);
   return shuffler.shuffle(playersData).map(getCharacterAssigner(characters));
 };
 
@@ -51,7 +64,7 @@ const setupGame = (playersData, cards, shuffler) => {
 
 const startGame = (lobbyDetails, req) => {
   const { lobby, board } = req.app.context;
-  const cards = new Cards(cardsData, lodash);
+  const cards = new Cards(makeCards(cardsData), lodash);
 
   const playersInfo = formatLobbyDetails(lobbyDetails);
   const { players, killingCombination } = setupGame(playersInfo, cards, lodash);
