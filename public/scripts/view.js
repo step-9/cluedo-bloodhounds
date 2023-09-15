@@ -290,7 +290,7 @@ class View {
     } = gameState;
 
     this.#highlightCurrentPlayer(currentPlayerId);
-    this.#renderAccusationMessage(isYourTurn);
+    this.#renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId);
     this.#renderAccuseButton(isYourTurn, isAccusing, currentPlayerId);
 
     if (isYourTurn) {
