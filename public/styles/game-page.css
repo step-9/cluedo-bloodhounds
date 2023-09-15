@@ -149,17 +149,20 @@ body {
 .card {
   width: 125px;
   height: 165px;
-  cursor: pointer;
   text-transform: capitalize;
-  color: black;
   text-align: center;
   padding-top: 1em;
-  background-color: #ddd;
   border-radius: 5px;
+  color: black;
+  background-color: #ddd;
   border: 2px solid black;
 }
 
-.card:hover {
+#cards-container .card {
+  cursor: pointer;
+}
+
+#cards-container .card:hover {
   z-index: 2;
   scale: 1.2;
   border: 2px solid white;
@@ -316,16 +319,31 @@ th {
   cursor: pointer;
 }
 
-#accusation-popup {
+.popup {
   position: absolute;
-  top: 30%;
-  left: 28%;
-  width: 500px;
-  height: 300px;
+  top: 28%;
+  left: 27%;
+  width: 550px;
+  height: 350px;
 
   border: 2px solid black;
   border-radius: 10px;
   background-color: hsla(60, 56%, 91%, 0.956);
+}
+
+#accusation-result {
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5em;
+  color: black;
+}
+
+#killing-combination {
+  display: flex;
+  gap: 2em;
 }
 
 #accusation-popup:modal {

@@ -154,7 +154,7 @@ class View {
   #createAccuseDialogFrame() {
     return this.#htmlGenerator([
       "dialog",
-      { id: "accusation-popup" },
+      { id: "accusation-popup", class: "popup" },
       [
         ["h3", { class: "popup-header" }, "Select Accusation Combination"],
         [
