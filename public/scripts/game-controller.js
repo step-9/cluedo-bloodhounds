@@ -55,6 +55,7 @@ class GameController {
     this.#view.addListener("accuse", accusationCombination => {
       this.#gameService.accuse(accusationCombination).then(accusationResult => {
         this.#view.renderAccusationResult(accusationResult);
+        this.#view.disableMove();
       });
     });
 
