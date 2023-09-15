@@ -146,7 +146,8 @@ describe("Game", () => {
       const game = new Game({
         players: {
           getCharacterPositions: () => {},
-          info: context.mock.fn(() => [])
+          info: context.mock.fn(() => []),
+          strandPlayer: context.mock.fn()
         },
         killingCombination
       });

@@ -98,7 +98,11 @@ class Game {
       return [type, card.info().title];
     });
 
-    if (!this.#isGameWon) this.#strandedPlayerIds.push(playerId);
+    if (!this.#isGameWon) {
+      this.#strandedPlayerIds.push(playerId);
+      this.#players.strandPlayer(playerId);
+    }
+
     this.#isAccusing = false;
 
     return {
