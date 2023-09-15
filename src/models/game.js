@@ -8,6 +8,7 @@ class Game {
   #isPlayerMovable;
   #shouldEndTurn;
   #killingCombination;
+  #canAccuse;
 
   constructor({ players, board, killingCombination }) {
     this.#board = board;
@@ -17,6 +18,7 @@ class Game {
     this.#isGameWon = false;
     this.#strandedPlayerIds = [];
     this.#isPlayerMovable = true;
+    this.#canAccuse = true;
     this.#killingCombination = killingCombination;
   }
 
@@ -35,6 +37,7 @@ class Game {
     const currentPlayer = this.#players.getNextPlayer();
     this.#currentPlayerId = currentPlayer.info().id;
     this.#isPlayerMovable = true;
+    this.#canAccuse = true;
     this.#shouldEndTurn = false;
   }
 
@@ -47,6 +50,7 @@ class Game {
       currentPlayerId: this.#currentPlayerId,
       isAccusing: this.#isAccusing,
       isGameWon: this.#isGameWon,
+      canAccuse: this.#canAccuse,
       isGameOver: this.#areAllPlayersStranded(),
       strandedPlayerIds: this.#strandedPlayerIds,
       shouldEndTurn: this.#shouldEndTurn,
@@ -72,6 +76,7 @@ class Game {
       if (tileInfo.isRoomTile === false) {
         this.#isPlayerMovable = false;
         this.#shouldEndTurn = true;
+        this.#canAccuse = true;
         this.#players.updatePlayerPosition(playerId, tileCoordinates);
         return { isMoved: true };
       }
@@ -105,6 +110,7 @@ class Game {
 
     this.#isAccusing = false;
     this.#shouldEndTurn = true;
+    this.#canAccuse = false;
 
     return {
       isWon: this.#isGameWon,

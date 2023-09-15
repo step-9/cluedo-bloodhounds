@@ -103,6 +103,11 @@ class View {
     return document.querySelector(`#${buttonId}`);
   }
 
+  #removeAccuseBtn() {
+    const accuseBtn = document.querySelector("#accuse-btn");
+    accuseBtn.remove();
+  }
+
   #renderEndTurnButton() {
     if (this.#isButtonPresent("end-turn-btn")) return;
 
@@ -294,7 +299,8 @@ class View {
       currentPlayerId,
       isAccusing,
       characterPositions,
-      shouldEndTurn
+      shouldEndTurn,
+      canAccuse
     } = gameState;
 
     this.#highlightCurrentPlayer(currentPlayerId);
@@ -304,6 +310,7 @@ class View {
     if (isYourTurn) {
       if (shouldEndTurn) this.#renderEndTurnButton();
       else this.enableMove();
+      if (!canAccuse) this.#removeAccuseBtn();
     }
 
     this.#updateCharacterPositions(characterPositions);
@@ -354,7 +361,7 @@ class View {
 
     closeButton.onclick = () => {
       const accuseButton = document.querySelector("#accuse-btn");
-      accuseButton.remove();
+      accuseButton?.remove();
       this.#resultContainer.close();
       this.#renderEndTurnButton();
     };
