@@ -278,14 +278,23 @@ class View {
   }
 
   renderGameState(gameState) {
-    console.log(gameState);
-    const { isYourTurn, currentPlayerId, isAccusing, characterPositions } =
-      gameState;
+    const {
+      isYourTurn,
+      currentPlayerId,
+      isAccusing,
+      characterPositions,
+      shouldEndTurn
+    } = gameState;
 
     this.#highlightCurrentPlayer(currentPlayerId);
     this.#renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId);
-    this.#renderAccuseButton(isYourTurn, isAccusing);
-    if (isYourTurn) this.enableMove();
+    this.#renderAccuseButton(isYourTurn);
+
+    if (isYourTurn) {
+      if (shouldEndTurn) this.#renderEndTurnButton();
+      else this.enableMove();
+    }
+
     this.#updateCharacterPositions(characterPositions);
   }
 

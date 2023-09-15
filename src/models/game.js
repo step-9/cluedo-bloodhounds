@@ -6,6 +6,7 @@ class Game {
   #isGameWon;
   #strandedPlayerIds;
   #isPlayerMovable;
+  #shouldEndTurn;
 
   constructor({ players, board }) {
     this.#board = board;
@@ -26,6 +27,7 @@ class Game {
     const currentPlayer = this.#players.getNextPlayer();
     this.#currentPlayerId = currentPlayer.info().id;
     this.#isPlayerMovable = true;
+    this.#shouldEndTurn = false;
   }
 
   toggleIsAccusing() {
@@ -38,6 +40,7 @@ class Game {
       isAccusing: this.#isAccusing,
       isGameWon: this.#isGameWon,
       strandedPlayerIds: this.#strandedPlayerIds,
+      shouldEndTurn: this.#shouldEndTurn,
       characterPositions: this.#players.getCharacterPositions()
     };
   }
@@ -59,6 +62,7 @@ class Game {
     if ("isRoomTile" in tileInfo) {
       if (tileInfo.isRoomTile === false) {
         this.#isPlayerMovable = false;
+        this.#shouldEndTurn = true;
         this.#players.updatePlayerPosition(playerId, tileCoordinates);
         return { isMoved: true };
       }
