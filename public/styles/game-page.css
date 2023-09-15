@@ -322,9 +322,9 @@ th {
   width: 500px;
   height: 300px;
 
+  border: 2px solid black;
   border-radius: 10px;
   background-color: hsla(60, 56%, 91%, 0.956);
-  box-shadow: 0px 0px 10px 10px rgb(201, 28, 28);
 }
 
 #accusation-popup:modal {
@@ -339,9 +339,13 @@ th {
   color: black;
 }
 
-#selections {
+.selections {
   display: flex;
   gap: 1.5em;
+}
+
+select {
+  text-align: center;
 }
 
 #accusation-popup #buttons {

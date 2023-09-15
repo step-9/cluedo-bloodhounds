@@ -4,17 +4,20 @@ class View {
   #htmlGenerator;
   #listeners;
   #bottomPane;
+  #middlePane;
 
   constructor({
     playersContainer,
     cardsContainer,
     bottomPane,
+    middlePane,
     generateElement
   }) {
     this.#playersContainer = playersContainer;
     this.#cardsContainer = cardsContainer;
     this.#htmlGenerator = generateElement;
     this.#bottomPane = bottomPane;
+    this.#middlePane = middlePane;
     this.#listeners = {};
   }
 
@@ -144,6 +147,90 @@ class View {
     accusingPlayer.innerText = "I am Accusing";
   }
 
+  #createAccuseDialogFrame() {
+    return this.#htmlGenerator([
+      "dialog",
+      { id: "accusation-popup" },
+      [
+        ["h3", { class: "popup-header" }, "Select Accusation Combination"],
+        [
+          "form",
+          { id: "accuse-form" },
+          [
+            ["div", { class: "selections" }, []],
+            [
+              "div",
+              { id: "buttons" },
+              [
+                [
+                  "button",
+                  {
+                    value: "default",
+                    id: "accuse-confirm-btn",
+                    class: "button"
+                  },
+                  "Accuse"
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]);
+  }
+
+  #createOptionElement(option) {
+    return this.#htmlGenerator(["option", { value: option }, option]);
+  }
+
+  #createSelectElement(name, id, options) {
+    const selectElement = this.#htmlGenerator([
+      "select",
+      { name, id, required: "true" },
+      []
+    ]);
+    const optionElements = options.map(option =>
+      this.#createOptionElement(option)
+    );
+    selectElement.append(...optionElements);
+
+    return selectElement;
+  }
+
+  #createAndAddSelections(selectionContainer, cardsInfo) {
+    const { weapon, room, suspect } = cardsInfo;
+    const selectWeaponElement = this.#createSelectElement(
+      "weapons",
+      "select-weapon",
+      weapon
+    );
+
+    const selectRoomElement = this.#createSelectElement(
+      "rooms",
+      "select-room",
+      room
+    );
+
+    const selectSuspectElement = this.#createSelectElement(
+      "weapons",
+      "select-suspect",
+      suspect
+    );
+
+    selectionContainer.append(
+      selectRoomElement,
+      selectSuspectElement,
+      selectWeaponElement
+    );
+  }
+
+  #createAccuseDialog(cardsInfo) {
+    const dialog = this.#createAccuseDialogFrame();
+    const selections = dialog.querySelector(".selections");
+    this.#createAndAddSelections(selections, cardsInfo);
+    return dialog;
+  }
+
   setupGame({ players, cards, playerId }, boardSvg) {
     this.#renderBoard(boardSvg);
     const playersInOrder = this.#arrangePlayers(players, playerId);
@@ -177,7 +264,9 @@ class View {
   }
 
   setupAccuseDialog(cardsInfo) {
+    const accuseDialog = this.#createAccuseDialog(cardsInfo);
     console.log(cardsInfo);
+    this.#middlePane.append(accuseDialog);
   }
 
   #updateCharacterPositions(characterPositions) {
