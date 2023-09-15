@@ -27,7 +27,10 @@ class GameService {
   }
 
   startAccusation() {
-    return fetch("/game/start-accusation", { method: "POST" });
+    return fetch("/game/accuse", {
+      method: "PATCH",
+      body: JSON.stringify({ isAccusing: true })
+    });
   }
 
   sendMovePawnReq(tileId) {
