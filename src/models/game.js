@@ -4,6 +4,7 @@ class Game {
   #currentPlayerId;
   #isAccusing;
   #isGameWon;
+  #isGameOver;
   #strandedPlayerIds;
   #isPlayerMovable;
   #shouldEndTurn;
@@ -15,6 +16,7 @@ class Game {
     this.#players = players;
     this.#currentPlayerId = null;
     this.#isAccusing = false;
+    this.#isGameWon = false;
     this.#isGameWon = false;
     this.#strandedPlayerIds = [];
     this.#isPlayerMovable = true;
@@ -51,7 +53,7 @@ class Game {
       isAccusing: this.#isAccusing,
       isGameWon: this.#isGameWon,
       canAccuse: this.#canAccuse,
-      isGameOver: this.#areAllPlayersStranded(),
+      isGameOver: this.#isGameOver,
       strandedPlayerIds: this.#strandedPlayerIds,
       shouldEndTurn: this.#shouldEndTurn,
       characterPositions: this.#players.getCharacterPositions()
@@ -99,6 +101,8 @@ class Game {
       return card.title === combination[type];
     });
 
+    this.#isGameOver = this.#isGameWon;
+
     const killingCombination = killingCombinationCards.map(([type, card]) => {
       return [type, card.title];
     });
@@ -106,6 +110,7 @@ class Game {
     if (!this.#isGameWon) {
       this.#strandedPlayerIds.push(playerId);
       this.#players.strandPlayer(playerId);
+      this.#isGameOver = this.#areAllPlayersStranded();
     }
 
     this.#isAccusing = false;
