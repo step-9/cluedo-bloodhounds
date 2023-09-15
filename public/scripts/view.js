@@ -1,27 +1,30 @@
 class View {
-  #playersContainer;
-  #cardsContainer;
-  #htmlGenerator;
   #listeners;
   #bottomPane;
   #middlePane;
+  #htmlGenerator;
+  #cardsContainer;
   #resultContainer;
+  #playersContainer;
+  #notificationContainer;
 
   constructor({
-    playersContainer,
-    cardsContainer,
-    bottomPane,
     middlePane,
+    bottomPane,
+    cardsContainer,
     resultContainer,
-    generateElement
+    generateElement,
+    playersContainer,
+    notificationContainer
   }) {
-    this.#playersContainer = playersContainer;
+    this.#listeners = {};
+    this.#middlePane = middlePane;
+    this.#bottomPane = bottomPane;
     this.#cardsContainer = cardsContainer;
     this.#htmlGenerator = generateElement;
-    this.#bottomPane = bottomPane;
-    this.#middlePane = middlePane;
     this.#resultContainer = resultContainer;
-    this.#listeners = {};
+    this.#playersContainer = playersContainer;
+    this.#notificationContainer = notificationContainer;
   }
 
   addListener(eventName, callback) {
@@ -354,11 +357,11 @@ class View {
     const message = this.#createGameOverMsg(
       `${playerNames[lastStrandedPlayerId]} Stranded!!`
     );
-    this.#resultContainer.replaceChildren(message);
-    this.#resultContainer.showModal();
+    this.#notificationContainer.replaceChildren(message);
+    this.#notificationContainer.showModal();
 
     setTimeout(() => {
-      this.#resultContainer.close();
+      this.#notificationContainer.close();
     }, 2000);
   }
 

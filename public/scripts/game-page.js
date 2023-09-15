@@ -4,6 +4,7 @@ const main = () => {
   const bottomPane = document.querySelector("#bottom-pane");
   const middlePane = document.querySelector("#middle-pane");
   const resultContainer = document.querySelector(".result-container");
+  const notificationContainer = document.getElementById("notification");
 
   const gameService = new GameService();
   const view = new View({
@@ -12,7 +13,8 @@ const main = () => {
     bottomPane,
     middlePane,
     resultContainer,
-    generateElement
+    generateElement,
+    notificationContainer
   });
 
   const gameController = new GameController(gameService, view);
