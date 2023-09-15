@@ -18,7 +18,7 @@ const createGameRouter = () => {
   gameRouter.post("/end-turn", handleEndTurnRequest);
   gameRouter.patch("/move-pawn", handleMovePawnRequest);
   gameRouter.get("/cards", serveCardsInfo);
-  gameRouter.patch("/accuse", handleStartAccusationRequest);
+  gameRouter.patch("/accusation-state", handleStartAccusationRequest);
 
   return gameRouter;
 };

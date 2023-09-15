@@ -269,7 +269,7 @@ describe("GET /game/start-accusation", () => {
     app.context = { game };
 
     request(app)
-      .patch("/game/accuse")
+      .patch("/game/accusation-state")
       .set("Cookie", "playerId=2")
       .expect(401)
       .expect("content-type", /application\/json/)
@@ -285,7 +285,7 @@ describe("GET /game/start-accusation", () => {
     app.context = { game };
 
     request(app)
-      .patch("/game/accuse")
+      .patch("/game/accusation-state")
       .set("Cookie", "playerId=1")
       .expect(200)
       .end(done);

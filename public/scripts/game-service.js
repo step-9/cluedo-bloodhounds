@@ -27,7 +27,7 @@ class GameService {
   }
 
   startAccusation() {
-    return fetch("/game/accuse", {
+    return fetch("/game/accusation-state", {
       method: "PATCH",
       body: JSON.stringify({ isAccusing: true })
     });
