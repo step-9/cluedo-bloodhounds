@@ -28,7 +28,8 @@ class Game {
   state() {
     return {
       currentPlayerId: this.#currentPlayerId,
-      isAccusing: this.#isAccusing
+      isAccusing: this.#isAccusing,
+      characterPositions: this.#players.getCharacterPositions()
     };
   }
 

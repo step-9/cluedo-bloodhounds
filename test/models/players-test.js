@@ -67,16 +67,18 @@ describe("Players", () => {
     });
   });
 
-  describe("getPlayersPositions", () => {
+  describe("getCharacterPositions", () => {
     it("should update the current position of the player mentioned by player id", () => {
       const gourab = new Player({
         name: "gourab",
+        character: "scarlet",
         id: 1,
         position: { x: 0, y: 0 },
         cards: []
       });
       const raj = new Player({
         name: "raj",
+        character: "mustard",
         id: 2,
         cards: [],
         position: { x: 6, y: 8 }
@@ -84,9 +86,9 @@ describe("Players", () => {
 
       const players = new Players([gourab, raj]);
 
-      assert.deepStrictEqual(players.getPlayersPositions(), {
-        1: { x: 0, y: 0 },
-        2: { x: 6, y: 8 }
+      assert.deepStrictEqual(players.getCharacterPositions(), {
+        scarlet: { x: 0, y: 0 },
+        mustard: { x: 6, y: 8 }
       });
     });
   });

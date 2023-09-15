@@ -39,9 +39,12 @@ class Players {
     playerToStrand.strand();
   }
 
-  getPlayersPositions() {
+  getCharacterPositions() {
     return Object.fromEntries(
-      this.info().map(({ id, currentPosition }) => [id, currentPosition])
+      this.info().map(({ character, currentPosition }) => [
+        character,
+        currentPosition
+      ])
     );
   }
 

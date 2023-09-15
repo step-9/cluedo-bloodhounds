@@ -6,6 +6,7 @@ const Players = require("./models/players");
 const { createCards } = require("./utils/card-generator");
 const Player = require("./models/player");
 const cardsData = require("../resources/cards.json");
+const initialPositions = require("../resources/initial-positions.json");
 
 const getCardsAssigner = cards => {
   return (playerInfo, playerIndex) => {
@@ -15,7 +16,12 @@ const getCardsAssigner = cards => {
 
 const getCharacterAssigner = characters => {
   return (playerInfo, playerIndex) => {
-    return { ...playerInfo, character: characters[playerIndex] };
+    const character = characters[playerIndex];
+    return {
+      ...playerInfo,
+      character,
+      position: initialPositions[character]
+    };
   };
 };
 

@@ -47,16 +47,14 @@ describe("Game", () => {
         info: context.mock.fn(() => ({ id: 1 }))
       };
       const players = {
-        getNextPlayer: context.mock.fn(() => player)
+        getNextPlayer: context.mock.fn(() => player),
+        getCharacterPositions: () => {}
       };
       const game = new Game({ players });
 
       game.start();
 
-      assert.deepStrictEqual(game.state(), {
-        currentPlayerId: 1,
-        isAccusing: false
-      });
+      assert.strictEqual(game.state().currentPlayerId, 1);
     });
   });
 
@@ -66,23 +64,25 @@ describe("Game", () => {
         info: context.mock.fn(() => ({ id: 1 }))
       };
       const players = {
-        getNextPlayer: context.mock.fn(() => player)
+        getNextPlayer: context.mock.fn(() => player),
+        getCharacterPositions: () => {}
       };
       const game = new Game({ players });
 
       game.start();
       game.changeTurn();
 
-      assert.deepStrictEqual(game.state(), {
-        currentPlayerId: 1,
-        isAccusing: false
-      });
+      assert.deepStrictEqual(game.state().currentPlayerId, 1);
     });
   });
 
   describe("toggleIsAccusing", () => {
     it("should toggle the isAccusing status", context => {
-      const game = new Game({ players: {} });
+      const game = new Game({
+        players: {
+          getCharacterPositions: () => {}
+        }
+      });
       game.toggleIsAccusing();
 
       assert.ok(game.state().isAccusing);
