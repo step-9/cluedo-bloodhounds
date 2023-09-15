@@ -29,14 +29,16 @@ class GameController {
   #sendMovePawnReq(rawTileId) {
     const [x, y] = rawTileId.split(",").map(num => parseInt(num));
 
-    this.#gameService.sendMovePawnReq({ x, y });
+    return this.#gameService.sendMovePawnReq({ x, y });
   }
 
   start() {
     this.#view.addListener("onEndTurn", () => this.#endTurn());
 
     this.#view.addListener("movePawn", rawTileId =>
-      this.#sendMovePawnReq(rawTileId)
+      this.#sendMovePawnReq(rawTileId).then(res => {
+        if (res.ok) this.#view.disableMove();
+      })
     );
 
     this.#view.addListener("startAccusation", () =>

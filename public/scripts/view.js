@@ -76,6 +76,7 @@ class View {
     const boardContainer = document.querySelector("#board");
     boardContainer.innerHTML = svg;
     const tileElements = boardContainer.querySelectorAll("rect");
+    boardContainer.classList.add("disable-click");
 
     tileElements.forEach(tile => {
       tile.onclick = () => {
@@ -153,16 +154,40 @@ class View {
     cards.forEach(card => this.#renderCard(card));
   }
 
+  disableMove() {
+    const boardContainer = document.querySelector("#board");
+    boardContainer.classList.add("disable-click");
+  }
+
+  enableMove() {
+    const boardContainer = document.querySelector("#board");
+    boardContainer.classList.remove("disable-click");
+  }
+
   renderGameState(gameState) {
-    const { isYourTurn, currentPlayerId, isAccusing } = gameState;
+    const { isYourTurn, currentPlayerId, isAccusing, characterPositions } =
+      gameState;
     this.#highlightCurrentPlayer(currentPlayerId);
 
     this.#renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId);
     this.#renderEndTurnButton(isYourTurn);
     this.#renderAccuseButton(isYourTurn);
+    if (isYourTurn) this.enableMove();
+    this.#updateCharacterPositions(characterPositions);
   }
 
   setupAccuseDialog(cardsInfo) {
     console.log(cardsInfo);
+  }
+
+  #updateCharacterPositions(characterPositions) {
+    Object.entries(characterPositions).forEach(([character, { x, y }]) => {
+      const pawn = `${character}-pawn`;
+      const previousPositionElement = document.querySelector(`.${pawn}`);
+      previousPositionElement?.classList.remove(pawn);
+
+      const currentPositionElement = document.getElementById(`${x},${y}`);
+      currentPositionElement.classList.add(pawn);
+    });
   }
 }

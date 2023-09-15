@@ -399,3 +399,8 @@ th {
   text-transform: capitalize;
   background-color: purple;
 }
+
+.disable-click {
+  pointer-events: none;
+  cursor: not-allowed;
+}

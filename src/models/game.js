@@ -3,12 +3,14 @@ class Game {
   #players;
   #currentPlayerId;
   #isAccusing;
+  #isPlayerMovable;
 
   constructor({ players, board }) {
     this.#board = board;
     this.#players = players;
     this.#currentPlayerId = null;
     this.#isAccusing = false;
+    this.#isPlayerMovable = true;
   }
 
   getCardsOfPlayer(playerId) {
@@ -19,6 +21,7 @@ class Game {
   changeTurn() {
     const currentPlayer = this.#players.getNextPlayer();
     this.#currentPlayerId = currentPlayer.info().id;
+    this.#isPlayerMovable = true;
   }
 
   toggleIsAccusing() {
@@ -33,13 +36,26 @@ class Game {
     };
   }
 
-  movePawn(tileCoordinates, playerId) {
-    console.log(tileCoordinates, playerId, this.#currentPlayerId);
-    if (playerId !== this.#currentPlayerId) return { isMoved: false };
+  #getOccupiedPositions() {
+    return Object.values(this.#players.getCharacterPositions());
+  }
 
-    const tileInfo = this.#board.getTileInfo(tileCoordinates);
+  movePawn(tileCoordinates, playerId) {
+    const isCurrentPlayer = playerId === this.#currentPlayerId;
+    if (!isCurrentPlayer || !this.#isPlayerMovable) return { isMoved: false };
+
+    const occupiedPositions = this.#getOccupiedPositions();
+    const tileInfo = this.#board.getTileInfo(
+      tileCoordinates,
+      occupiedPositions
+    );
+
     if ("isRoomTile" in tileInfo) {
-      if (tileInfo.isRoomTile === false) return { isMoved: true };
+      if (tileInfo.isRoomTile === false) {
+        this.#isPlayerMovable = false;
+        this.#players.updatePlayerPosition(playerId, tileCoordinates);
+        return { isMoved: true };
+      }
     }
 
     return { isMoved: false };
