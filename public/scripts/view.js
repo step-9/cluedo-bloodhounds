@@ -285,7 +285,7 @@ class View {
       characterPositions,
       shouldEndTurn
     } = gameState;
-
+    
     this.#highlightCurrentPlayer(currentPlayerId);
     this.#renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId);
     this.#renderAccuseButton(isYourTurn);

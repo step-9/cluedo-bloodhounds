@@ -18,6 +18,12 @@ class Game {
     this.#isPlayerMovable = true;
   }
 
+  #areAllPlayersStranded() {
+    const totalPlayers = this.#players.info().length;
+    const totalStrandedPlayers = this.#strandedPlayerIds.length;
+    return totalPlayers === totalStrandedPlayers;
+  }
+
   getCardsOfPlayer(playerId) {
     const player = this.#players.findPlayer(+playerId);
     return player.info().cards;
@@ -39,6 +45,7 @@ class Game {
       currentPlayerId: this.#currentPlayerId,
       isAccusing: this.#isAccusing,
       isGameWon: this.#isGameWon,
+      isGameOver: this.#areAllPlayersStranded(),
       strandedPlayerIds: this.#strandedPlayerIds,
       shouldEndTurn: this.#shouldEndTurn,
       characterPositions: this.#players.getCharacterPositions()

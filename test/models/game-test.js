@@ -42,13 +42,14 @@ describe("Game", () => {
   });
 
   describe("status", () => {
-    it("Should give the current player id as the game state", context => {
+    it("Should give the current game state", context => {
       const player = {
         info: context.mock.fn(() => ({ id: 1 }))
       };
       const players = {
         getNextPlayer: context.mock.fn(() => player),
-        getCharacterPositions: () => {}
+        getCharacterPositions: () => {},
+        info: context.mock.fn(() => ({ id: 1 }))
       };
       const game = new Game({ players });
 
@@ -65,7 +66,8 @@ describe("Game", () => {
       };
       const players = {
         getNextPlayer: context.mock.fn(() => player),
-        getCharacterPositions: () => {}
+        getCharacterPositions: () => {},
+        info: context.mock.fn(() => ({ id: 1 }))
       };
       const game = new Game({ players });
 
@@ -80,7 +82,8 @@ describe("Game", () => {
     it("should toggle the isAccusing status", context => {
       const game = new Game({
         players: {
-          getCharacterPositions: () => {}
+          getCharacterPositions: () => {},
+          info: context.mock.fn(() => [])
         }
       });
       game.toggleIsAccusing();
