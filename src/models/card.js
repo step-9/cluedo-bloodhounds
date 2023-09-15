@@ -1,3 +1,5 @@
+const isEqualString = (a, b) => a.toLowerCase() === b.toLowerCase();
+
 class Card {
   #type;
   #title;
@@ -12,9 +14,10 @@ class Card {
   }
 
   matches(anotherCard) {
-    return (
-      this.#title === anotherCard.#title && this.#type === anotherCard.#type
-    );
+    const matchesTitle = isEqualString(this.#title, anotherCard.#title);
+    const matchesType = isEqualString(this.#type, anotherCard.#type);
+
+    return matchesTitle && matchesType;
   }
 }
 
