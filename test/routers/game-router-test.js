@@ -3,6 +3,8 @@ const { describe, it } = require("node:test");
 const { createApp } = require("../../src/app");
 const Game = require("../../src/models/game");
 const Board = require("../../src/models/board");
+const Players = require("../../src/models/players");
+const Player = require("../../src/models/player");
 
 describe("GET /game", () => {
   it("should redirect to homepage when game not started", (context, done) => {
@@ -118,13 +120,14 @@ describe("GET /game/end-turn", () => {
 
 describe("PATCH /game/move-pawn", () => {
   it("should move the pawn if the given tile is valid", (context, done) => {
-    const players = {
-      add: context.mock.fn(),
-      info: context.mock.fn(() => "Mock Data"),
-      getNextPlayer: context.mock.fn(() => ({
-        info: () => ({ id: 1 })
-      }))
-    };
+    const gourab = new Player({
+      id: 1,
+      name: "gourab",
+      cards: [],
+      character: "mustard",
+      position: { x: 2, y: 4 }
+    });
+    const players = new Players([gourab]);
 
     const board = new Board({
       blockedTiles: [],
@@ -149,13 +152,14 @@ describe("PATCH /game/move-pawn", () => {
   });
 
   it("should not move the pawn to a blockedTile", (context, done) => {
-    const players = {
-      add: context.mock.fn(),
-      info: context.mock.fn(() => "Mock Data"),
-      getNextPlayer: context.mock.fn(() => ({
-        info: () => ({ id: 1 })
-      }))
-    };
+    const gourab = new Player({
+      id: 1,
+      name: "gourab",
+      cards: [],
+      character: "mustard",
+      position: { x: 2, y: 4 }
+    });
+    const players = new Players([gourab]);
 
     const board = new Board({
       blockedTiles: [{ x: 1, y: 2 }],
@@ -178,13 +182,14 @@ describe("PATCH /game/move-pawn", () => {
   });
 
   it("should not move the pawn to a room", (context, done) => {
-    const players = {
-      add: context.mock.fn(),
-      info: context.mock.fn(() => "Mock Data"),
-      getNextPlayer: context.mock.fn(() => ({
-        info: () => ({ id: 1 })
-      }))
-    };
+    const gourab = new Player({
+      id: 1,
+      name: "gourab",
+      cards: [],
+      character: "mustard",
+      position: { x: 2, y: 4 }
+    });
+    const players = new Players([gourab]);
 
     const board = new Board({
       blockedTiles: [{ x: 1, y: 2 }],
