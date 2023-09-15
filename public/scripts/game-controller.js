@@ -23,7 +23,7 @@ class GameController {
       if (!this.#isNewState(gameState)) return;
 
       this.#lastGameState = gameState;
-      this.#view.renderGameState(gameState);
+      this.#view.renderGameState(gameState, this.#playersNames);
     });
   }
 
@@ -51,6 +51,10 @@ class GameController {
     this.#view.addListener("startAccusation", () =>
       this.#gameService.startAccusation()
     );
+
+    this.#view.addListener("playAgain", () => {
+      this.#gameService.sendPlayAgainRequest();
+    });
 
     this.#view.addListener("accuse", accusationCombination => {
       this.#gameService.accuse(accusationCombination).then(accusationResult => {

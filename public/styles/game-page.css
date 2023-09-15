@@ -445,3 +445,15 @@ select {
 .stranded-player {
   filter: opacity(0.3);
 }
+
+#home {
+  border: none;
+  outline: none;
+  background-color: green;
+}
+
+.game-over-msg {
+  color: #444;
+  text-shadow: 0 0 0 10px blueviolet;
+  text-transform: uppercase;
+}

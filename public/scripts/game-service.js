@@ -48,4 +48,8 @@ class GameService {
       headers: { "content-type": "application/json" }
     });
   }
+
+  sendPlayAgainRequest() {
+    window.location.href = "/";
+  }
 }

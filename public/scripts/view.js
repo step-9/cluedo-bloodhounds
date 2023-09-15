@@ -303,7 +303,36 @@ class View {
     this.#renderEndTurnButton();
   }
 
-  renderGameState(gameState) {
+  #createGameOverMsg(message) {
+    return this.#htmlGenerator(["h3", { class: "game-over-msg" }, message]);
+  }
+
+  #createHomeBtn() {
+    const btn = this.#createButton("Play Again", "home");
+    btn.onclick = () => this.#listeners.playAgain();
+    return btn;
+  }
+
+  #displayAllPlayersStranded() {
+    const message = this.#createGameOverMsg("All Players stranded");
+    const btn = this.#createHomeBtn();
+    this.#resultContainer.replaceChildren(message, btn);
+    this.#resultContainer.showModal();
+  }
+
+  #displayWinner(playerName) {
+    const message = this.#createGameOverMsg(`${playerName} Won!!`);
+    const btn = this.#createHomeBtn();
+    this.#resultContainer.replaceChildren(message, btn);
+    this.#resultContainer.showModal();
+  }
+
+  #displayGameOver({ isGameWon, playerNames, currentPlayerId }) {
+    if (!isGameWon) return this.#displayAllPlayersStranded();
+    this.#displayWinner(playerNames[currentPlayerId]);
+  }
+
+  renderGameState(gameState, playerNames) {
     const {
       isYourTurn,
       currentPlayerId,
@@ -311,12 +340,18 @@ class View {
       characterPositions,
       shouldEndTurn,
       canAccuse,
+      isGameOver,
+      isGameWon,
       strandedPlayerIds
     } = gameState;
 
     this.#disableStrandedPlayers(strandedPlayerIds);
-    this.#highlightCurrentPlayer(currentPlayerId);
     this.#renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId);
+
+    if (isGameOver)
+      return this.#displayGameOver({ isGameWon, playerNames, currentPlayerId });
+
+    this.#highlightCurrentPlayer(currentPlayerId);
     this.#renderAccuseButton(isYourTurn, isAccusing, currentPlayerId);
 
     if (isYourTurn) {
