@@ -327,12 +327,42 @@ class View {
     this.#resultContainer.showModal();
   }
 
-  #displayGameOver({ isGameWon, playerNames, currentPlayerId }) {
+  #displayGameOver({ isYourTurn, isGameWon, playerNames, currentPlayerId }) {
+    if (isYourTurn) {
+      return setTimeout(() => {
+        if (!isGameWon) return this.#displayAllPlayersStranded();
+        this.#displayWinner(playerNames[currentPlayerId]);
+      }, 2000);
+    }
+
     if (!isGameWon) return this.#displayAllPlayersStranded();
     this.#displayWinner(playerNames[currentPlayerId]);
   }
 
-  renderGameState(gameState, playerNames) {
+  #notifyPlayerStranded(
+    newStrandedPlayers,
+    prevStrandedPlayers = [],
+    playerNames,
+    isYourTurn
+  ) {
+    if (isYourTurn) return;
+    if (newStrandedPlayers.length === prevStrandedPlayers.length) return;
+
+    console.log(newStrandedPlayers, prevStrandedPlayers);
+
+    const lastStrandedPlayerId = newStrandedPlayers.at(-1);
+    const message = this.#createGameOverMsg(
+      `${playerNames[lastStrandedPlayerId]} Stranded!!`
+    );
+    this.#resultContainer.replaceChildren(message);
+    this.#resultContainer.showModal();
+
+    setTimeout(() => {
+      this.#resultContainer.close();
+    }, 2000);
+  }
+
+  renderGameState(gameState, playerNames, lastGameState) {
     const {
       isYourTurn,
       currentPlayerId,
@@ -346,10 +376,21 @@ class View {
     } = gameState;
 
     this.#disableStrandedPlayers(strandedPlayerIds);
+    this.#notifyPlayerStranded(
+      strandedPlayerIds,
+      lastGameState.strandedPlayerIds,
+      playerNames,
+      isYourTurn
+    );
     this.#renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId);
 
     if (isGameOver)
-      return this.#displayGameOver({ isGameWon, playerNames, currentPlayerId });
+      return this.#displayGameOver({
+        isGameWon,
+        playerNames,
+        currentPlayerId,
+        isYourTurn
+      });
 
     this.#highlightCurrentPlayer(currentPlayerId);
     this.#renderAccuseButton(isYourTurn, isAccusing, currentPlayerId);

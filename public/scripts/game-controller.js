@@ -3,6 +3,7 @@ class GameController {
   #gameService;
   #lastGameState;
   #playersNames;
+  #pollingInterval;
 
   constructor(gameService, view) {
     this.#gameService = gameService;
@@ -18,12 +19,22 @@ class GameController {
     this.#gameService.endTurn();
   }
 
+  #stopPolling() {
+    clearInterval(this.#pollingInterval);
+  }
+
   #fetchAndRenderCurrentState() {
     this.#gameService.getGameState(gameState => {
       if (!this.#isNewState(gameState)) return;
+      if (gameState.isGameOver) this.#stopPolling();
+
+      this.#view.renderGameState(
+        gameState,
+        this.#playersNames,
+        this.#lastGameState
+      );
 
       this.#lastGameState = gameState;
-      this.#view.renderGameState(gameState, this.#playersNames);
     });
   }
 
@@ -75,6 +86,9 @@ class GameController {
       });
     });
 
-    setInterval(() => this.#fetchAndRenderCurrentState(), 500);
+    this.#pollingInterval = setInterval(
+      () => this.#fetchAndRenderCurrentState(),
+      500
+    );
   }
 }
