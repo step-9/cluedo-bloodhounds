@@ -14,7 +14,6 @@ const makeCards = cardsData => {
   cards.weapon = weapon.map(title => ({ type: "weapon", title }));
   cards.room = room.map(title => ({ type: "room", title }));
 
-  console.log(cards);
   return cards;
 };
 

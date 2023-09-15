@@ -51,13 +51,7 @@ const handleMovePawnRequest = (req, res) => {
 };
 
 const serveCardsInfo = (_, res) => {
-  const { suspect, weapon, room } = cardsInfo;
-  const cardsLookup = {};
-  cardsLookup.suspect = suspect.map(({ title }) => title);
-  cardsLookup.weapon = weapon.map(({ title }) => title);
-  cardsLookup.room = room.map(({ title }) => title);
-
-  res.json(cardsLookup);
+  res.json(cardsInfo);
 };
 
 const handleStartAccusationRequest = (req, res) => {
