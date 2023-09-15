@@ -324,7 +324,7 @@ th {
   top: 28%;
   left: 27%;
   width: 550px;
-  height: 350px;
+  height: 360px;
 
   border: 2px solid black;
   border-radius: 10px;
@@ -332,13 +332,15 @@ th {
 }
 
 #accusation-result {
-  visibility: hidden;
+  color: black;
+}
+
+#accusation-result:modal {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 2.5em;
-  color: black;
 }
 
 #killing-combination {
@@ -351,7 +353,19 @@ th {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3em;
+  gap: 2em;
+}
+
+#accusation-result-message {
+  padding-top: 0.5em;
+}
+
+#accusation-result-close-btn {
+  background-color: orangered;
+}
+
+#accusation-result-close-btn:hover {
+  cursor: pointer;
 }
 
 #accusation-popup > h3 {

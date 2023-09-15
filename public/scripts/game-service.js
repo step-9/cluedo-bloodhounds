@@ -33,6 +33,14 @@ class GameService {
     });
   }
 
+  accuse(accusationCombination) {
+    return fetch("/game/accuse", {
+      method: "POST",
+      body: JSON.stringify(accusationCombination),
+      headers: { "content-type": "application/json" }
+    }).then(res => res.json());
+  }
+
   sendMovePawnReq(tileId) {
     return fetch("/game/move-pawn", {
       method: "PATCH",

@@ -3,6 +3,7 @@ const main = () => {
   const playersContainer = document.querySelector("#players");
   const bottomPane = document.querySelector("#bottom-pane");
   const middlePane = document.querySelector("#middle-pane");
+  const resultContainer = document.querySelector("#accusation-result");
 
   const gameService = new GameService();
   const view = new View({
@@ -10,6 +11,7 @@ const main = () => {
     cardsContainer,
     bottomPane,
     middlePane,
+    resultContainer,
     generateElement
   });
 

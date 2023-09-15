@@ -36,6 +36,7 @@ class GameController {
     this.#playersNames = playersData.reduce((playerNames, { id, name }) => {
       return { ...playerNames, [id]: name };
     }, {});
+    console.log(this.#playersNames);
   }
 
   start() {
@@ -52,7 +53,9 @@ class GameController {
     );
 
     this.#view.addListener("accuse", accusationCombination => {
-      console.log(accusationCombination);
+      this.#gameService.accuse(accusationCombination).then(accusationResult => {
+        this.#view.renderAccusationResult(accusationResult);
+      });
     });
 
     this.#gameService.getCardsInfo().then(cardsInfo => {
@@ -61,7 +64,6 @@ class GameController {
 
     this.#gameService.getInitialData().then(initialState => {
       this.#storePlayerNames(initialState.players);
-      console.log(this.#playersNames);
       this.#gameService.getBoardStructure().then(boardSvg => {
         this.#view.setupGame(initialState, boardSvg);
         this.#fetchAndRenderCurrentState();

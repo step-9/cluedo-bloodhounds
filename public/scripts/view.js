@@ -5,12 +5,14 @@ class View {
   #listeners;
   #bottomPane;
   #middlePane;
+  #resultContainer;
 
   constructor({
     playersContainer,
     cardsContainer,
     bottomPane,
     middlePane,
+    resultContainer,
     generateElement
   }) {
     this.#playersContainer = playersContainer;
@@ -18,6 +20,7 @@ class View {
     this.#htmlGenerator = generateElement;
     this.#bottomPane = bottomPane;
     this.#middlePane = middlePane;
+    this.#resultContainer = resultContainer;
     this.#listeners = {};
   }
 
@@ -123,7 +126,6 @@ class View {
     }
 
     if (isYourTurn && isAccusing) {
-      console.log(accuseDialog);
       accuseDialog.showModal();
     }
 
@@ -304,6 +306,55 @@ class View {
   setupAccuseDialog(cardsInfo) {
     const accuseDialog = this.#createAccuseDialog(cardsInfo);
     this.#middlePane.append(accuseDialog);
+  }
+
+  #createCardElement(title) {
+    return this.#htmlGenerator(["div", { class: "card" }, title]);
+  }
+
+  #createMessageElement(message) {
+    return this.#htmlGenerator([
+      "h3",
+      { id: "accusation-result-message" },
+      message
+    ]);
+  }
+
+  #createCardElements({ weapon, room, suspect }) {
+    const weaponCard = this.#createCardElement(weapon);
+    const roomCard = this.#createCardElement(room);
+    const suspectCard = this.#createCardElement(suspect);
+
+    return [weaponCard, roomCard, suspectCard];
+  }
+
+  #createCardsContainer(id) {
+    return this.#htmlGenerator(["div", { id }, []]);
+  }
+
+  renderAccusationResult({ killingCombination, isWon }) {
+    const winningMessage = "You Sucessfully Solved the Murder Mystery";
+    const wrongAccusationMessage = "Your Accusation was Wrong";
+    const message = isWon ? winningMessage : wrongAccusationMessage;
+
+    const secretCards = this.#createCardElements(killingCombination);
+    const cardsContainer = this.#createCardsContainer("killing-combination");
+    cardsContainer.append(...secretCards);
+    const resultMessage = this.#createMessageElement(message);
+    const closeButton = this.#createButton(
+      "Close",
+      "accusation-result-close-btn"
+    );
+
+    closeButton.onclick = () => {
+      const accuseButton = document.querySelector("#accuse-btn");
+      accuseButton.remove();
+      this.#resultContainer.close();
+      this.#renderEndTurnButton();
+    };
+
+    this.#resultContainer.append(resultMessage, cardsContainer, closeButton);
+    this.#resultContainer.showModal();
   }
 
   #updateCharacterPositions(characterPositions) {
