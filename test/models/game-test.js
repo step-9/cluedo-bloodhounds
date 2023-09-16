@@ -41,7 +41,7 @@ describe("Game", () => {
     });
   });
 
-  describe("status", () => {
+  describe("state", () => {
     it("Should give the current game state", context => {
       const player = {
         info: context.mock.fn(() => ({ id: 1 }))
@@ -56,6 +56,22 @@ describe("Game", () => {
       game.start();
 
       assert.strictEqual(game.state().currentPlayerId, 1);
+    });
+
+    it("Should give killingCombination as empty when game is not over", context => {
+      const player = {
+        info: context.mock.fn(() => ({ id: 1 }))
+      };
+      const players = {
+        getNextPlayer: context.mock.fn(() => player),
+        getCharacterPositions: () => {},
+        info: context.mock.fn(() => ({ id: 1 }))
+      };
+      const game = new Game({ players });
+
+      game.start();
+
+      assert.deepStrictEqual(game.state().killingCombination, {});
     });
   });
 
@@ -94,19 +110,16 @@ describe("Game", () => {
 
   describe("validateAccuse", () => {
     it("should declare the winner and end the game as combination matches", context => {
-      const mustard = { type: "suspect", title: "mustard" };
-      const dagger = { type: "weapon", title: "dagger" };
-      const lounge = { type: "room", title: "lounge" };
-
       const killingCombination = {
-        weapon: dagger,
-        room: lounge,
-        suspect: mustard
+        weapon: "dagger",
+        room: "lounge",
+        suspect: "mustard"
       };
 
       const game = new Game({
         players: {
           getCharacterPositions: () => {},
+          strandPlayer: () => {},
           info: context.mock.fn(() => [])
         },
         killingCombination
@@ -129,18 +142,18 @@ describe("Game", () => {
       };
 
       assert.deepStrictEqual(accusationResult, expectedAccusationResult);
+      assert.deepStrictEqual(game.state().killingCombination, {
+        weapon: "dagger",
+        room: "lounge",
+        suspect: "mustard"
+      });
     });
 
     it("should make the player stranded as the combination is wrong", context => {
-      const mustard = { type: "suspect", title: "mustard" };
-      const plum = { type: "suspect", title: "plum" };
-      const lounge = { type: "room", title: "lounge" };
-      const dagger = { type: "weapon", title: "dagger" };
-
       const killingCombination = {
-        weapon: dagger,
-        room: lounge,
-        suspect: plum
+        weapon: "dagger",
+        room: "lounge",
+        suspect: "plum"
       };
 
       const game = new Game({
@@ -153,7 +166,7 @@ describe("Game", () => {
       });
 
       const playerId = 1;
-      const playerAccusation = { ...killingCombination, suspect: mustard };
+      const playerAccusation = { ...killingCombination, suspect: "mustard" };
       const accusationResult = game.validateAccuse(playerId, playerAccusation);
 
       const expectedAccusationResult = {

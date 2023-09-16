@@ -47,7 +47,6 @@ class GameController {
     this.#playersNames = playersData.reduce((playerNames, { id, name }) => {
       return { ...playerNames, [id]: name };
     }, {});
-    console.log(this.#playersNames);
   }
 
   start() {

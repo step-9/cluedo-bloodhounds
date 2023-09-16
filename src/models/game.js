@@ -17,7 +17,7 @@ class Game {
     this.#currentPlayerId = null;
     this.#isAccusing = false;
     this.#isGameWon = false;
-    this.#isGameWon = false;
+    this.#isGameOver = false;
     this.#strandedPlayerIds = [];
     this.#isPlayerMovable = true;
     this.#canAccuse = true;
@@ -48,6 +48,10 @@ class Game {
   }
 
   state() {
+    const killingCombination = this.#isGameOver
+      ? this.#killingCombination
+      : {};
+
     return {
       currentPlayerId: this.#currentPlayerId,
       isAccusing: this.#isAccusing,
@@ -55,6 +59,7 @@ class Game {
       canAccuse: this.#canAccuse,
       isGameOver: this.#isGameOver,
       strandedPlayerIds: this.#strandedPlayerIds,
+      killingCombination,
       shouldEndTurn: this.#shouldEndTurn,
       characterPositions: this.#players.getCharacterPositions()
     };
@@ -97,15 +102,11 @@ class Game {
   validateAccuse(playerId, combination) {
     const killingCombinationCards = Object.entries(this.#killingCombination);
 
-    this.#isGameWon = killingCombinationCards.every(([type, card]) => {
-      return card.title === combination[type];
+    this.#isGameWon = killingCombinationCards.every(([type, title]) => {
+      return title === combination[type];
     });
 
     this.#isGameOver = this.#isGameWon;
-
-    const killingCombination = killingCombinationCards.map(([type, card]) => {
-      return [type, card.title];
-    });
 
     if (!this.#isGameWon) {
       this.#strandedPlayerIds.push(playerId);
@@ -119,7 +120,7 @@ class Game {
 
     return {
       isWon: this.#isGameWon,
-      killingCombination: Object.fromEntries(killingCombination)
+      killingCombination: { ...this.#killingCombination }
     };
   }
 

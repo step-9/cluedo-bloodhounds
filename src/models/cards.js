@@ -24,7 +24,8 @@ class Cards {
 
   getKillingCombination() {
     const typeCardPairs = Object.keys(this.#remainingCards).map(type => {
-      return [type, ...this.#pickRandomCard(type)];
+      const [{ title }] = this.#pickRandomCard(type);
+      return [type, title];
     });
 
     return Object.fromEntries(typeCardPairs);
