@@ -3,6 +3,10 @@
   border-radius: 50%;
 }
 
+.start-tile {
+  ry: 15;
+}
+
 .mustard-pawn {
   fill: yellow;
 }
