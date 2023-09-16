@@ -315,11 +315,11 @@ th {
 }
 
 #accuse-btn {
-  background-color: hsl(120, 73%, 50%);
+  background-color: rgb(0, 186, 96);
 }
 
 #end-turn-btn {
-  background-color: red;
+  background-color: hsl(0, 100%, 65%);
 }
 
 .button:hover {
@@ -347,8 +347,8 @@ th {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1em;
-  gap: 2.5em;
+  padding: 0.5em;
+  gap: 1.5em;
 }
 
 #killing-combination {
@@ -361,7 +361,8 @@ th {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2em;
+  padding: 0.5em;
+  gap: 3em;
 }
 
 #accusation-result-message {
@@ -387,6 +388,9 @@ th {
 
 select {
   text-align: center;
+  border-radius: 6px;
+  text-transform: capitalize;
+  padding: 0.2em;
 }
 
 #accusation-popup #buttons {
@@ -409,8 +413,8 @@ select {
 }
 
 #accuse-confirm-btn {
-  color: darkgreen;
-  background-color: lightgreen;
+  color: white;
+  background-color: rgb(0, 186, 96);
 }
 
 .scarlet {

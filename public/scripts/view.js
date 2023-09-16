@@ -189,7 +189,7 @@ class View {
                     id: "accuse-confirm-btn",
                     class: "button"
                   },
-                  "Accuse"
+                  "Confirm"
                 ]
               ]
             ]
