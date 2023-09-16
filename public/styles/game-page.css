@@ -417,38 +417,6 @@ select {
   background-color: rgb(0, 186, 96);
 }
 
-.scarlet {
-  text-transform: capitalize;
-  background-color: red;
-}
-
-.mustard {
-  text-transform: capitalize;
-  color: black;
-  background-color: rgb(255, 255, 0);
-}
-
-.white {
-  text-transform: capitalize;
-  color: black;
-  background-color: #ddd;
-}
-
-.green {
-  text-transform: capitalize;
-  background-color: green;
-}
-
-.peacock {
-  text-transform: capitalize;
-  background-color: blue;
-}
-
-.plum {
-  text-transform: capitalize;
-  background-color: purple;
-}
-
 .disable-click {
   pointer-events: none;
   cursor: not-allowed;

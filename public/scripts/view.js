@@ -36,7 +36,7 @@ class View {
       "div",
       { class: "player-info", id: `player-${id}` },
       [
-        ["div", { class: `icon ${character}`, id: `avatar-${id}` }, character],
+        ["div", { class: `icon ${character}`, id: `avatar-${id}` }, []],
         ["div", { class: "name" }, name],
         ["div", { class: "message hide", id: `message-${id}` }, []]
       ]
