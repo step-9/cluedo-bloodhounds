@@ -316,30 +316,43 @@ class View {
     return btn;
   }
 
-  #displayAllPlayersStranded() {
+  #displayAllPlayersStranded(killingCombination) {
     const message = this.#createGameOverMsg("All Players stranded");
+    const secretCards = this.#createCardElements(killingCombination);
+    const cardsContainer = this.#createCardsContainer("killing-combination");
+    cardsContainer.append(...secretCards);
     const btn = this.#createHomeBtn();
-    this.#resultContainer.replaceChildren(message, btn);
+    this.#resultContainer.replaceChildren(message, cardsContainer, btn);
     this.#resultContainer.showModal();
   }
 
-  #displayWinner(playerName) {
+  #displayWinner(playerName, killingCombination) {
     const message = this.#createGameOverMsg(`${playerName} Won!!`);
     const btn = this.#createHomeBtn();
-    this.#resultContainer.replaceChildren(message, btn);
+    const secretCards = this.#createCardElements(killingCombination);
+    const cardsContainer = this.#createCardsContainer("killing-combination");
+    cardsContainer.append(...secretCards);
+    this.#resultContainer.replaceChildren(message, cardsContainer, btn);
     this.#resultContainer.showModal();
   }
 
-  #displayGameOver({ isYourTurn, isGameWon, playerNames, currentPlayerId }) {
+  #displayGameOver({
+    isYourTurn,
+    isGameWon,
+    playerNames,
+    currentPlayerId,
+    killingCombination
+  }) {
     if (isYourTurn) {
       return setTimeout(() => {
-        if (!isGameWon) return this.#displayAllPlayersStranded();
-        this.#displayWinner(playerNames[currentPlayerId]);
+        if (!isGameWon)
+          return this.#displayAllPlayersStranded(killingCombination);
+        this.#displayWinner(playerNames[currentPlayerId], killingCombination);
       }, 2000);
     }
 
-    if (!isGameWon) return this.#displayAllPlayersStranded();
-    this.#displayWinner(playerNames[currentPlayerId]);
+    if (!isGameWon) return this.#displayAllPlayersStranded(killingCombination);
+    this.#displayWinner(playerNames[currentPlayerId], killingCombination);
   }
 
   #notifyPlayerStranded(
@@ -369,6 +382,7 @@ class View {
     const {
       isYourTurn,
       currentPlayerId,
+      killingCombination,
       isAccusing,
       characterPositions,
       shouldEndTurn,
@@ -391,6 +405,7 @@ class View {
       return this.#displayGameOver({
         isGameWon,
         playerNames,
+        killingCombination,
         currentPlayerId,
         isYourTurn
       });
@@ -425,11 +440,11 @@ class View {
   }
 
   #createCardElements({ weapon, room, suspect }) {
-    const weaponCard = this.#createCardElement(weapon);
     const roomCard = this.#createCardElement(room);
     const suspectCard = this.#createCardElement(suspect);
+    const weaponCard = this.#createCardElement(weapon);
 
-    return [weaponCard, roomCard, suspectCard];
+    return [roomCard, suspectCard, weaponCard];
   }
 
   #createCardsContainer(id) {
