@@ -1,7 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;700&family=Roboto+Slab:wght@300;400;600;700&family=Titillium+Web:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Roboto Slab", serif;
 }
 
 .center-align {
@@ -37,7 +40,6 @@ body {
 
 #cluedo-logo {
   width: 100%;
-  border-bottom: 1px solid white;
 }
 
 #players {
@@ -53,7 +55,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid white;
+  /* border: 1px solid white; */
 }
 
 #board {
@@ -143,12 +145,14 @@ body {
 
 #inference-container {
   display: grid;
-  grid-template-columns: 30% 70%;
+  grid-template-columns: 25% 70%;
+  gap: 5%;
 }
 
 .card {
   width: 125px;
   height: 165px;
+  font-size: 0.9em;
   text-transform: capitalize;
   text-align: center;
   padding-top: 1em;
@@ -165,14 +169,13 @@ body {
 #cards-container .card:hover {
   z-index: 2;
   scale: 1.2;
-  border: 2px solid white;
+  box-shadow: 0 0 15px 0 black;
 }
 
 #cards-container {
   height: 100%;
   display: grid;
   grid-template-rows: 5% auto;
-  border: 1px solid white;
 }
 
 #cards-container > h3 {
@@ -236,6 +239,10 @@ body {
 #clue-sheet {
   display: flex;
   flex-direction: column;
+}
+
+#clue-sheet td {
+  font-size: 15px;
 }
 
 .clue-section-heading {
@@ -340,6 +347,7 @@ th {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 1em;
   gap: 2.5em;
 }
 
