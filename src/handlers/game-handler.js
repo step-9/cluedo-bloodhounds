@@ -7,10 +7,14 @@ const serveGamePage = (req, res) => {
   res.sendFile("game-page.html", { root: "private/pages" });
 };
 
+const removeCardsFrom = players =>
+  players.forEach(player => delete player.cards);
+
 const serveInitialGameState = (req, res) => {
   const { game } = req.app.context;
   const { playerId } = req.cookies;
   const { players, currentPlayerId } = game.playersInfo();
+  removeCardsFrom(players);
   const cards = game.getCardsOfPlayer(playerId);
 
   res.json({ players, cards, playerId: +playerId, currentPlayerId });

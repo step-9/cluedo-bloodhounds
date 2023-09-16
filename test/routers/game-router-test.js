@@ -38,7 +38,7 @@ describe("GET /game", () => {
 
 describe("GET /game/initial-state", () => {
   it("should give the initial state of the game", (context, done) => {
-    const playersInfo = context.mock.fn(() => ({}));
+    const playersInfo = context.mock.fn(() => ({ players: [{ cards: {} }] }));
     const getCardsOfPlayer = context.mock.fn();
     const game = { playersInfo, getCardsOfPlayer };
 
