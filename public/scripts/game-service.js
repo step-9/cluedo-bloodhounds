@@ -66,6 +66,12 @@ class GameService {
   }
 
   rollDice() {
-    return fetch("/game/roll-dice").then(res => res.json());
+    return fetch("/game/roll-dice", {
+      method: "POST"
+    }).then(res => res.json());
+  }
+
+  getLastDiceRollCombination() {
+    return fetch("/game/dice-combination").then(res => res.json());
   }
 }

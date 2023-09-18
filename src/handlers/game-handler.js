@@ -100,10 +100,16 @@ const sendGameOverInfo = (req, res) => {
   res.json(gameOverInfo);
 };
 
-const sendDiceCombination = (req, res) => {
+const handleRollDice = (req, res) => {
   const { game, diceCombinationGenerator } = req.app.context;
   const diceRollCombination = rollDice(diceCombinationGenerator);
   game.updateDiceCombination(diceRollCombination);
+  res.json({ diceRollCombination });
+};
+
+const sendDiceCombination = (req, res) => {
+  const { game } = req.app.context;
+  const diceRollCombination = game.getLastDiceCombination();
   res.json({ diceRollCombination });
 };
 
@@ -119,5 +125,6 @@ module.exports = {
   sendCharacterPositions,
   sendGameOverInfo,
   sendAccusationResult,
-  sendDiceCombination
+  sendDiceCombination,
+  handleRollDice
 };

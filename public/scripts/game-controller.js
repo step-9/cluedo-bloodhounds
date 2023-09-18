@@ -120,7 +120,8 @@ class GameController {
       currentPlayerId,
       playerId,
       strandedPlayerIds,
-      characterPositions
+      characterPositions,
+      diceRollCombination
     } = initialState;
 
     const isYourTurn = playerId === currentPlayerId;
@@ -133,8 +134,17 @@ class GameController {
       shouldEndTurn
     });
 
+    this.#view.renderDice(diceRollCombination);
     this.#view.updateCharacterPositions(characterPositions);
     this.#view.disableStrandedPlayers(strandedPlayerIds, this.#playerId);
+  }
+
+  #showLastDiceRollCombination() {
+    this.#gameService
+      .getLastDiceRollCombination()
+      .then(({ diceRollCombination }) =>
+        this.#view.renderDice(diceRollCombination)
+      );
   }
 
   #registerEvents() {
@@ -147,6 +157,9 @@ class GameController {
     );
     this.#eventEmitter.on("accused", currentPlayerId =>
       this.#showAccusationResult(currentPlayerId)
+    );
+    this.#eventEmitter.on("diceRolled", currentPlayerId =>
+      this.#showLastDiceRollCombination(currentPlayerId)
     );
   }
 

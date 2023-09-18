@@ -101,7 +101,8 @@ class Game {
       strandedPlayerIds: this.#strandedPlayerIds,
       canAccuse: this.#canAccuse,
       shouldEndTurn: this.#shouldEndTurn,
-      characterPositions: this.#players.getCharacterPositions()
+      characterPositions: this.#players.getCharacterPositions(),
+      diceRollCombination: this.#lastDiceCombination
     };
   }
 

@@ -11,7 +11,8 @@ const {
   sendCharacterPositions,
   sendAccusationResult,
   sendGameOverInfo,
-  sendDiceCombination
+  sendDiceCombination,
+  handleRollDice
 } = require("../handlers/game-handler");
 
 const createGameRouter = () => {
@@ -28,7 +29,8 @@ const createGameRouter = () => {
   gameRouter.get("/character-positions", sendCharacterPositions);
   gameRouter.get("/accusation-result", sendAccusationResult);
   gameRouter.get("/game-over-info", sendGameOverInfo);
-  gameRouter.get("/roll-dice", sendDiceCombination);
+  gameRouter.post("/roll-dice", handleRollDice);
+  gameRouter.get("/dice-combination", sendDiceCombination);
 
   return gameRouter;
 };

@@ -239,7 +239,8 @@ describe("Game", () => {
         strandedPlayerIds: [],
         canAccuse: true,
         shouldEndTurn: false,
-        characterPositions: "mockData"
+        characterPositions: "mockData",
+        diceRollCombination: undefined
       };
 
       assert.deepStrictEqual(game.playersInfo(), expectedPlayerInfo);

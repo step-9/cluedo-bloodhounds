@@ -377,8 +377,8 @@ describe("POST /game/accuse", () => {
   });
 });
 
-describe("GET /roll-dice", () => {
-  it("should give the roll dice count", (_, done) => {
+describe("POST /roll-dice", () => {
+  it("should handle roll dice and give the dice combination", (_, done) => {
     const diceCombinationGenerator = { next: () => ({ value: [4, 4] }) };
     const updateDiceCombination = () => {};
     const game = { updateDiceCombination };
@@ -386,7 +386,24 @@ describe("GET /roll-dice", () => {
     app.context = { game, diceCombinationGenerator };
 
     request(app)
-      .get("/game/roll-dice")
+      .post("/game/roll-dice")
+      .set("Cookie", "playerId=2")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .expect({ diceRollCombination: [4, 4] })
+      .end(done);
+  });
+});
+
+describe("GET /dice-combination", () => {
+  it("should give the dice combination", (_, done) => {
+    const getLastDiceCombination = () => [4, 4];
+    const game = { getLastDiceCombination };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .get("/game/dice-combination")
       .set("Cookie", "playerId=2")
       .expect(200)
       .expect("content-type", /application\/json/)
