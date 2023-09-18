@@ -10,6 +10,7 @@ class Game {
   #shouldEndTurn;
   #killingCombination;
   #canAccuse;
+  #lastAccusationCombination;
 
   constructor({ players, board, killingCombination }) {
     this.#board = board;
@@ -18,6 +19,7 @@ class Game {
     this.#isAccusing = false;
     this.#isGameWon = false;
     this.#isGameOver = false;
+    this.#shouldEndTurn = false;
     this.#strandedPlayerIds = [];
     this.#isPlayerMovable = true;
     this.#canAccuse = true;
@@ -48,9 +50,7 @@ class Game {
   }
 
   state() {
-    const killingCombination = this.#isGameOver
-      ? this.#killingCombination
-      : {};
+    const killingCombination = this.#isGameOver ? this.#killingCombination : {};
 
     return {
       currentPlayerId: this.#currentPlayerId,
@@ -92,14 +92,8 @@ class Game {
     return { isMoved: false };
   }
 
-  playersInfo() {
-    return {
-      players: this.#players.info(),
-      currentPlayerId: this.#currentPlayerId
-    };
-  }
-
   validateAccuse(playerId, combination) {
+    this.#lastAccusationCombination = combination;
     const killingCombinationCards = Object.entries(this.#killingCombination);
 
     this.#isGameWon = killingCombinationCards.every(([type, title]) => {
@@ -121,6 +115,25 @@ class Game {
     return {
       isWon: this.#isGameWon,
       killingCombination: { ...this.#killingCombination }
+    };
+  }
+
+  getLastAccusationCombination() {
+    return this.#lastAccusationCombination;
+  }
+
+  getCharacterPositions() {
+    return this.#players.getCharacterPositions();
+  }
+
+  playersInfo() {
+    return {
+      players: this.#players.info(),
+      currentPlayerId: this.#currentPlayerId,
+      strandedPlayerIds: this.#strandedPlayerIds,
+      canAccuse: this.#canAccuse,
+      shouldEndTurn: this.#shouldEndTurn,
+      characterPositions: this.#players.getCharacterPositions()
     };
   }
 
