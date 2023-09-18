@@ -63,7 +63,7 @@
       ]
     ]
   },
-  "Dining Room": {
+  "dining-room": {
     "passage": null,
     "doors": [{ "x": 17, "y": 9 }],
     "tileRows": [
@@ -127,7 +127,7 @@
       ]
     ]
   },
-  "Ball Room": {
+  "ball-room": {
     "passage": null,
     "doors": [
       { "x": 14, "y": 17 },
@@ -190,7 +190,7 @@
       ]
     ]
   },
-  "billiard": {
+  "billiard-room": {
     "passage": null,
     "doors": [{ "x": 5, "y": 15 }],
     "tileRows": [
