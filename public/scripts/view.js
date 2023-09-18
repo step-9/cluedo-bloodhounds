@@ -369,8 +369,20 @@ class View {
     }, 3000);
   }
 
+  renderRollDiceButton(isYourTurn, hasRolledDice = false) {
+    const rollDiceBtnId = "roll-dice-btn";
+    if (this.#isButtonPresent(rollDiceBtnId)) return;
+
+    if (isYourTurn && !hasRolledDice) {
+      const rollDiceButton = this.#createButton("Roll Dice", rollDiceBtnId);
+      rollDiceButton.onclick = () => this.#listeners.rollDice();
+      this.#bottomPane.append(rollDiceButton);
+    }
+  }
+
   setupCurrentPlayerActions({ isYourTurn, canAccuse, shouldEndTurn }) {
     this.renderAccuseButton(isYourTurn, false);
+    this.renderRollDiceButton(isYourTurn);
 
     if (isYourTurn) {
       if (shouldEndTurn) this.renderEndTurnButton();
@@ -449,6 +461,22 @@ class View {
   }
 
   enableAllButtons(isYourTurn) {
+    this.renderRollDiceButton(isYourTurn);
     this.renderAccuseButton(isYourTurn, false);
+  }
+
+  #removeRollDiceButton() {
+    const rollDiceButton = document.querySelector("#roll-dice-btn");
+    rollDiceButton?.remove();
+  }
+
+  renderDice([dice1Count, dice2Count]) {
+    const dice1Element = document.querySelector("#dice1");
+    const dice2Element = document.querySelector("#dice2");
+
+    dice1Element.innerText = dice1Count;
+    dice2Element.innerText = dice2Count;
+
+    this.#removeRollDiceButton();
   }
 }

@@ -278,7 +278,7 @@ th {
 #bottom-pane {
   display: flex;
   height: 2.6em;
-  gap: 2em;
+  gap: 1em;
   align-items: center;
   padding-left: 30%;
 }
@@ -299,6 +299,7 @@ th {
   align-items: center;
   background-color: whitesmoke;
   border: 1px solid white;
+  color: black;
 }
 
 .dot {
@@ -320,6 +321,12 @@ th {
   border: none;
   outline: none;
   background-color: rgb(0, 186, 96);
+}
+
+#roll-dice-btn {
+  border: none;
+  outline: none;
+  background-color: rgb(117, 117, 229);
 }
 
 #end-turn-btn {

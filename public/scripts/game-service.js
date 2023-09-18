@@ -64,4 +64,8 @@ class GameService {
   getGameOverInfo() {
     return fetch("/game/game-over-info").then(res => res.json());
   }
+
+  rollDice() {
+    return fetch("/game/roll-dice").then(res => res.json());
+  }
 }
