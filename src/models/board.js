@@ -1,10 +1,12 @@
 class Board {
   #rooms;
   #dimensions;
+  #validTiles;
   #blockedTiles;
 
-  constructor({ dimensions, blockedTiles, rooms }) {
+  constructor({ dimensions, blockedTiles, rooms, validTiles }) {
     this.#rooms = rooms;
+    this.#validTiles = validTiles;
     this.#dimensions = dimensions;
     this.#blockedTiles = blockedTiles;
   }
@@ -33,6 +35,14 @@ class Board {
         );
       });
     });
+  }
+
+  #isValidTile(tileCoordinates, playerPositions) {
+    return (
+      this.#isInside(tileCoordinates) &&
+      !this.#isBlockedTile(tileCoordinates, playerPositions) &&
+      !this.#isInsideRoom(tileCoordinates)
+    );
   }
 
   getTileInfo(tileCoordinate, playersPositions = []) {
@@ -68,19 +78,51 @@ class Board {
     return positions;
   }
 
-  #isValidTile(tileCoordinates, playerPositions) {
+  #arePosSame(pos1, pos2) {
+    return pos1.x === pos2.x && pos1.y === pos2.y;
+  }
+
+  #isValidNeighbour(pos, visited) {
     return (
-      this.#isInside(tileCoordinates) &&
-      !this.#isBlockedTile(tileCoordinates, playerPositions) &&
-      !this.#isInsideRoom(tileCoordinates)
+      this.#isValidTile(pos, []) &&
+      !visited.some(pos2 => this.#arePosSame(pos, pos2))
+    );
+  }
+
+  #getNeighbours({ x, y }, visited) {
+    const neighbours = [];
+    neighbours.push({ x: x, y: y + 1 });
+    neighbours.push({ x: x, y: y - 1 });
+    neighbours.push({ x: x + 1, y: y });
+    neighbours.push({ x: x - 1, y: y });
+
+    return neighbours.filter(pos => this.#isValidNeighbour(pos, visited));
+  }
+
+  #isPathExists(from, to, stepCount, visited) {
+    if (stepCount < 0) return false;
+    if (this.#arePosSame(from, to) && stepCount === 0) return true;
+    const stepsLeft = stepCount - 1;
+
+    const neighbours = this.#getNeighbours(from, visited);
+    return neighbours.some(pos =>
+      this.#isPathExists(pos, to, stepsLeft, [...visited, from])
     );
   }
 
   getPossibleTiles(stepCount, currentPosition, playersPositions = []) {
     const possiblePositions = {};
+
     this.#calculateAllPossiblePos(stepCount, currentPosition).forEach(pos => {
       if (this.#isValidTile(pos, playersPositions)) {
-        possiblePositions[`${pos.x},${pos.y}`] = pos;
+        const isPathExists = this.#isPathExists(
+          currentPosition,
+          pos,
+          stepCount,
+          playersPositions
+        );
+
+        if (isPathExists) possiblePositions[`${pos.x},${pos.y}`] = pos;
       }
     });
 
