@@ -362,6 +362,11 @@ th {
   gap: 2em;
 }
 
+#accusation-combination {
+  display: flex;
+  gap: 2em;
+}
+
 #accusation-popup:modal {
   display: flex;
   flex-direction: column;

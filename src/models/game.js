@@ -10,6 +10,7 @@ class Game {
   #shouldEndTurn;
   #killingCombination;
   #canAccuse;
+  #action;
   #lastAccusationCombination;
 
   constructor({ players, board, killingCombination }) {
@@ -19,11 +20,12 @@ class Game {
     this.#isAccusing = false;
     this.#isGameWon = false;
     this.#isGameOver = false;
-    this.#shouldEndTurn = false;
     this.#strandedPlayerIds = [];
     this.#isPlayerMovable = true;
     this.#canAccuse = true;
+    this.#shouldEndTurn = false;
     this.#killingCombination = killingCombination;
+    this.#action = null;
   }
 
   #areAllPlayersStranded() {
@@ -43,25 +45,23 @@ class Game {
     this.#isPlayerMovable = true;
     this.#canAccuse = true;
     this.#shouldEndTurn = false;
+    this.#action = "turnEnded";
   }
 
   toggleIsAccusing() {
     this.#isAccusing = !this.#isAccusing;
+    this.#action = "accusing";
+  }
+
+  setAction(action) {
+    this.#action = action;
   }
 
   state() {
-    const killingCombination = this.#isGameOver ? this.#killingCombination : {};
-
     return {
       currentPlayerId: this.#currentPlayerId,
-      isAccusing: this.#isAccusing,
-      isGameWon: this.#isGameWon,
-      canAccuse: this.#canAccuse,
-      isGameOver: this.#isGameOver,
-      strandedPlayerIds: this.#strandedPlayerIds,
-      killingCombination,
-      shouldEndTurn: this.#shouldEndTurn,
-      characterPositions: this.#players.getCharacterPositions()
+      action: this.#action,
+      isGameOver: this.#isGameOver
     };
   }
 
@@ -85,11 +85,38 @@ class Game {
         this.#shouldEndTurn = true;
         this.#canAccuse = true;
         this.#players.updatePlayerPosition(playerId, tileCoordinates);
+        this.#action = "updateBoard";
         return { isMoved: true };
       }
     }
 
     return { isMoved: false };
+  }
+
+  playersInfo() {
+    return {
+      players: this.#players.info(),
+      currentPlayerId: this.#currentPlayerId,
+      strandedPlayerIds: this.#strandedPlayerIds,
+      canAccuse: this.#canAccuse,
+      shouldEndTurn: this.#shouldEndTurn,
+      characterPositions: this.#players.getCharacterPositions()
+    };
+  }
+
+  getCharacterPositions() {
+    return this.#players.getCharacterPositions();
+  }
+
+  getLastAccusationCombination() {
+    return this.#lastAccusationCombination;
+  }
+
+  getGameOverInfo() {
+    return {
+      killingCombination: this.#killingCombination,
+      isGameWon: this.#isGameWon
+    };
   }
 
   validateAccuse(playerId, combination) {
@@ -111,29 +138,11 @@ class Game {
     this.#isAccusing = false;
     this.#shouldEndTurn = true;
     this.#canAccuse = false;
+    this.#action = "accused";
 
     return {
       isWon: this.#isGameWon,
       killingCombination: { ...this.#killingCombination }
-    };
-  }
-
-  getLastAccusationCombination() {
-    return this.#lastAccusationCombination;
-  }
-
-  getCharacterPositions() {
-    return this.#players.getCharacterPositions();
-  }
-
-  playersInfo() {
-    return {
-      players: this.#players.info(),
-      currentPlayerId: this.#currentPlayerId,
-      strandedPlayerIds: this.#strandedPlayerIds,
-      canAccuse: this.#canAccuse,
-      shouldEndTurn: this.#shouldEndTurn,
-      characterPositions: this.#players.getCharacterPositions()
     };
   }
 

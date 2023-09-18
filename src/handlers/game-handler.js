@@ -13,11 +13,12 @@ const removeCardsFrom = players =>
 const serveInitialGameState = (req, res) => {
   const { game } = req.app.context;
   const { playerId } = req.cookies;
-  const { players, currentPlayerId } = game.playersInfo();
+  const playersInfo = game.playersInfo();
+  const { players } = playersInfo;
   removeCardsFrom(players);
   const cards = game.getCardsOfPlayer(playerId);
 
-  res.json({ players, cards, playerId: +playerId, currentPlayerId });
+  res.json({ ...playersInfo, cards, playerId: +playerId, players });
 };
 
 const serveGameState = (req, res) => {

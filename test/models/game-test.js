@@ -8,10 +8,10 @@ describe("Game", () => {
       const players = {
         add: context.mock.fn(),
         info: context.mock.fn(() => "Mock Data"),
+        getCharacterPositions: context.mock.fn(),
         getNextPlayer: context.mock.fn(() => ({
           info: () => ({ id: 1 })
-        })),
-        getCharacterPositions: context.mock.fn()
+        }))
       };
 
       const game = new Game({ players });
@@ -19,15 +19,12 @@ describe("Game", () => {
       game.start();
 
       const expectedGameStatus = {
-        players: "Mock Data",
+        action: null,
         currentPlayerId: 1,
-        strandedPlayerIds: [],
-        canAccuse: true,
-        shouldEndTurn: false,
-        characterPositions: undefined
+        isGameOver: false
       };
 
-      assert.deepStrictEqual(game.playersInfo(), expectedGameStatus);
+      assert.deepStrictEqual(game.state(), expectedGameStatus);
     });
   });
 
@@ -62,22 +59,6 @@ describe("Game", () => {
 
       assert.strictEqual(game.state().currentPlayerId, 1);
     });
-
-    it("Should give killingCombination as empty when game is not over", context => {
-      const player = {
-        info: context.mock.fn(() => ({ id: 1 }))
-      };
-      const players = {
-        getNextPlayer: context.mock.fn(() => player),
-        getCharacterPositions: () => {},
-        info: context.mock.fn(() => ({ id: 1 }))
-      };
-      const game = new Game({ players });
-
-      game.start();
-
-      assert.deepStrictEqual(game.state().killingCombination, {});
-    });
   });
 
   describe("change turn", () => {
@@ -85,11 +66,13 @@ describe("Game", () => {
       const player = {
         info: context.mock.fn(() => ({ id: 1 }))
       };
+
       const players = {
         getNextPlayer: context.mock.fn(() => player),
         getCharacterPositions: () => {},
         info: context.mock.fn(() => ({ id: 1 }))
       };
+
       const game = new Game({ players });
 
       game.start();
@@ -107,9 +90,10 @@ describe("Game", () => {
           info: context.mock.fn(() => [])
         }
       });
+
       game.toggleIsAccusing();
 
-      assert.ok(game.state().isAccusing);
+      assert.strictEqual(game.state().action, "accusing");
     });
   });
 
@@ -130,28 +114,22 @@ describe("Game", () => {
         killingCombination
       });
 
-      const playerId = 1;
-      const accusationResult = game.validateAccuse(playerId, {
-        weapon: "dagger",
-        room: "lounge",
-        suspect: "mustard"
-      });
-
       const expectedAccusationResult = {
-        isWon: true,
         killingCombination: {
           weapon: "dagger",
           room: "lounge",
           suspect: "mustard"
-        }
+        },
+        isGameWon: true
       };
 
-      assert.deepStrictEqual(accusationResult, expectedAccusationResult);
-      assert.deepStrictEqual(game.state().killingCombination, {
+      const playerId = 1;
+      game.validateAccuse(playerId, {
         weapon: "dagger",
         room: "lounge",
         suspect: "mustard"
       });
+      assert.deepStrictEqual(game.getGameOverInfo(), expectedAccusationResult);
     });
 
     it("should make the player stranded as the combination is wrong", context => {
@@ -216,6 +194,15 @@ describe("Game", () => {
         game.getLastAccusationCombination(),
         accusingCombination
       );
+    });
+  });
+
+  describe("setAction", () => {
+    it("Should set Action of game", () => {
+      const game = new Game({});
+      game.setAction("mockAction");
+
+      assert.strictEqual(game.state().action, "mockAction");
     });
   });
 

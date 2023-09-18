@@ -94,7 +94,7 @@ class View {
     });
   }
 
-  #highlightCurrentPlayer(currentPlayerId) {
+  highlightCurrentPlayer(currentPlayerId) {
     const players = document.querySelectorAll(".icon");
     players.forEach(player => player.classList.remove("highlight"));
 
@@ -106,12 +106,12 @@ class View {
     return document.querySelector(`#${buttonId}`);
   }
 
-  #removeAccuseBtn() {
+  removeAccuseBtn() {
     const accuseBtn = document.querySelector("#accuse-btn");
-    accuseBtn.remove();
+    accuseBtn?.remove();
   }
 
-  #renderEndTurnButton() {
+  renderEndTurnButton() {
     if (this.#isButtonPresent("end-turn-btn")) return;
 
     const endTurnBtn = this.#createButton("End Turn", "end-turn-btn");
@@ -119,13 +119,13 @@ class View {
     endTurnBtn.onclick = () => {
       const { onEndTurn } = this.#listeners;
       onEndTurn();
-      endTurnBtn.remove();
+      endTurnBtn?.remove();
     };
 
     this.#bottomPane.appendChild(endTurnBtn);
   }
 
-  #renderAccuseButton(isYourTurn, isAccusing) {
+  renderAccuseButton(isYourTurn, isAccusing) {
     const accuseDialog = document.querySelector("#accusation-popup");
 
     if (!isYourTurn) {
@@ -150,18 +150,15 @@ class View {
     this.#bottomPane.appendChild(accuseBtn);
   }
 
-  #hideAllMessages() {
+  hideAllMessages() {
     const messageElements = document.querySelectorAll(".message");
     messageElements.forEach(element => element.classList.add("hide"));
   }
 
-  #renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId) {
+  renderAccusationMessage(currentPlayerId) {
     const accusingPlayer = document.querySelector(
       `#message-${currentPlayerId}`
     );
-
-    if (!isAccusing) return this.#hideAllMessages();
-    if (isYourTurn) return;
 
     accusingPlayer.classList.remove("hide");
     accusingPlayer.innerText = "I am Accusing";
@@ -272,7 +269,7 @@ class View {
     return dialog;
   }
 
-  #disableStrandedPlayers(strandedPlayerIds) {
+  disableStrandedPlayers(strandedPlayerIds, myId) {
     strandedPlayerIds.forEach(strandedPlayerId => {
       const playerIconElement = document.querySelector(
         `#avatar-${strandedPlayerId}`
@@ -280,6 +277,8 @@ class View {
 
       playerIconElement.classList.add("stranded-player");
     });
+
+    if (strandedPlayerIds.includes(myId)) this.disableMove();
   }
 
   setupGame({ players, cards, playerId }, boardSvg) {
@@ -303,7 +302,7 @@ class View {
   }
 
   displayEndButton() {
-    this.#renderEndTurnButton();
+    this.renderEndTurnButton();
   }
 
   #createGameOverMsg(message) {
@@ -336,7 +335,7 @@ class View {
     this.#resultContainer.showModal();
   }
 
-  #displayGameOver({
+  displayGameOver({
     isYourTurn,
     isGameWon,
     playerNames,
@@ -355,71 +354,29 @@ class View {
     this.#displayWinner(playerNames[currentPlayerId], killingCombination);
   }
 
-  #notifyPlayerStranded(
-    newStrandedPlayers,
-    prevStrandedPlayers = [],
-    playerNames,
-    isYourTurn
-  ) {
-    if (isYourTurn) return;
-    if (newStrandedPlayers.length === prevStrandedPlayers.length) return;
+  notifyPlayerStranded(accuserName, accusationCombination) {
+    const message = this.#createGameOverMsg(`${accuserName} Stranded!!`);
 
-    console.log(newStrandedPlayers, prevStrandedPlayers);
+    const accusedCards = this.#createCardElements(accusationCombination);
+    const cardsContainer = this.#createCardsContainer("accusation-combination");
+    cardsContainer.append(...accusedCards);
 
-    const lastStrandedPlayerId = newStrandedPlayers.at(-1);
-    const message = this.#createGameOverMsg(
-      `${playerNames[lastStrandedPlayerId]} Stranded!!`
-    );
-    this.#notificationContainer.replaceChildren(message);
+    this.#notificationContainer.replaceChildren(message, cardsContainer);
     this.#notificationContainer.showModal();
 
     setTimeout(() => {
       this.#notificationContainer.close();
-    }, 2000);
+    }, 3000);
   }
 
-  renderGameState(gameState, playerNames, lastGameState) {
-    const {
-      isYourTurn,
-      currentPlayerId,
-      killingCombination,
-      isAccusing,
-      characterPositions,
-      shouldEndTurn,
-      canAccuse,
-      isGameOver,
-      isGameWon,
-      strandedPlayerIds
-    } = gameState;
-
-    this.#disableStrandedPlayers(strandedPlayerIds);
-    this.#notifyPlayerStranded(
-      strandedPlayerIds,
-      lastGameState.strandedPlayerIds,
-      playerNames,
-      isYourTurn
-    );
-    this.#renderAccusationMessage(isYourTurn, isAccusing, currentPlayerId);
-
-    if (isGameOver)
-      return this.#displayGameOver({
-        isGameWon,
-        playerNames,
-        killingCombination,
-        currentPlayerId,
-        isYourTurn
-      });
-
-    this.#highlightCurrentPlayer(currentPlayerId);
-    this.#renderAccuseButton(isYourTurn, isAccusing, currentPlayerId);
+  setupCurrentPlayerActions({ isYourTurn, canAccuse, shouldEndTurn }) {
+    this.renderAccuseButton(isYourTurn, false);
 
     if (isYourTurn) {
-      if (shouldEndTurn) this.#renderEndTurnButton();
+      if (shouldEndTurn) this.renderEndTurnButton();
       else this.enableMove();
-      if (!canAccuse) this.#removeAccuseBtn();
+      if (!canAccuse) this.removeAccuseBtn();
     }
-
-    this.#updateCharacterPositions(characterPositions);
   }
 
   setupAccuseDialog(cardsInfo) {
@@ -469,14 +426,14 @@ class View {
       const accuseButton = document.querySelector("#accuse-btn");
       accuseButton?.remove();
       this.#resultContainer.close();
-      this.#renderEndTurnButton();
+      this.renderEndTurnButton();
     };
 
     this.#resultContainer.append(resultMessage, cardsContainer, closeButton);
     this.#resultContainer.showModal();
   }
 
-  #updateCharacterPositions(characterPositions) {
+  updateCharacterPositions(characterPositions) {
     Object.entries(characterPositions).forEach(([character, { x, y }]) => {
       const pawn = `${character}-pawn`;
       const previousPositionElement = document.querySelector(`.${pawn}`);
@@ -485,5 +442,13 @@ class View {
       const currentPositionElement = document.getElementById(`${x},${y}`);
       currentPositionElement.classList.add(pawn);
     });
+  }
+
+  removeAllButtons() {
+    this.removeAccuseBtn();
+  }
+
+  enableAllButtons(isYourTurn) {
+    this.renderAccuseButton(isYourTurn, false);
   }
 }

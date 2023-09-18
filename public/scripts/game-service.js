@@ -52,4 +52,16 @@ class GameService {
   sendPlayAgainRequest() {
     window.location.href = "/";
   }
+
+  getUpdatedPositions() {
+    return fetch("/game/character-positions").then(res => res.json());
+  }
+
+  getAccusationResult() {
+    return fetch("/game/accusation-result").then(res => res.json());
+  }
+
+  getGameOverInfo() {
+    return fetch("/game/game-over-info").then(res => res.json());
+  }
 }

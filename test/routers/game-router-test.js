@@ -261,6 +261,51 @@ describe("GET /game/cards", () => {
   });
 });
 
+describe("GET /game/character-positions", () => {
+  it("should give positions of all characters", (context, done) => {
+    const getCharacterPositions = context.mock.fn();
+    const game = { getCharacterPositions };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .get("/game/character-positions")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .end(done);
+  });
+});
+
+describe("GET /game/accusation-result", () => {
+  it("should give result of last accusation", (context, done) => {
+    const getLastAccusationCombination = context.mock.fn();
+    const game = { getLastAccusationCombination };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .get("/game/accusation-result")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .end(done);
+  });
+});
+
+describe("GET /game/game-over-info", () => {
+  it("should give game over info", (context, done) => {
+    const getGameOverInfo = context.mock.fn();
+    const game = { getGameOverInfo };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .get("/game/game-over-info")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .end(done);
+  });
+});
+
 describe("GET /game/start-accusation", () => {
   it("Should give error if its not player turn", (context, done) => {
     const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
@@ -327,51 +372,6 @@ describe("POST /game/accuse", () => {
       .expect(401)
       .expect("content-type", /application\/json/)
       .expect({ error: "not your turn" })
-      .end(done);
-  });
-});
-
-describe("GET /game/character-positions", () => {
-  it("should give positions of all characters", (context, done) => {
-    const getCharacterPositions = context.mock.fn();
-    const game = { getCharacterPositions };
-    const app = createApp();
-    app.context = { game };
-
-    request(app)
-      .get("/game/character-positions")
-      .expect(200)
-      .expect("content-type", /application\/json/)
-      .end(done);
-  });
-});
-
-describe("GET /game/accusation-result", () => {
-  it("should give result of last accusation", (context, done) => {
-    const getLastAccusationCombination = context.mock.fn();
-    const game = { getLastAccusationCombination };
-    const app = createApp();
-    app.context = { game };
-
-    request(app)
-      .get("/game/accusation-result")
-      .expect(200)
-      .expect("content-type", /application\/json/)
-      .end(done);
-  });
-});
-
-describe("GET /game/game-over-info", () => {
-  it("should give game over info", (context, done) => {
-    const getGameOverInfo = context.mock.fn();
-    const game = { getGameOverInfo };
-    const app = createApp();
-    app.context = { game };
-
-    request(app)
-      .get("/game/game-over-info")
-      .expect(200)
-      .expect("content-type", /application\/json/)
       .end(done);
   });
 });
