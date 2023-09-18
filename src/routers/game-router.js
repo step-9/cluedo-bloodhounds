@@ -7,7 +7,10 @@ const {
   handleMovePawnRequest,
   serveCardsInfo,
   handleStartAccusationRequest,
-  handleAccusation
+  handleAccusation,
+  sendCharacterPositions,
+  sendAccusationResult,
+  sendGameOverInfo
 } = require("../handlers/game-handler");
 
 const createGameRouter = () => {
@@ -21,6 +24,9 @@ const createGameRouter = () => {
   gameRouter.get("/cards", serveCardsInfo);
   gameRouter.patch("/accusation-state", handleStartAccusationRequest);
   gameRouter.post("/accuse", handleAccusation);
+  gameRouter.get("/character-positions", sendCharacterPositions);
+  gameRouter.get("/accusation-result", sendAccusationResult);
+  gameRouter.get("/game-over-info", sendGameOverInfo);
 
   return gameRouter;
 };

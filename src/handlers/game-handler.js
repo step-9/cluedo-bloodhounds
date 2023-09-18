@@ -80,6 +80,24 @@ const handleAccusation = (req, res) => {
   res.json(result);
 };
 
+const sendCharacterPositions = (req, res) => {
+  const { game } = req.app.context;
+  const characterPositions = game.getCharacterPositions();
+  res.json(characterPositions);
+};
+
+const sendAccusationResult = (req, res) => {
+  const { game } = req.app.context;
+  const accusationCombination = game.getLastAccusationCombination();
+  res.json({ accusationCombination });
+};
+
+const sendGameOverInfo = (req, res) => {
+  const { game } = req.app.context;
+  const gameOverInfo = game.getGameOverInfo();
+  res.json(gameOverInfo);
+};
+
 module.exports = {
   serveGamePage,
   serveInitialGameState,
@@ -88,5 +106,8 @@ module.exports = {
   handleMovePawnRequest,
   serveCardsInfo,
   handleStartAccusationRequest,
-  handleAccusation
+  handleAccusation,
+  sendCharacterPositions,
+  sendGameOverInfo,
+  sendAccusationResult
 };
