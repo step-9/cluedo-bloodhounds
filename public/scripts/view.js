@@ -375,7 +375,10 @@ class View {
 
     if (isYourTurn && !hasRolledDice) {
       const rollDiceButton = this.#createButton("Roll Dice", rollDiceBtnId);
-      rollDiceButton.onclick = () => this.#listeners.rollDice();
+      rollDiceButton.onclick = () => {
+        this.#listeners.rollDice();
+        this.#removeRollDiceButton();
+      };
       this.#bottomPane.append(rollDiceButton);
     }
   }
@@ -470,13 +473,13 @@ class View {
     rollDiceButton?.remove();
   }
 
-  renderDice([dice1Count, dice2Count]) {
+  renderDice(diceRollCombination) {
+    const [dice1Count, dice2Count] = diceRollCombination || ["?", "?"];
+
     const dice1Element = document.querySelector("#dice1");
     const dice2Element = document.querySelector("#dice2");
 
     dice1Element.innerText = dice1Count;
     dice2Element.innerText = dice2Count;
-
-    this.#removeRollDiceButton();
   }
 }
