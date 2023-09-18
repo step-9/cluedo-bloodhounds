@@ -17,7 +17,8 @@ const main = () => {
     notificationContainer
   });
 
-  const gameController = new GameController(gameService, view);
+  const eventEmitter = new EventEmitter();
+  const gameController = new GameController(gameService, view, eventEmitter);
 
   gameController.start();
 };

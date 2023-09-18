@@ -30,6 +30,7 @@ module.exports = {
           "id",
           "#id",
           "_",
+          "on",
           "fs",
           "js",
           "it",
@@ -49,7 +50,8 @@ module.exports = {
         "public/scripts/view.js",
         "public/scripts/game-page.js",
         "public/scripts/game-controller.js",
-        "public/scripts/game-service.js"
+        "public/scripts/game-service.js",
+        "public/scripts/event-emitter.js"
       ],
       rules: {
         "no-undef": "off",
