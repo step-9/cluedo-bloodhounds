@@ -72,18 +72,23 @@ describe("GET /game/state", () => {
       .end(done);
   });
 
-  it("Should redirect to joining page when the game has not started", (context, done) => {
-    const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
-    const status = context.mock.fn(() => ({ isGameStarted: false }));
-    const lobby = { status };
+  it("Should clear the lobby when game ends", (context, done) => {
+    const state = context.mock.fn(() => ({
+      isGameOver: true,
+      currentPlayerId: 1
+    }));
+    const clear = context.mock.fn();
+    const lobby = { clear };
     const game = { state };
     const app = createApp();
     app.context = { game, lobby };
 
     request(app)
       .get("/game/state")
-      .expect(302)
+      .expect(200)
       .set("Cookie", "playerId=3")
+      .expect("content-type", /application\/json/)
+      .expect({ currentPlayerId: 1, isGameOver: true, isYourTurn: false })
       .end(done);
   });
 });

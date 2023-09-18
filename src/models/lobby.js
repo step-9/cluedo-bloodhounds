@@ -35,6 +35,11 @@ class Lobby {
     return this.#players.length >= this.#maxPlayers;
   }
 
+  clear() {
+    this.#players = [];
+    this.#isGameStarted = false;
+  }
+
   status() {
     return {
       players: this.getAllPlayers(),

@@ -54,8 +54,18 @@ describe("Lobby", () => {
 
       const lobby = new Lobby({ maxPlayers: 3 });
       lobby.startGame(game);
-      
+
       assert.ok(lobby.status().isGameStarted);
+    });
+  });
+
+  describe("clear", () => {
+    it("should clear the lobby", () => {
+      const lobby = new Lobby({ maxPlayers: 3 });
+      lobby.clear();
+
+      assert.deepStrictEqual(lobby.status().isGameStarted, false);
+      assert.deepStrictEqual(lobby.status().players, []);
     });
   });
 });

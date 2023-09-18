@@ -24,11 +24,11 @@ const serveInitialGameState = (req, res) => {
 
 const serveGameState = (req, res) => {
   const { game, lobby } = req.app.context;
-  if (!lobby.status().isGameStarted) return redirectToHomePage(req, res);
-
   const { playerId } = req.cookies;
   const gameState = game.state();
   const isYourTurn = +playerId === gameState.currentPlayerId;
+
+  if (gameState.isGameOver) lobby.clear();
 
   res.json({ isYourTurn, ...gameState });
 };
