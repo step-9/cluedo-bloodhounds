@@ -1,12 +1,10 @@
 class Board {
   #rooms;
   #dimensions;
-  #validTiles;
   #blockedTiles;
 
-  constructor({ dimensions, blockedTiles, rooms, validTiles }) {
+  constructor({ dimensions, blockedTiles, rooms}) {
     this.#rooms = rooms;
-    this.#validTiles = validTiles;
     this.#dimensions = dimensions;
     this.#blockedTiles = blockedTiles;
   }
