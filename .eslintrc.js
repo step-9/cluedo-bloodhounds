@@ -30,6 +30,8 @@ module.exports = {
           "id",
           "#id",
           "_",
+          "i",
+          "j",
           "on",
           "fs",
           "js",

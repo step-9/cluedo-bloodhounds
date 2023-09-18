@@ -54,9 +54,7 @@ class Board {
     let x = 0;
     let y = stepCount;
 
-    //eslint-disable-next-line id-length
     for (let i = 0; i <= stepCount; i++) {
-      //eslint-disable-next-line id-length
       for (let j = 0; j <= stepCount; j++) {
         positions.push({
           x: x + j + currentPosition.x,
