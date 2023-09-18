@@ -5,6 +5,7 @@ const Game = require("../../src/models/game");
 const Board = require("../../src/models/board");
 const Players = require("../../src/models/players");
 const Player = require("../../src/models/player");
+const { cycler } = require("../../src/models/dice-roller");
 
 describe("GET /game", () => {
   it("should redirect to homepage when game not started", (context, done) => {
@@ -372,6 +373,24 @@ describe("POST /game/accuse", () => {
       .expect(401)
       .expect("content-type", /application\/json/)
       .expect({ error: "not your turn" })
+      .end(done);
+  });
+});
+
+describe("GET /roll-dice", () => {
+  it("should give the roll dice count", (_, done) => {
+    const diceCombinationGenerator = { next: () => ({ value: [4, 4] }) };
+    const updateDiceCombination = () => {};
+    const game = { updateDiceCombination };
+    const app = createApp();
+    app.context = { game, diceCombinationGenerator };
+
+    request(app)
+      .get("/game/roll-dice")
+      .set("Cookie", "playerId=2")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .expect({ diceRollCombination: [4, 4] })
       .end(done);
   });
 });

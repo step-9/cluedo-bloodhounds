@@ -216,6 +216,15 @@ describe("Game", () => {
     });
   });
 
+  describe("getLastDiceCombination", () => {
+    it("Should give the last dice combination", () => {
+      const game = new Game({});
+      game.updateDiceCombination([4, 4]);
+
+      assert.deepStrictEqual(game.getLastDiceCombination(), [4, 4]);
+    });
+  });
+
   describe("playersInfo", () => {
     it("Should give the players info", context => {
       const players = {

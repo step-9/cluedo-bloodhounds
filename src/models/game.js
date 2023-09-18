@@ -12,6 +12,7 @@ class Game {
   #canAccuse;
   #action;
   #lastAccusationCombination;
+  #lastDiceCombination;
 
   constructor({ players, board, killingCombination }) {
     this.#board = board;
@@ -119,6 +120,10 @@ class Game {
     };
   }
 
+  getLastDiceCombination() {
+    return this.#lastDiceCombination;
+  }
+
   validateAccuse(playerId, combination) {
     this.#lastAccusationCombination = combination;
     const killingCombinationCards = Object.entries(this.#killingCombination);
@@ -144,6 +149,11 @@ class Game {
       isWon: this.#isGameWon,
       killingCombination: { ...this.#killingCombination }
     };
+  }
+
+  updateDiceCombination(diceCombination) {
+    this.#lastDiceCombination = diceCombination;
+    this.#action = "diceRolled";
   }
 
   start() {

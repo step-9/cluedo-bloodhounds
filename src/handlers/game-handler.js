@@ -1,4 +1,5 @@
 const cardsInfo = require("../../resources/cards.json");
+const { rollDice } = require("../models/dice-roller");
 const redirectToHomePage = (_, res) => res.status(302).redirect("/");
 
 const serveGamePage = (req, res) => {
@@ -99,6 +100,13 @@ const sendGameOverInfo = (req, res) => {
   res.json(gameOverInfo);
 };
 
+const sendDiceCombination = (req, res) => {
+  const { game, diceCombinationGenerator } = req.app.context;
+  const diceRollCombination = rollDice(diceCombinationGenerator);
+  game.updateDiceCombination(diceRollCombination);
+  res.json({ diceRollCombination });
+};
+
 module.exports = {
   serveGamePage,
   serveInitialGameState,
@@ -110,5 +118,6 @@ module.exports = {
   handleAccusation,
   sendCharacterPositions,
   sendGameOverInfo,
-  sendAccusationResult
+  sendAccusationResult,
+  sendDiceCombination
 };
