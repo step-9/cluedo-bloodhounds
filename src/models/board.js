@@ -1,60 +1,25 @@
 class Board {
+  //eslint-disable-next-line no-unused-private-class-members
   #rooms;
-  #dimensions;
-  #blockedTiles;
+  #validTiles;
 
-  constructor({ dimensions, blockedTiles, rooms}) {
+  constructor({ validTiles, rooms }) {
     this.#rooms = rooms;
-    this.#dimensions = dimensions;
-    this.#blockedTiles = blockedTiles;
+    this.#validTiles = validTiles;
   }
 
-  #isInside({ x, y }) {
-    const { length, breadth } = this.#dimensions;
-    const isXInside = x >= 0 && x < length;
-    const isYInside = y >= 0 && y < breadth;
-
-    return isXInside && isYInside;
-  }
-
-  #isBlockedTile(tileCoordinate, playerPositions) {
-    return this.#blockedTiles
-      .concat(playerPositions)
-      .some(({ x, y }) => x === tileCoordinate.x && y === tileCoordinate.y);
-  }
-
-  #isInsideRoom({ x, y }) {
-    const rooms = Object.entries(this.#rooms);
-
-    return rooms.some(([_, { tileRows }]) => {
-      return tileRows.some(([rowStart, rowEnd]) => {
-        return (
-          x >= rowStart.x && x <= rowEnd.x && y >= rowStart.y && y <= rowEnd.y
-        );
-      });
-    });
+  #stringifyTile({ x, y }) {
+    return `${x},${y}`;
   }
 
   #isValidTile(tileCoordinates, playerPositions) {
-    return (
-      this.#isInside(tileCoordinates) &&
-      !this.#isBlockedTile(tileCoordinates, playerPositions) &&
-      !this.#isInsideRoom(tileCoordinates)
+    const tilePosition = this.#stringifyTile(tileCoordinates);
+    const isValidTile = this.#validTiles.tiles[tilePosition] !== undefined;
+    const isOccupied = playerPositions.some(pos =>
+      this.#arePosSame(pos, tileCoordinates)
     );
-  }
 
-  getTileInfo(tileCoordinate, playersPositions = []) {
-    const info = {};
-
-    info.isPresent = this.#isInside(tileCoordinate);
-    if (!info.isPresent) return info;
-
-    info.isBlocked = this.#isBlockedTile(tileCoordinate, playersPositions);
-    if (info.isBlocked) return info;
-
-    info.isRoomTile = this.#isInsideRoom(tileCoordinate);
-
-    return info;
+    return isValidTile && !isOccupied;
   }
 
   #calculateAllPossiblePos(stepCount, currentPosition) {

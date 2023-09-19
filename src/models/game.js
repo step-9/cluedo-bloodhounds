@@ -14,6 +14,7 @@ class Game {
   #action;
   #lastAccusationCombination;
   #lastDiceCombination;
+  #possiblePositions;
   #canMovePawn;
 
   constructor({ players, board, killingCombination }) {
@@ -30,6 +31,7 @@ class Game {
     this.#shouldEndTurn = false;
     this.#canMovePawn = false;
     this.#killingCombination = killingCombination;
+    this.#possiblePositions = {};
     this.#action = null;
   }
 
@@ -72,29 +74,24 @@ class Game {
     };
   }
 
-  #getOccupiedPositions() {
-    return Object.values(this.#players.getCharacterPositions());
+  #canMove({ x, y }) {
+    const tileId = `${x},${y}`;
+
+    return this.#possiblePositions[tileId] !== undefined;
   }
 
   movePawn(tileCoordinates, playerId) {
     const isCurrentPlayer = playerId === this.#currentPlayerId;
     if (!isCurrentPlayer || !this.#isPlayerMovable) return { isMoved: false };
+    const canMove = this.#canMove(tileCoordinates);
 
-    const occupiedPositions = this.#getOccupiedPositions();
-    const tileInfo = this.#board.getTileInfo(
-      tileCoordinates,
-      occupiedPositions
-    );
-
-    if ("isRoomTile" in tileInfo) {
-      if (tileInfo.isRoomTile === false) {
-        this.#isPlayerMovable = false;
-        this.#shouldEndTurn = true;
-        this.#canAccuse = true;
-        this.#players.updatePlayerPosition(playerId, tileCoordinates);
-        this.#action = "updateBoard";
-        return { isMoved: true };
-      }
+    if (canMove) {
+      this.#isPlayerMovable = false;
+      this.#shouldEndTurn = true;
+      this.#canAccuse = true;
+      this.#players.updatePlayerPosition(playerId, tileCoordinates);
+      this.#action = "updateBoard";
+      return { isMoved: true };
     }
 
     return { isMoved: false };
@@ -112,10 +109,6 @@ class Game {
       canRollDice: this.#canRollDice,
       canMovePawn: this.#canMovePawn
     };
-  }
-
-  getCharacterPositions() {
-    return this.#players.getCharacterPositions();
   }
 
   getLastAccusationCombination() {
@@ -162,6 +155,10 @@ class Game {
     };
   }
 
+  getCharacterPositions() {
+    return this.#players.getCharacterPositions();
+  }
+
   updateDiceCombination(diceCombination) {
     this.#lastDiceCombination = diceCombination;
     this.#action = "diceRolled";
@@ -169,11 +166,18 @@ class Game {
     this.#canMovePawn = true;
   }
 
-  getPossiblePositions(stepCount) {
+  updatePossiblePositions(possiblePositions) {
+    this.#possiblePositions = possiblePositions;
+  }
+
+  getPossiblePositions() {
+    return this.#possiblePositions;
+  }
+
+  findPossiblePositions(stepCount) {
     const currentPlayerPos = this.#players.getPlayerPosition(
       this.#currentPlayerId
     );
-
     const characterPositions = Object.values(
       this.#players.getCharacterPositions()
     );

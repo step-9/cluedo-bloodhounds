@@ -131,17 +131,23 @@ describe("PATCH /game/move-pawn", () => {
       name: "gourab",
       cards: [],
       character: "mustard",
-      position: { x: 2, y: 4 }
+      position: { x: 1, y: 4 }
     });
     const players = new Players([gourab]);
 
     const board = new Board({
-      blockedTiles: [],
-      rooms: {},
-      dimensions: { length: 24, breadth: 25 }
+      validTiles: {
+        tiles: {
+          "1,4": { x: 1, y: 4 },
+          "1,5": { x: 1, y: 5 }
+        },
+        doors: {}
+      },
+      rooms: {}
     });
 
     const game = new Game({ players, board });
+    game.updatePossiblePositions({ "1,5": { x: 1, y: 5 } });
     const app = createApp();
     app.context = { game };
 
@@ -150,7 +156,7 @@ describe("PATCH /game/move-pawn", () => {
     request(app)
       .patch("/game/move-pawn")
       .set("Cookie", "playerId=1")
-      .send({ x: 1, y: 2 })
+      .send({ x: 1, y: 5 })
       .expect(200)
       .expect("content-type", /application\/json/)
       .expect({})
@@ -385,9 +391,15 @@ describe("POST /game/accuse", () => {
 describe("POST /roll-dice", () => {
   it("should handle roll dice and give the dice combination", (_, done) => {
     const diceCombinationGenerator = { next: () => ({ value: [4, 4] }) };
-    const getPossiblePositions = () => {};
+    const findPossiblePositions = () => {};
     const updateDiceCombination = () => {};
-    const game = { updateDiceCombination, getPossiblePositions };
+    const updatePossiblePositions = () => {};
+
+    const game = {
+      updateDiceCombination,
+      findPossiblePositions,
+      updatePossiblePositions
+    };
     const app = createApp();
     app.context = { game, diceCombinationGenerator };
 

@@ -183,9 +183,10 @@ class GameController {
       })
     );
 
-    this.#view.addListener("startAccusation", () =>
-      this.#gameService.startAccusation()
-    );
+    this.#view.addListener("startAccusation", () => {
+      this.#gameService.startAccusation();
+      this.#view.disableTileHighlighting();
+    });
 
     this.#view.addListener("playAgain", () => {
       this.#gameService.sendPlayAgainRequest();
