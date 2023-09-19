@@ -3,8 +3,13 @@
   border-radius: 50%;
 }
 
+.room {
+  fill: #ddb892;
+}
+
 .highlight-tile {
   fill: lightgreen;
+  cursor: pointer;
 }
 
 .start-tile {
