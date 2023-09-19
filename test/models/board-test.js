@@ -44,6 +44,26 @@ describe("Board", () => {
 
       assert.deepStrictEqual(possiblePositions, expectedPositions);
     });
+
+    it("Should give all the possible positions that can reach from the doors of the room that the player is in", () => {
+      const board = new Board({
+        validTiles,
+        rooms
+      });
+
+      const pawnPos = { x: 10, y: 19 };
+      const possiblePositions = board.getPossibleTiles(2, pawnPos, [pawnPos]);
+      const expectedPositions = {
+        "6,19": { x: 6, y: 19 },
+        "7,18": { x: 7, y: 18 },
+        "7,20": { x: 7, y: 20 },
+        "14,15": { x: 14, y: 15 },
+        "13,16": { x: 13, y: 16 },
+        "15,16": { x: 15, y: 16 }
+      };
+
+      assert.deepStrictEqual(possiblePositions, expectedPositions);
+    });
   });
 
   describe("getPosition", () => {
@@ -99,47 +119,47 @@ describe("Board", () => {
 
     assert.deepStrictEqual(possiblePositions, expectedPositions);
   });
-});
 
-it("Should give all the possible positions and rooms according to number of steps and players positions", () => {
-  const board = new Board({
-    validTiles,
-    rooms
+  it("Should give all the possible positions and rooms according to number of steps and players positions", () => {
+    const board = new Board({
+      validTiles,
+      rooms
+    });
+
+    const pawnPos = { x: 14, y: 7 };
+    const possiblePositions = board.getPossibleTiles(7, pawnPos, [pawnPos]);
+    const expectedPositions = {
+      "14,14": { x: 14, y: 14 },
+      "15,13": { x: 15, y: 13 },
+      "20,8": { x: 20, y: 8 },
+      "21,7": { x: 21, y: 7 },
+      "14,12": { x: 14, y: 12 },
+      "15,11": { x: 15, y: 11 },
+      "18,8": { x: 18, y: 8 },
+      "19,7": { x: 19, y: 7 },
+      "20,6": { x: 20, y: 6 },
+      "14,10": { x: 14, y: 10 },
+      "15,9": { x: 15, y: 9 },
+      "16,8": { x: 16, y: 8 },
+      "17,7": { x: 17, y: 7 },
+      "18,6": { x: 18, y: 6 },
+      "14,8": { x: 14, y: 8 },
+      "15,7": { x: 15, y: 7 },
+      "16,6": { x: 16, y: 6 },
+      "15,5": { x: 15, y: 5 },
+      "16,4": { x: 16, y: 4 },
+      "15,3": { x: 15, y: 3 },
+      "16,2": { x: 16, y: 2 },
+      "8,8": { x: 8, y: 8 },
+      "15,1": { x: 15, y: 1 },
+      "7,7": { x: 7, y: 7 },
+      "8,6": { x: 8, y: 6 },
+      "17,9": { x: 17, y: 9 },
+      hall: "hall",
+      lounge: "lounge",
+      "dining-room": "dining-room"
+    };
+
+    assert.deepStrictEqual(possiblePositions, expectedPositions);
   });
-
-  const pawnPos = { x: 14, y: 7 };
-  const possiblePositions = board.getPossibleTiles(7, pawnPos, [pawnPos]);
-  const expectedPositions = {
-    "14,14": { x: 14, y: 14 },
-    "15,13": { x: 15, y: 13 },
-    "20,8": { x: 20, y: 8 },
-    "21,7": { x: 21, y: 7 },
-    "14,12": { x: 14, y: 12 },
-    "15,11": { x: 15, y: 11 },
-    "18,8": { x: 18, y: 8 },
-    "19,7": { x: 19, y: 7 },
-    "20,6": { x: 20, y: 6 },
-    "14,10": { x: 14, y: 10 },
-    "15,9": { x: 15, y: 9 },
-    "16,8": { x: 16, y: 8 },
-    "17,7": { x: 17, y: 7 },
-    "18,6": { x: 18, y: 6 },
-    "14,8": { x: 14, y: 8 },
-    "15,7": { x: 15, y: 7 },
-    "16,6": { x: 16, y: 6 },
-    "15,5": { x: 15, y: 5 },
-    "16,4": { x: 16, y: 4 },
-    "15,3": { x: 15, y: 3 },
-    "16,2": { x: 16, y: 2 },
-    "8,8": { x: 8, y: 8 },
-    "15,1": { x: 15, y: 1 },
-    "7,7": { x: 7, y: 7 },
-    "8,6": { x: 8, y: 6 },
-    "17,9": { x: 17, y: 9 },
-    hall: "hall",
-    lounge: "lounge",
-    "dining-room": "dining-room"
-  };
-
-  assert.deepStrictEqual(possiblePositions, expectedPositions);
 });
