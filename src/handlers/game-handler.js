@@ -50,10 +50,11 @@ const handleMovePawnRequest = (req, res) => {
   const { game } = req.app.context;
   const { playerId } = req.cookies;
   const tileCoordinates = req.body;
-  const { isMoved } = game.movePawn(tileCoordinates, +playerId);
+  const { isMoved, canSuspect, room } = game.movePawn(
+    tileCoordinates,
+    +playerId
+  );
 
-  const room = "lounge";
-  const canSuspect = true;
   if (isMoved) return res.json({ room, canSuspect });
   res.sendStatus(400);
 };

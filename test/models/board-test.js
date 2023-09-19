@@ -91,7 +91,8 @@ describe("Board", () => {
         board.getPosition(4, { x: 2, y: 4 }, [{ x: 2, y: 4 }], { x: 4, y: 2 }),
         {
           canMove: true,
-          newPos: { x: 1, y: 2 }
+          newPos: { x: 1, y: 2 },
+          room: "study"
         }
       );
     });

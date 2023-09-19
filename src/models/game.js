@@ -95,7 +95,7 @@ class Game {
       this.#players.getCharacterPositions()
     );
 
-    const { canMove, newPos } = this.#board.getPosition(
+    const { canMove, newPos, room } = this.#board.getPosition(
       stepCount,
       currentPlayerPos,
       characterPositions,
@@ -108,7 +108,14 @@ class Game {
       this.#canAccuse = true;
       this.#players.updatePlayerPosition(playerId, newPos);
       this.#action = "updateBoard";
-      return { isMoved: true };
+      const result = { isMoved: true };
+
+      if (room) {
+        result.canSuspect = true;
+        result.room = room;
+      }
+
+      return result;
     }
 
     return { isMoved: false };

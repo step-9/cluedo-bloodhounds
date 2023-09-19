@@ -158,7 +158,7 @@ class Board {
 
     if (possiblePositions[room[0]]) {
       newPos = this.#getNextPos(room[1], playersPositions);
-      return { canMove: true, newPos };
+      return { canMove: true, newPos, room: room[0] };
     }
 
     return { canMove: false };
