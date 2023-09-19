@@ -121,7 +121,8 @@ class GameController {
       playerId,
       strandedPlayerIds,
       characterPositions,
-      diceRollCombination
+      diceRollCombination,
+      canRollDice
     } = initialState;
 
     const isYourTurn = playerId === currentPlayerId;
@@ -131,7 +132,8 @@ class GameController {
     this.#view.setupCurrentPlayerActions({
       isYourTurn,
       canAccuse,
-      shouldEndTurn
+      shouldEndTurn,
+      canRollDice
     });
 
     this.#view.renderDice(diceRollCombination);

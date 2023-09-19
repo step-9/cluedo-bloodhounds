@@ -240,7 +240,8 @@ describe("Game", () => {
         canAccuse: true,
         shouldEndTurn: false,
         characterPositions: "mockData",
-        diceRollCombination: undefined
+        diceRollCombination: undefined,
+        canRollDice: true
       };
 
       assert.deepStrictEqual(game.playersInfo(), expectedPlayerInfo);

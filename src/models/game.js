@@ -10,6 +10,7 @@ class Game {
   #shouldEndTurn;
   #killingCombination;
   #canAccuse;
+  #canRollDice;
   #action;
   #lastAccusationCombination;
   #lastDiceCombination;
@@ -24,6 +25,7 @@ class Game {
     this.#strandedPlayerIds = [];
     this.#isPlayerMovable = true;
     this.#canAccuse = true;
+    this.#canRollDice = true;
     this.#shouldEndTurn = false;
     this.#killingCombination = killingCombination;
     this.#action = null;
@@ -46,6 +48,7 @@ class Game {
     this.#isPlayerMovable = true;
     this.#canAccuse = true;
     this.#shouldEndTurn = false;
+    this.#canRollDice = true;
     this.#action = "turnEnded";
   }
 
@@ -102,7 +105,8 @@ class Game {
       canAccuse: this.#canAccuse,
       shouldEndTurn: this.#shouldEndTurn,
       characterPositions: this.#players.getCharacterPositions(),
-      diceRollCombination: this.#lastDiceCombination
+      diceRollCombination: this.#lastDiceCombination,
+      canRollDice: this.#canRollDice
     };
   }
 
@@ -155,6 +159,7 @@ class Game {
   updateDiceCombination(diceCombination) {
     this.#lastDiceCombination = diceCombination;
     this.#action = "diceRolled";
+    this.#canRollDice = false;
   }
 
   start() {

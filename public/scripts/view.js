@@ -369,11 +369,11 @@ class View {
     }, 3000);
   }
 
-  renderRollDiceButton(isYourTurn, hasRolledDice = false) {
+  renderRollDiceButton(isYourTurn, canRollDice) {
     const rollDiceBtnId = "roll-dice-btn";
     if (this.#isButtonPresent(rollDiceBtnId)) return;
 
-    if (isYourTurn && !hasRolledDice) {
+    if (isYourTurn && canRollDice) {
       const rollDiceButton = this.#createButton("Roll Dice", rollDiceBtnId);
       rollDiceButton.onclick = () => {
         this.#listeners.rollDice();
@@ -383,9 +383,14 @@ class View {
     }
   }
 
-  setupCurrentPlayerActions({ isYourTurn, canAccuse, shouldEndTurn }) {
+  setupCurrentPlayerActions({
+    isYourTurn,
+    canAccuse,
+    shouldEndTurn,
+    canRollDice
+  }) {
     this.renderAccuseButton(isYourTurn, false);
-    this.renderRollDiceButton(isYourTurn);
+    this.renderRollDiceButton(isYourTurn, canRollDice);
 
     if (isYourTurn) {
       if (shouldEndTurn) this.renderEndTurnButton();
@@ -464,7 +469,7 @@ class View {
   }
 
   enableAllButtons(isYourTurn) {
-    this.renderRollDiceButton(isYourTurn);
+    this.renderRollDiceButton(isYourTurn, true);
     this.renderAccuseButton(isYourTurn, false);
   }
 
