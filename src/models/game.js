@@ -36,6 +36,7 @@ class Game {
     this.#possiblePositions = {};
     this.#action = null;
     this.#isSuspecting = false;
+    this.#lastDiceCombination = [0, 0];
   }
 
   #areAllPlayersStranded() {
@@ -82,22 +83,30 @@ class Game {
     };
   }
 
-  #canMove({ x, y }) {
-    const tileId = `${x},${y}`;
-
-    return this.#possiblePositions[tileId] !== undefined;
-  }
-
   movePawn(tileCoordinates, playerId) {
     const isCurrentPlayer = playerId === this.#currentPlayerId;
     if (!isCurrentPlayer || !this.#isPlayerMovable) return { isMoved: false };
-    const canMove = this.#canMove(tileCoordinates);
+    const stepCount = this.#lastDiceCombination.reduce((sum, a) => sum + a, 0);
+
+    const currentPlayerPos = this.#players.getPlayerPosition(
+      this.#currentPlayerId
+    );
+    const characterPositions = Object.values(
+      this.#players.getCharacterPositions()
+    );
+
+    const { canMove, newPos } = this.#board.getPosition(
+      stepCount,
+      currentPlayerPos,
+      characterPositions,
+      tileCoordinates
+    );
 
     if (canMove) {
       this.#isPlayerMovable = false;
       this.#shouldEndTurn = true;
       this.#canAccuse = true;
-      this.#players.updatePlayerPosition(playerId, tileCoordinates);
+      this.#players.updatePlayerPosition(playerId, newPos);
       this.#action = "updateBoard";
       return { isMoved: true };
     }

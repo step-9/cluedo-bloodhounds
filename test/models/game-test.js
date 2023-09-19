@@ -268,7 +268,7 @@ describe("Game", () => {
         canAccuse: true,
         shouldEndTurn: false,
         characterPositions: "mockData",
-        diceRollCombination: undefined,
+        diceRollCombination: [0, 0],
         canRollDice: true,
         canMovePawn: false,
         isSuspecting: false
@@ -310,7 +310,9 @@ describe("Game", () => {
       const game = new Game({});
       game.updatePossiblePositions({ "1,4": { x: 1, y: 4 } });
 
-      assert.deepStrictEqual(game.getPossiblePositions(), { "1,4": { x: 1, y: 4 } })
+      assert.deepStrictEqual(game.getPossiblePositions(), {
+        "1,4": { x: 1, y: 4 }
+      });
     });
   });
 

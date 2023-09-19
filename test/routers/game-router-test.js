@@ -139,7 +139,8 @@ describe("PATCH /game/move-pawn", () => {
       validTiles: {
         tiles: {
           "1,4": { x: 1, y: 4 },
-          "1,5": { x: 1, y: 5 }
+          "1,5": { x: 1, y: 5 },
+          "1,6": { x: 1, y: 6 }
         },
         doors: {}
       },
@@ -147,7 +148,7 @@ describe("PATCH /game/move-pawn", () => {
     });
 
     const game = new Game({ players, board });
-    game.updatePossiblePositions({ "1,5": { x: 1, y: 5 } });
+    game.updateDiceCombination([1, 1]);
     const app = createApp();
     app.context = { game };
 
@@ -156,7 +157,7 @@ describe("PATCH /game/move-pawn", () => {
     request(app)
       .patch("/game/move-pawn")
       .set("Cookie", "playerId=1")
-      .send({ x: 1, y: 5 })
+      .send({ x: 1, y: 6 })
       .expect(200)
       .expect("content-type", /application\/json/)
       .end(done);
@@ -168,17 +169,24 @@ describe("PATCH /game/move-pawn", () => {
       name: "gourab",
       cards: [],
       character: "mustard",
-      position: { x: 2, y: 4 }
+      position: { x: 1, y: 4 }
     });
     const players = new Players([gourab]);
 
     const board = new Board({
-      blockedTiles: [{ x: 1, y: 2 }],
-      rooms: {},
-      dimensions: { length: 24, breadth: 25 }
+      validTiles: {
+        tiles: {
+          "1,4": { x: 1, y: 4 },
+          "1,5": { x: 1, y: 5 },
+          "1,6": { x: 1, y: 6 }
+        },
+        doors: {}
+      },
+      rooms: {}
     });
 
     const game = new Game({ players, board });
+    game.updateDiceCombination([1, 1]);
     const app = createApp();
     app.context = { game };
 
@@ -188,45 +196,6 @@ describe("PATCH /game/move-pawn", () => {
       .patch("/game/move-pawn")
       .set("Cookie", "playerId=1")
       .send({ x: 1, y: 2 })
-      .expect(400)
-      .end(done);
-  });
-
-  it("should not move the pawn to a room", (context, done) => {
-    const gourab = new Player({
-      id: 1,
-      name: "gourab",
-      cards: [],
-      character: "mustard",
-      position: { x: 2, y: 4 }
-    });
-    const players = new Players([gourab]);
-
-    const board = new Board({
-      blockedTiles: [{ x: 1, y: 2 }],
-      rooms: {
-        hall: {
-          tileRows: [
-            [
-              { x: 0, y: 0 },
-              { x: 0, y: 10 }
-            ]
-          ]
-        }
-      },
-      dimensions: { length: 24, breadth: 25 }
-    });
-
-    const game = new Game({ players, board });
-    const app = createApp();
-    app.context = { game };
-
-    game.start();
-
-    request(app)
-      .patch("/game/move-pawn")
-      .set("Cookie", "playerId=1")
-      .send({ x: 0, y: 2 })
       .expect(400)
       .end(done);
   });

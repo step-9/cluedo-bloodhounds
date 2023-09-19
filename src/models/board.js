@@ -73,6 +73,30 @@ class Board {
     );
   }
 
+  #getRoomDetails({ x, y }) {
+    const rooms = Object.entries(this.#rooms);
+
+    return rooms.find(([_, { tileRows }]) => {
+      return tileRows.some(([rowStart, rowEnd]) => {
+        return (
+          x >= rowStart.x && x <= rowEnd.x && y >= rowStart.y && y <= rowEnd.y
+        );
+      });
+    });
+  }
+
+  #canReachEntrance(from, to, stepCount, visited) {
+    if (stepCount < 0) return false;
+
+    if (this.#arePosSame(from, to) && stepCount >= 0) return true;
+    const stepsLeft = stepCount - 1;
+
+    const neighbours = this.#getNeighbours(from, visited);
+    return neighbours.some(pos =>
+      this.#canReachEntrance(pos, to, stepsLeft, [...visited, from])
+    );
+  }
+
   getPossibleTiles(stepCount, currentPosition, playersPositions = []) {
     const possiblePositions = {};
 
@@ -89,7 +113,50 @@ class Board {
       }
     });
 
+    const doors = Object.values(this.#validTiles.doors);
+    doors.forEach(({ x, y, room }) => {
+      if (possiblePositions[room]) return;
+      const doorPos = { x, y };
+
+      const canReachEntrance = this.#canReachEntrance(
+        currentPosition,
+        doorPos,
+        stepCount,
+        playersPositions
+      );
+
+      if (canReachEntrance) possiblePositions[room] = room;
+    });
+
     return possiblePositions;
+  }
+
+  #getNextPos({ floorPositions }, playerPositions) {
+    return floorPositions.find(tile => {
+      return !playerPositions.some(pos => this.#arePosSame(tile, pos));
+    });
+  }
+
+  getPosition(stepCount, currentPlayerPos, playersPositions, destination) {
+    let newPos = { ...destination };
+    const possiblePositions = this.getPossibleTiles(
+      stepCount,
+      currentPlayerPos,
+      playersPositions
+    );
+
+    const destinationId = this.#stringifyTile(destination);
+    if (possiblePositions[destinationId]) return { canMove: true, newPos };
+
+    const room = this.#getRoomDetails(destination);
+    if (!room) return { canMove: false };
+
+    if (possiblePositions[room[0]]) {
+      newPos = this.#getNextPos(room[1], playersPositions);
+      return { canMove: true, newPos };
+    }
+
+    return { canMove: false };
   }
 }
 
