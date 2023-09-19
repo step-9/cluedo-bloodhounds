@@ -144,9 +144,10 @@ class GameController {
   #showLastDiceRollCombination() {
     this.#gameService
       .getLastDiceRollCombination()
-      .then(({ diceRollCombination }) =>
-        this.#view.renderDice(diceRollCombination)
-      );
+      .then(({ diceRollCombination, possiblePositions }) => {
+        if (possiblePositions) this.#view.highlightPositions(possiblePositions);
+        this.#view.renderDice(diceRollCombination);
+      });
   }
 
   #registerEvents() {
@@ -175,6 +176,7 @@ class GameController {
         if (res.ok) {
           this.#fetchAndRenderCurrentState();
           this.#view.disableMove();
+          this.#view.disableTileHighlighting();
           this.#view.renderEndTurnButton();
         }
       })

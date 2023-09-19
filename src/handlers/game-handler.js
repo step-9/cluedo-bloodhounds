@@ -113,9 +113,15 @@ const handleRollDice = (req, res) => {
 
 const sendDiceCombination = (req, res) => {
   const { game } = req.app.context;
+  const { playerId } = req.cookies;
+  const { currentPlayerId } = game.state();
   const diceRollCombination = game.getLastDiceCombination();
+  if (+playerId !== currentPlayerId) return res.json({ diceRollCombination });
 
-  res.json({ diceRollCombination });
+  const stepCount = diceRollCombination.reduce((sum, a) => sum + a, 0);
+  const possiblePositions = game.getPossiblePositions(stepCount);
+
+  res.json({ diceRollCombination, possiblePositions });
 };
 
 module.exports = {

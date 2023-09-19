@@ -486,6 +486,13 @@ class View {
     });
   }
 
+  disableTileHighlighting() {
+    const highlightedTiles = document.querySelectorAll(".highlight-tile");
+    highlightedTiles.forEach(highlightedTile =>
+      highlightedTile.classList.remove("highlight-tile")
+    );
+  }
+
   renderDice(diceRollCombination) {
     const [dice1Count, dice2Count] = diceRollCombination || ["?", "?"];
 

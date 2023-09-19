@@ -402,15 +402,36 @@ describe("POST /roll-dice", () => {
 });
 
 describe("GET /dice-combination", () => {
-  it("should give the dice combination", (_, done) => {
+  it("should give the dice combination and the possible positions if its players turn", (_, done) => {
     const getLastDiceCombination = () => [4, 4];
-    const game = { getLastDiceCombination };
+    const getPossiblePositions = () => {};
+    const state = () => ({ currentPlayerId: 2 });
+
+    const game = { getLastDiceCombination, getPossiblePositions, state };
     const app = createApp();
     app.context = { game };
 
     request(app)
       .get("/game/dice-combination")
       .set("Cookie", "playerId=2")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .expect({ diceRollCombination: [4, 4] })
+      .end(done);
+  });
+
+  it("should give the dice combination only when its not players turn", (_, done) => {
+    const getLastDiceCombination = () => [4, 4];
+    const getPossiblePositions = () => {};
+    const state = () => ({ currentPlayerId: 2 });
+
+    const game = { getLastDiceCombination, getPossiblePositions, state };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .get("/game/dice-combination")
+      .set("Cookie", "playerId=1")
       .expect(200)
       .expect("content-type", /application\/json/)
       .expect({ diceRollCombination: [4, 4] })
