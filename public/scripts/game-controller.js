@@ -68,6 +68,7 @@ class GameController {
   #changeTurn({ currentPlayerId, canRollDice, canMovePawn, canAccuse }) {
     const isYourTurn = this.#playerId === currentPlayerId;
     this.#enableTurn({ isYourTurn, canRollDice, canMovePawn, canAccuse });
+    this.#view.hideAllMessages();
     this.#view.highlightCurrentPlayer(currentPlayerId);
   }
 
@@ -201,7 +202,9 @@ class GameController {
         .then(({ room, canSuspect }) => {
           this.#gameService.getCardsInfo().then(cardsInfo => {
             this.#view.renderSuspicionDialog({ room, canSuspect, cardsInfo });
-            this.#gameService.startSuspicion();
+            setTimeout(() => {
+              if (room && canSuspect) this.#gameService.startSuspicion();
+            }, 1000);
           });
         })
     );

@@ -569,7 +569,7 @@ class View {
   }
 
   renderSuspicionDialog({ room, canSuspect, cardsInfo }) {
-    if (canSuspect) {
+    if (room && canSuspect) {
       const suspicionDialog = this.#createSuspicionDialog(room, cardsInfo);
       const roomSelector = suspicionDialog.querySelector("#select-room");
       roomSelector.value = room;
@@ -585,15 +585,12 @@ class View {
     const suspectedCards = this.#createCardElements(suspicionCombination);
     const cardsContainer = this.#createCardsContainer("suspicion-combination");
     cardsContainer.append(...suspectedCards);
-    const closeBtn = this.#createButton("Close", "suspicion-pop-up-close-btn");
 
-    this.#notificationContainer.replaceChildren(
-      message,
-      cardsContainer,
-      closeBtn
-    );
+    this.#notificationContainer.replaceChildren(message, cardsContainer);
     this.#notificationContainer.showModal();
 
-    closeBtn.onclick = () => this.#notificationContainer.close();
+    setTimeout(() => {
+      this.#notificationContainer.close();
+    }, 4000);
   }
 }
