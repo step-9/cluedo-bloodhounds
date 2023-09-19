@@ -103,7 +103,7 @@ class Board {
     const room = this.#getRoomDetails(currentPosition);
     if (room) startingPositions = room[1].doors;
 
-    startingPositions.forEach(startingPos =>
+    startingPositions.forEach(startingPos => {
       this.#calculateAllPossiblePos(stepCount, startingPos).forEach(pos => {
         if (this.#isValidTile(pos, playersPositions)) {
           const isPathExists = this.#isPathExists(
@@ -115,22 +115,23 @@ class Board {
 
           if (isPathExists) possiblePositions[`${pos.x},${pos.y}`] = pos;
         }
-      })
-    );
+      });
 
-    const doors = Object.values(this.#validTiles.doors);
-    doors.forEach(({ x, y, room }) => {
-      if (possiblePositions[room]) return;
-      const doorPos = { x, y };
+      const currentRoom = this.#getRoomDetails(startingPos) || [];
+      const doors = Object.values(this.#validTiles.doors);
+      doors.forEach(({ x, y, room }) => {
+        if (possiblePositions[room] || room === currentRoom[0]) return;
+        const doorPos = { x, y };
 
-      const canReachEntrance = this.#canReachEntrance(
-        currentPosition,
-        doorPos,
-        stepCount,
-        playersPositions
-      );
+        const canReachEntrance = this.#canReachEntrance(
+          startingPos,
+          doorPos,
+          stepCount,
+          playersPositions
+        );
 
-      if (canReachEntrance) possiblePositions[room] = room;
+        if (canReachEntrance) possiblePositions[room] = room;
+      });
     });
 
     return possiblePositions;
