@@ -34,8 +34,7 @@ class GameController {
       if (!this.#isNewState(gameState)) return;
       if (!action) return;
       if (isGameOver) return this.#displayGameOver(gameState);
-      if (isYourTurn) this.#enableTurn();
-
+      if (isYourTurn) this.#enableTurn({ isYourTurn });
       this.#eventEmitter.emit(action, currentPlayerId);
       this.#lastGameState = gameState;
     });
@@ -59,16 +58,16 @@ class GameController {
       .then(positions => this.#view.updateCharacterPositions(positions));
   }
 
-  #enableTurn(isYourTurn) {
+  #enableTurn({ isYourTurn, canRollDice, canMovePawn, canAccuse }) {
     if (isYourTurn) {
-      this.#view.enableMove();
-      this.#view.enableAllButtons(true);
+      if (canMovePawn) this.#view.enableMove();
+      this.#view.enableAllButtons(true, canRollDice, canAccuse);
     }
   }
 
-  #changeTurn(currentPlayerId) {
+  #changeTurn({ currentPlayerId, canRollDice, canMovePawn, canAccuse }) {
     const isYourTurn = this.#playerId === currentPlayerId;
-    this.#enableTurn(isYourTurn);
+    this.#enableTurn({ isYourTurn, canRollDice, canMovePawn, canAccuse });
     this.#view.highlightCurrentPlayer(currentPlayerId);
   }
 
@@ -122,18 +121,20 @@ class GameController {
       strandedPlayerIds,
       characterPositions,
       diceRollCombination,
-      canRollDice
+      canRollDice,
+      canMovePawn
     } = initialState;
 
     const isYourTurn = playerId === currentPlayerId;
 
-    this.#changeTurn(currentPlayerId);
+    this.#changeTurn({ currentPlayerId, canRollDice, canMovePawn });
 
     this.#view.setupCurrentPlayerActions({
       isYourTurn,
       canAccuse,
       shouldEndTurn,
-      canRollDice
+      canRollDice,
+      canMovePawn
     });
 
     this.#view.renderDice(diceRollCombination);
@@ -153,7 +154,7 @@ class GameController {
   #registerEvents() {
     this.#eventEmitter.on("updateBoard", () => this.#updateBoard());
     this.#eventEmitter.on("turnEnded", currentPlayerId =>
-      this.#changeTurn(currentPlayerId)
+      this.#changeTurn({ currentPlayerId, canRollDice: true, canAccuse: true })
     );
     this.#eventEmitter.on("accusing", currentPlayerId =>
       this.#markAccusingPlayer(currentPlayerId)

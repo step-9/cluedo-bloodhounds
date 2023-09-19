@@ -125,7 +125,7 @@ class View {
     this.#bottomPane.appendChild(endTurnBtn);
   }
 
-  renderAccuseButton(isYourTurn, isAccusing) {
+  renderAccuseButton(isYourTurn, isAccusing, canAccuse) {
     const accuseDialog = document.querySelector("#accusation-popup");
 
     if (!isYourTurn) {
@@ -139,15 +139,18 @@ class View {
 
     if (isYourTurn && this.#isButtonPresent("accuse-btn")) return;
 
-    const accuseBtn = this.#createButton("Accuse", "accuse-btn");
+    if (canAccuse) {
+      const accuseBtn = this.#createButton("Accuse", "accuse-btn");
 
-    accuseBtn.onclick = () => {
-      const { startAccusation } = this.#listeners;
-      accuseDialog.showModal();
-      startAccusation();
-    };
+      accuseBtn.onclick = () => {
+        const { startAccusation } = this.#listeners;
+        accuseDialog.showModal();
+        startAccusation();
+        this.removeAllButtons();
+      };
 
-    this.#bottomPane.appendChild(accuseBtn);
+      this.#bottomPane.appendChild(accuseBtn);
+    }
   }
 
   hideAllMessages() {
@@ -376,6 +379,7 @@ class View {
     if (isYourTurn && canRollDice) {
       const rollDiceButton = this.#createButton("Roll Dice", rollDiceBtnId);
       rollDiceButton.onclick = () => {
+        this.enableMove();
         this.#listeners.rollDice();
         this.#removeRollDiceButton();
       };
@@ -389,12 +393,11 @@ class View {
     shouldEndTurn,
     canRollDice
   }) {
-    this.renderAccuseButton(isYourTurn, false);
     this.renderRollDiceButton(isYourTurn, canRollDice);
+    this.renderAccuseButton(isYourTurn, false, canAccuse);
 
     if (isYourTurn) {
       if (shouldEndTurn) this.renderEndTurnButton();
-      else this.enableMove();
       if (!canAccuse) this.removeAccuseBtn();
     }
   }
@@ -465,12 +468,13 @@ class View {
   }
 
   removeAllButtons() {
+    this.#removeRollDiceButton();
     this.removeAccuseBtn();
   }
 
-  enableAllButtons(isYourTurn) {
-    this.renderRollDiceButton(isYourTurn, true);
-    this.renderAccuseButton(isYourTurn, false);
+  enableAllButtons(isYourTurn, canRollDice, canAccuse) {
+    this.renderRollDiceButton(isYourTurn, canRollDice);
+    this.renderAccuseButton(isYourTurn, false, canAccuse);
   }
 
   #removeRollDiceButton() {

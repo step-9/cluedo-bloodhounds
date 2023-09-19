@@ -14,6 +14,7 @@ class Game {
   #action;
   #lastAccusationCombination;
   #lastDiceCombination;
+  #canMovePawn;
 
   constructor({ players, board, killingCombination }) {
     this.#board = board;
@@ -27,6 +28,7 @@ class Game {
     this.#canAccuse = true;
     this.#canRollDice = true;
     this.#shouldEndTurn = false;
+    this.#canMovePawn = false;
     this.#killingCombination = killingCombination;
     this.#action = null;
   }
@@ -49,6 +51,7 @@ class Game {
     this.#canAccuse = true;
     this.#shouldEndTurn = false;
     this.#canRollDice = true;
+    this.#canMovePawn = false;
     this.#action = "turnEnded";
   }
 
@@ -106,7 +109,8 @@ class Game {
       shouldEndTurn: this.#shouldEndTurn,
       characterPositions: this.#players.getCharacterPositions(),
       diceRollCombination: this.#lastDiceCombination,
-      canRollDice: this.#canRollDice
+      canRollDice: this.#canRollDice,
+      canMovePawn: this.#canMovePawn
     };
   }
 
@@ -148,6 +152,8 @@ class Game {
     this.#isAccusing = false;
     this.#shouldEndTurn = true;
     this.#canAccuse = false;
+    this.#canRollDice = false;
+    this.#canMovePawn = false;
     this.#action = "accused";
 
     return {
@@ -160,6 +166,7 @@ class Game {
     this.#lastDiceCombination = diceCombination;
     this.#action = "diceRolled";
     this.#canRollDice = false;
+    this.#canMovePawn = true;
   }
 
   getPossiblePositions(stepCount) {
