@@ -40,13 +40,20 @@ describe("Players", () => {
       assert.deepStrictEqual(nextPlayer.info(), milan.info());
     });
 
-    it("should give an error when tried to strand player with invalid player id", () => {
+    it("should throw an error when tried to strand player with invalid player id", () => {
       const [gourab, milan, riya] = createPlayers(["gourab", "milan", "riya"]);
 
       const players = new Players([gourab, milan, riya]);
-      const result = players.strandPlayer(4);
 
-      assert.ok(result instanceof Error);
+      assert.throws(
+        () => {
+          players.strandPlayer(4);
+        },
+        {
+          name: "Error",
+          message: "Invalid Player Id"
+        }
+      );
     });
   });
 
@@ -151,6 +158,29 @@ describe("Players", () => {
       ];
 
       assert.deepStrictEqual(players.info(), expectedPlayersInfo);
+    });
+  });
+
+  describe("getPlayerPosition", () => {
+    it("should give the position of the player mapped to player id", () => {
+      const gourab = new Player({
+        name: "gourab",
+        id: 1,
+        position: { x: 0, y: 0 },
+        cards: []
+      });
+
+      const raj = new Player({
+        name: "raj",
+        id: 2,
+        position: { x: 4, y: 4 },
+        cards: []
+      });
+      const players = new Players([gourab, raj]);
+
+      const playerPosition = players.getPlayerPosition(1);
+
+      assert.deepStrictEqual(playerPosition, { x: 0, y: 0 });
     });
   });
 });

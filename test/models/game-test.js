@@ -1,6 +1,9 @@
 const { describe, it } = require("node:test");
 const assert = require("assert");
 const Game = require("../../src/models/game");
+const Board = require("../../src/models/board");
+const rooms = require("../../resources/rooms.json");
+const blockedTiles = require("../../resources/blocked-tiles.json");
 
 describe("Game", () => {
   describe("start", () => {
@@ -245,6 +248,33 @@ describe("Game", () => {
       };
 
       assert.deepStrictEqual(game.playersInfo(), expectedPlayerInfo);
+    });
+  });
+  describe("getPossiblePositions", () => {
+    it("Should give the players info", context => {
+      const players = {
+        info: context.mock.fn(() => "mockData"),
+        getCharacterPositions: context.mock.fn(() => ({ 1: { x: 7, y: 7 } })),
+        getPlayerPosition: () => ({ x: 7, y: 5 })
+      };
+
+      const board = new Board({
+        dimensions: { length: 24, breadth: 25 },
+        blockedTiles,
+        rooms
+      });
+
+      const game = new Game({ players, board });
+      const expectedPositions = {
+        "8,6": { x: 8, y: 6 },
+        "6,6": { x: 6, y: 6 },
+        "8,4": { x: 8, y: 4 },
+        "5,5": { x: 5, y: 5 },
+        "6,4": { x: 6, y: 4 },
+        "7,3": { x: 7, y: 3 }
+      };
+
+      assert.deepStrictEqual(game.getPossiblePositions(2), expectedPositions);
     });
   });
 });

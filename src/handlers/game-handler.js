@@ -104,12 +104,17 @@ const handleRollDice = (req, res) => {
   const { game, diceCombinationGenerator } = req.app.context;
   const diceRollCombination = rollDice(diceCombinationGenerator);
   game.updateDiceCombination(diceRollCombination);
-  res.json({ diceRollCombination });
+
+  const stepCount = diceRollCombination.reduce((sum, a) => sum + a, 0);
+  const possiblePositions = game.getPossiblePositions(stepCount);
+
+  res.json({ diceRollCombination, possiblePositions });
 };
 
 const sendDiceCombination = (req, res) => {
   const { game } = req.app.context;
   const diceRollCombination = game.getLastDiceCombination();
+
   res.json({ diceRollCombination });
 };
 

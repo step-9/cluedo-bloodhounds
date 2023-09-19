@@ -26,6 +26,11 @@ class Players {
     return this.#players.find(player => player.info().id === playerId);
   }
 
+  getPlayerPosition(playerId) {
+    const player = this.findPlayer(playerId);
+    return player.getPosition();
+  }
+
   updatePlayerPosition(playerId, newPosition) {
     const player = this.findPlayer(playerId);
     if (player) player.updatePosition(newPosition);
@@ -34,7 +39,7 @@ class Players {
   strandPlayer(playerId) {
     const playerToStrand = this.findPlayer(playerId);
 
-    if (!playerToStrand) return new Error("Invalid Player Id");
+    if (!playerToStrand) throw new Error("Invalid Player Id");
 
     playerToStrand.strand();
   }

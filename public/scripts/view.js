@@ -478,6 +478,14 @@ class View {
     rollDiceButton?.remove();
   }
 
+  highlightPositions(positions) {
+    const tiles = Object.keys(positions);
+    tiles.forEach(tile => {
+      const tileElement = document.getElementById(tile);
+      tileElement.classList.add("highlight-tile");
+    });
+  }
+
   renderDice(diceRollCombination) {
     const [dice1Count, dice2Count] = diceRollCombination || ["?", "?"];
 

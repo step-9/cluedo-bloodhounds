@@ -385,8 +385,9 @@ describe("POST /game/accuse", () => {
 describe("POST /roll-dice", () => {
   it("should handle roll dice and give the dice combination", (_, done) => {
     const diceCombinationGenerator = { next: () => ({ value: [4, 4] }) };
+    const getPossiblePositions = () => {};
     const updateDiceCombination = () => {};
-    const game = { updateDiceCombination };
+    const game = { updateDiceCombination, getPossiblePositions };
     const app = createApp();
     app.context = { game, diceCombinationGenerator };
 

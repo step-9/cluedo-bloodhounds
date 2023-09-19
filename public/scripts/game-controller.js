@@ -196,9 +196,12 @@ class GameController {
     });
 
     this.#view.addListener("rollDice", () => {
-      this.#gameService.rollDice().then(({ diceRollCombination }) => {
-        this.#view.renderDice(diceRollCombination);
-      });
+      this.#gameService
+        .rollDice()
+        .then(({ diceRollCombination, possiblePositions }) => {
+          this.#view.highlightPositions(possiblePositions);
+          this.#view.renderDice(diceRollCombination);
+        });
     });
 
     this.#gameService.getInitialData().then(initialState => {

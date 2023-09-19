@@ -162,6 +162,22 @@ class Game {
     this.#canRollDice = false;
   }
 
+  getPossiblePositions(stepCount) {
+    const currentPlayerPos = this.#players.getPlayerPosition(
+      this.#currentPlayerId
+    );
+
+    const characterPositions = Object.values(
+      this.#players.getCharacterPositions()
+    );
+
+    return this.#board.getPossibleTiles(
+      stepCount,
+      currentPlayerPos,
+      characterPositions
+    );
+  }
+
   start() {
     const currentPlayer = this.#players.getNextPlayer();
     this.#currentPlayerId = currentPlayer.info().id;

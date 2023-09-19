@@ -3,6 +3,10 @@
   border-radius: 50%;
 }
 
+.highlight-tile {
+  fill: lightgreen;
+}
+
 .start-tile {
   ry: 15;
 }
