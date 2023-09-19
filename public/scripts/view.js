@@ -167,6 +167,15 @@ class View {
     accusingPlayer.innerText = "I am Accusing";
   }
 
+  renderSuspicionMessage(currentPlayerId) {
+    const suspectingPlayer = document.querySelector(
+      `#message-${currentPlayerId}`
+    );
+
+    suspectingPlayer.classList.remove("hide");
+    suspectingPlayer.innerText = "I am Suspecting";
+  }
+
   #createAccuseDialogFrame() {
     return this.#htmlGenerator([
       "dialog",
@@ -244,10 +253,10 @@ class View {
     );
   }
 
-  #readFormData() {
-    const room = document.querySelector("#select-room").value;
-    const weapon = document.querySelector("#select-weapon").value;
-    const suspect = document.querySelector("#select-suspect").value;
+  #readFormData(form) {
+    const room = form.querySelector("#select-room").value;
+    const weapon = form.querySelector("#select-weapon").value;
+    const suspect = form.querySelector("#select-suspect").value;
 
     return { room, weapon, suspect };
   }
@@ -255,7 +264,7 @@ class View {
   #setupAccusationForm(accusationForm, dialog) {
     accusationForm.onsubmit = event => {
       event.preventDefault();
-      const accusationCombination = this.#readFormData();
+      const accusationCombination = this.#readFormData(accusationForm);
       const { accuse } = this.#listeners;
 
       accuse(accusationCombination);
@@ -505,5 +514,86 @@ class View {
 
     dice1Element.innerText = dice1Count;
     dice2Element.innerText = dice2Count;
+  }
+
+  #createSuspectDialogFrame() {
+    return this.#htmlGenerator([
+      "dialog",
+      { id: "suspicion-popup", class: "popup" },
+      [
+        ["h3", { class: "popup-header" }, "Select Suspicion Combination"],
+        [
+          "form",
+          { id: "suspect-form" },
+          [
+            ["div", { class: "selections" }, []],
+            [
+              "div",
+              { id: "buttons" },
+              [
+                [
+                  "button",
+                  {
+                    value: "default",
+                    id: "suspect-confirm-btn",
+                    class: "button"
+                  },
+                  "Confirm"
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]);
+  }
+
+  #setupSuspicionForm(suspicionForm, dialog) {
+    suspicionForm.onsubmit = event => {
+      event.preventDefault();
+      const suspicionCombination = this.#readFormData(suspicionForm);
+      this.#listeners.suspect(suspicionCombination);
+      dialog.close();
+    };
+  }
+
+  #createSuspicionDialog(room, cardsInfo) {
+    const dialog = this.#createSuspectDialogFrame();
+    const selections = dialog.querySelector(".selections");
+    const suspicionForm = dialog.querySelector("#suspect-form");
+    const weapon = cardsInfo.weapon;
+    const suspect = cardsInfo.suspect;
+    this.#createAndAddSelections(selections, { weapon, suspect, room: [room] });
+    this.#setupSuspicionForm(suspicionForm, dialog);
+    return dialog;
+  }
+
+  renderSuspicionDialog({ room, canSuspect, cardsInfo }) {
+    if (canSuspect) {
+      const suspicionDialog = this.#createSuspicionDialog(room, cardsInfo);
+      const roomSelector = suspicionDialog.querySelector("#select-room");
+      roomSelector.value = room;
+      roomSelector.setAttribute("disabled", true);
+      this.#middlePane.append(suspicionDialog);
+      suspicionDialog.showModal();
+    }
+  }
+
+  renderSuspicionCombination(suspectorName, suspicionCombination) {
+    const message = this.#createGameOverMsg(`${suspectorName} Suspected`);
+
+    const suspectedCards = this.#createCardElements(suspicionCombination);
+    const cardsContainer = this.#createCardsContainer("suspicion-combination");
+    cardsContainer.append(...suspectedCards);
+    const closeBtn = this.#createButton("Close", "suspicion-pop-up-close-btn");
+
+    this.#notificationContainer.replaceChildren(
+      message,
+      cardsContainer,
+      closeBtn
+    );
+    this.#notificationContainer.showModal();
+
+    closeBtn.onclick = () => this.#notificationContainer.close();
   }
 }

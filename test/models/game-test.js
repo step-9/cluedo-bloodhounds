@@ -200,6 +200,31 @@ describe("Game", () => {
     });
   });
 
+  describe("getLastSuspicionCombination", () => {
+    it("Should give the suspicion combination of last validation", context => {
+      const game = new Game({
+        players: {
+          getCharacterPositions: () => {},
+          strandPlayer: () => {},
+          info: context.mock.fn(() => [])
+        }
+      });
+
+      const suspicionCombination = {
+        weapon: "dagger",
+        room: "lounge",
+        suspect: "plum"
+      };
+
+      game.validateSuspicion(1, suspicionCombination);
+
+      assert.deepStrictEqual(
+        game.getLastSuspicionCombination(),
+        suspicionCombination
+      );
+    });
+  });
+
   describe("setAction", () => {
     it("Should set Action of game", () => {
       const game = new Game({});
@@ -245,7 +270,8 @@ describe("Game", () => {
         characterPositions: "mockData",
         diceRollCombination: undefined,
         canRollDice: true,
-        canMovePawn: false
+        canMovePawn: false,
+        isSuspecting: false
       };
 
       assert.deepStrictEqual(game.playersInfo(), expectedPlayerInfo);
@@ -285,6 +311,21 @@ describe("Game", () => {
       game.updatePossiblePositions({ "1,4": { x: 1, y: 4 } });
 
       assert.deepStrictEqual(game.getPossiblePositions(), { "1,4": { x: 1, y: 4 } })
+    });
+  });
+
+  describe("toggleIsSuspecting", () => {
+    it("should toggle the isSuspecting status", context => {
+      const game = new Game({
+        players: {
+          getCharacterPositions: () => {},
+          info: context.mock.fn(() => [])
+        }
+      });
+
+      game.toggleIsSuspecting();
+
+      assert.strictEqual(game.state().action, "suspecting");
     });
   });
 });

@@ -369,12 +369,14 @@ th {
   gap: 2em;
 }
 
-#accusation-combination {
+#accusation-combination,
+#suspicion-combination {
   display: flex;
   gap: 2em;
 }
 
-#accusation-popup:modal {
+#accusation-popup:modal,
+#suspicion-popup:modal {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -387,7 +389,8 @@ th {
   padding-top: 0.5em;
 }
 
-#accusation-result-close-btn {
+#accusation-result-close-btn,
+#suspicion-pop-up-close-btn {
   background-color: orangered;
 }
 
@@ -395,7 +398,8 @@ th {
   cursor: pointer;
 }
 
-#accusation-popup > h3 {
+#accusation-popup > h3,
+#suspicion-popup > h3 {
   color: black;
 }
 
@@ -411,26 +415,30 @@ select {
   padding: 0.2em;
 }
 
-#accusation-popup #buttons {
+#accusation-popup #buttons,
+#suspicion-popup #buttons {
   display: flex;
   gap: 2em;
 }
 
-#accuse-form {
+#accuse-form,
+#suspect-form {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3em;
 }
 
-#accuse-form select {
+#accuse-form select,
+#suspect-form select {
   width: 100px;
   height: 30px;
   font-size: 0.8em;
   cursor: pointer;
 }
 
-#accuse-confirm-btn {
+#accuse-confirm-btn,
+#suspect-confirm-btn {
   color: white;
   background-color: rgb(0, 186, 96);
 }

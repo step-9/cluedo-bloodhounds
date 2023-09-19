@@ -159,7 +159,6 @@ describe("PATCH /game/move-pawn", () => {
       .send({ x: 1, y: 5 })
       .expect(200)
       .expect("content-type", /application\/json/)
-      .expect({})
       .end(done);
   });
 
@@ -447,6 +446,92 @@ describe("GET /dice-combination", () => {
       .expect(200)
       .expect("content-type", /application\/json/)
       .expect({ diceRollCombination: [4, 4] })
+      .end(done);
+  });
+});
+
+describe("PATCH /game/suspicion-state", () => {
+  it("Should give error if its not player turn", (context, done) => {
+    const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
+    const game = { state };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .patch("/game/suspicion-state")
+      .set("Cookie", "playerId=2")
+      .expect(401)
+      .expect("content-type", /application\/json/)
+      .expect({ error: "not your turn" })
+      .end(done);
+  });
+
+  it("Should set the isSuspecting status true when its players turn", (context, done) => {
+    const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
+    const toggleIsSuspecting = context.mock.fn();
+    const game = { state, toggleIsSuspecting };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .patch("/game/suspicion-state")
+      .set("Cookie", "playerId=1")
+      .expect(200)
+      .end(done);
+  });
+});
+
+describe("GET /game/suspicion-combination", () => {
+  it("should give result of last suspicion", (context, done) => {
+    const getLastSuspicionCombination = context.mock.fn();
+    const game = { getLastSuspicionCombination };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .get("/game/suspicion-combination")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .end(done);
+  });
+});
+
+describe("POST /game/suspect", () => {
+  it("Should start suspicion if its current player turn", (context, done) => {
+    const suspicionCombination = {
+      weapon: "dagger",
+      suspect: "mustard",
+      room: "lounge"
+    };
+    const validateSuspicion = () => ({
+      isWon: true,
+      killingCombination: suspicionCombination
+    });
+    const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
+    const game = { validateSuspicion, state };
+    const app = createApp({});
+    app.context = { game };
+
+    request(app)
+      .post("/game/suspect")
+      .set("Cookie", "playerId=1")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .end(done);
+  });
+
+  it("Should give error if its not player turn", (context, done) => {
+    const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
+    const game = { state };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .post("/game/suspect")
+      .set("Cookie", "playerId=2")
+      .expect(401)
+      .expect("content-type", /application\/json/)
+      .expect({ error: "not your turn" })
       .end(done);
   });
 });

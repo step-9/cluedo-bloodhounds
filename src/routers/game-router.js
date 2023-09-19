@@ -12,7 +12,10 @@ const {
   sendAccusationResult,
   sendGameOverInfo,
   sendDiceCombination,
-  handleRollDice
+  handleRollDice,
+  handleStartSuspicionRequest,
+  sendLastSuspicionCombination,
+  handleSuspicion
 } = require("../handlers/game-handler");
 
 const createGameRouter = () => {
@@ -31,6 +34,9 @@ const createGameRouter = () => {
   gameRouter.get("/game-over-info", sendGameOverInfo);
   gameRouter.post("/roll-dice", handleRollDice);
   gameRouter.get("/dice-combination", sendDiceCombination);
+  gameRouter.patch("/suspicion-state", handleStartSuspicionRequest);
+  gameRouter.get("/suspicion-combination", sendLastSuspicionCombination);
+  gameRouter.post("/suspect", handleSuspicion);
 
   return gameRouter;
 };

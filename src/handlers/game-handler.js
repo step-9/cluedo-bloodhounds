@@ -52,7 +52,9 @@ const handleMovePawnRequest = (req, res) => {
   const tileCoordinates = req.body;
   const { isMoved } = game.movePawn(tileCoordinates, +playerId);
 
-  if (isMoved) return res.json({});
+  const room = "lounge";
+  const canSuspect = true;
+  if (isMoved) return res.json({ room, canSuspect });
   res.sendStatus(400);
 };
 
@@ -67,6 +69,16 @@ const handleStartAccusationRequest = (req, res) => {
   if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
 
   game.toggleIsAccusing();
+  res.end();
+};
+
+const handleStartSuspicionRequest = (req, res) => {
+  const { game } = req.app.context;
+  const { playerId } = req.cookies;
+  const { currentPlayerId } = game.state();
+  if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
+
+  game.toggleIsSuspecting();
   res.end();
 };
 
@@ -125,6 +137,24 @@ const sendDiceCombination = (req, res) => {
   res.json({ diceRollCombination, possiblePositions });
 };
 
+const handleSuspicion = (req, res) => {
+  const { game } = req.app.context;
+  const { playerId } = req.cookies;
+  const { currentPlayerId } = game.state();
+  if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
+
+  const combinationCards = req.body;
+  game.validateSuspicion(+playerId, combinationCards);
+
+  res.json({});
+};
+
+const sendLastSuspicionCombination = (req, res) => {
+  const { game } = req.app.context;
+  const suspicionCombination = game.getLastSuspicionCombination();
+  res.json({ suspicionCombination });
+};
+
 module.exports = {
   serveGamePage,
   serveInitialGameState,
@@ -138,5 +168,8 @@ module.exports = {
   sendGameOverInfo,
   sendAccusationResult,
   sendDiceCombination,
-  handleRollDice
+  handleRollDice,
+  handleStartSuspicionRequest,
+  handleSuspicion,
+  sendLastSuspicionCombination
 };

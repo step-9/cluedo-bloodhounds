@@ -78,6 +78,12 @@ class GameController {
     this.#view.renderAccusationMessage(currentPlayerId);
   }
 
+  #markSuspectingPlayer(currentPlayerId) {
+    const isYourTurn = this.#playerId === currentPlayerId;
+    if (isYourTurn) return;
+    this.#view.renderSuspicionMessage(currentPlayerId);
+  }
+
   #showAccusationResult(currentPlayerId) {
     this.#gameService
       .getAccusationResult()
@@ -90,6 +96,18 @@ class GameController {
           this.#playersNames[currentPlayerId],
           accusationCombination
         );
+      });
+  }
+
+  #showSuspicion(currentPlayerId) {
+    this.#gameService
+      .getSuspicionCombination()
+      .then(({ suspicionCombination }) => {
+        this.#view.hideAllMessages();
+        const isYourTurn = this.#playerId === currentPlayerId;
+        const name = isYourTurn ? "YOU" : this.#playersNames[currentPlayerId];
+
+        this.#view.renderSuspicionCombination(name, suspicionCombination);
       });
   }
 
@@ -113,17 +131,8 @@ class GameController {
   }
 
   #renderInitialGameState(initialState) {
-    const {
-      canAccuse,
-      shouldEndTurn,
-      currentPlayerId,
-      playerId,
-      strandedPlayerIds,
-      characterPositions,
-      diceRollCombination,
-      canRollDice,
-      canMovePawn
-    } = initialState;
+    const { currentPlayerId, playerId, canRollDice, canMovePawn } =
+      initialState;
 
     const isYourTurn = playerId === currentPlayerId;
 
@@ -131,15 +140,15 @@ class GameController {
 
     this.#view.setupCurrentPlayerActions({
       isYourTurn,
-      canAccuse,
-      shouldEndTurn,
-      canRollDice,
-      canMovePawn
+      ...initialState
     });
 
-    this.#view.renderDice(diceRollCombination);
-    this.#view.updateCharacterPositions(characterPositions);
-    this.#view.disableStrandedPlayers(strandedPlayerIds, this.#playerId);
+    this.#view.renderDice(initialState.diceRollCombination);
+    this.#view.updateCharacterPositions(initialState.characterPositions);
+    this.#view.disableStrandedPlayers(
+      initialState.strandedPlayerIds,
+      this.#playerId
+    );
   }
 
   #showLastDiceRollCombination() {
@@ -165,6 +174,12 @@ class GameController {
     this.#eventEmitter.on("diceRolled", currentPlayerId =>
       this.#showLastDiceRollCombination(currentPlayerId)
     );
+    this.#eventEmitter.on("suspecting", currentPlayerId =>
+      this.#markSuspectingPlayer(currentPlayerId)
+    );
+    this.#eventEmitter.on("suspected", currentPlayerId =>
+      this.#showSuspicion(currentPlayerId)
+    );
   }
 
   start() {
@@ -173,14 +188,22 @@ class GameController {
     this.#view.addListener("onEndTurn", () => this.#endTurn());
 
     this.#view.addListener("movePawn", rawTileId =>
-      this.#sendMovePawnReq(rawTileId).then(res => {
-        if (res.ok) {
-          this.#fetchAndRenderCurrentState();
-          this.#view.disableMove();
-          this.#view.disableTileHighlighting();
-          this.#view.renderEndTurnButton();
-        }
-      })
+      this.#sendMovePawnReq(rawTileId)
+        .then(res => {
+          if (res.ok) {
+            this.#fetchAndRenderCurrentState();
+            this.#view.disableMove();
+            this.#view.disableTileHighlighting();
+            this.#view.renderEndTurnButton();
+          }
+          return res.json();
+        })
+        .then(({ room, canSuspect }) => {
+          this.#gameService.getCardsInfo().then(cardsInfo => {
+            this.#view.renderSuspicionDialog({ room, canSuspect, cardsInfo });
+            this.#gameService.startSuspicion();
+          });
+        })
     );
 
     this.#view.addListener("startAccusation", () => {
@@ -197,6 +220,11 @@ class GameController {
         this.#view.renderAccusationResult(accusationResult);
         this.#view.disableMove();
       });
+    });
+
+    this.#view.addListener("suspect", suspicionCombination => {
+      this.#gameService.suspect(suspicionCombination);
+      this.#view.disableMove();
     });
 
     this.#view.addListener("rollDice", () => {

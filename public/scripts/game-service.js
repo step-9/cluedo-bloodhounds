@@ -74,4 +74,23 @@ class GameService {
   getLastDiceRollCombination() {
     return fetch("/game/dice-combination").then(res => res.json());
   }
+
+  startSuspicion() {
+    return fetch("/game/suspicion-state", {
+      method: "PATCH",
+      body: JSON.stringify({ isSuspecting: true })
+    });
+  }
+
+  getSuspicionCombination() {
+    return fetch("/game/suspicion-combination").then(res => res.json());
+  }
+
+  suspect(suspicionCombination) {
+    return fetch("/game/suspect", {
+      method: "POST",
+      body: JSON.stringify(suspicionCombination),
+      headers: { "content-type": "application/json" }
+    });
+  }
 }

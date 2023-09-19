@@ -13,9 +13,11 @@ class Game {
   #canRollDice;
   #action;
   #lastAccusationCombination;
+  #lastSuspicionCombination;
   #lastDiceCombination;
   #possiblePositions;
   #canMovePawn;
+  #isSuspecting;
 
   constructor({ players, board, killingCombination }) {
     this.#board = board;
@@ -33,6 +35,7 @@ class Game {
     this.#killingCombination = killingCombination;
     this.#possiblePositions = {};
     this.#action = null;
+    this.#isSuspecting = false;
   }
 
   #areAllPlayersStranded() {
@@ -60,6 +63,11 @@ class Game {
   toggleIsAccusing() {
     this.#isAccusing = !this.#isAccusing;
     this.#action = "accusing";
+  }
+
+  toggleIsSuspecting() {
+    this.#isSuspecting = !this.#isSuspecting;
+    this.#action = "suspecting";
   }
 
   setAction(action) {
@@ -107,12 +115,22 @@ class Game {
       characterPositions: this.#players.getCharacterPositions(),
       diceRollCombination: this.#lastDiceCombination,
       canRollDice: this.#canRollDice,
-      canMovePawn: this.#canMovePawn
+      canMovePawn: this.#canMovePawn,
+      isSuspecting: this.#isSuspecting
     };
   }
 
   getLastAccusationCombination() {
     return this.#lastAccusationCombination;
+  }
+
+  getLastSuspicionCombination() {
+    return this.#lastSuspicionCombination;
+  }
+
+  validateSuspicion(playerId, suspicionCombination) {
+    this.#lastSuspicionCombination = suspicionCombination;
+    this.#action = "suspected";
   }
 
   getGameOverInfo() {
