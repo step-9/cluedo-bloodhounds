@@ -175,9 +175,23 @@ class GameController {
     this.#eventEmitter.on("diceRolled", currentPlayerId =>
       this.#showLastDiceRollCombination(currentPlayerId)
     );
-    this.#eventEmitter.on("suspecting", currentPlayerId =>
-      this.#markSuspectingPlayer(currentPlayerId)
-    );
+
+    this.#eventEmitter.on("suspecting", currentPlayerId => {
+      this.#markSuspectingPlayer(currentPlayerId);
+
+      if (this.#playerId !== currentPlayerId) return;
+
+      this.#gameService.getLastSuspicionPosition().then(({ room }) => {
+        this.#gameService.getCardsInfo().then(cardsInfo => {
+          this.#view.renderSuspicionDialog({
+            room,
+            canSuspect: true,
+            cardsInfo
+          });
+        });
+      });
+    });
+
     this.#eventEmitter.on("suspected", currentPlayerId =>
       this.#showSuspicion(currentPlayerId)
     );

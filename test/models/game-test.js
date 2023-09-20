@@ -348,4 +348,16 @@ describe("Game", () => {
       assert.strictEqual(game.state().action, "suspecting");
     });
   });
+
+  describe("getLastSuspicionPosition", () => {
+    it("should give the last suspicion position of current player", () => {
+      const game = new Game({
+        players: {
+          getLastSuspicionPosition: () => "lounge"
+        }
+      });
+
+      assert.strictEqual(game.getLastSuspicionPosition(1), "lounge");
+    });
+  });
 });

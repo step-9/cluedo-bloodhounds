@@ -53,6 +53,18 @@ class Players {
     );
   }
 
+  getLastSuspicionPosition(playerId) {
+    const player = this.findPlayer(playerId);
+    if (!player) throw new Error("Player not found");
+    return player.lastSuspicionPosition();
+  }
+
+  updateLastSuspicionPosition(playerId, room) {
+    const player = this.findPlayer(playerId);
+    if (!player) throw new Error("Player not found");
+    player.updateLastSuspicionPosition(room);
+  }
+
   info() {
     return this.#players.map(toPlayerInfo);
   }

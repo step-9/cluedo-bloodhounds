@@ -113,6 +113,7 @@ class Game {
       if (room) {
         result.canSuspect = true;
         result.room = room;
+        this.#players.updateLastSuspicionPosition(playerId, room);
       }
 
       return result;
@@ -233,6 +234,10 @@ class Game {
   start() {
     const currentPlayer = this.#players.getNextPlayer();
     this.#currentPlayerId = currentPlayer.info().id;
+  }
+
+  getLastSuspicionPosition(playerId) {
+    return this.#players.getLastSuspicionPosition(playerId);
   }
 }
 

@@ -15,7 +15,8 @@ const {
   handleRollDice,
   handleStartSuspicionRequest,
   sendLastSuspicionCombination,
-  handleSuspicion
+  handleSuspicion,
+  sendLastSuspicionPosition
 } = require("../handlers/game-handler");
 
 const createGameRouter = () => {
@@ -37,6 +38,7 @@ const createGameRouter = () => {
   gameRouter.patch("/suspicion-state", handleStartSuspicionRequest);
   gameRouter.get("/suspicion-combination", sendLastSuspicionCombination);
   gameRouter.post("/suspect", handleSuspicion);
+  gameRouter.get("/last-suspicion-position", sendLastSuspicionPosition);
 
   return gameRouter;
 };

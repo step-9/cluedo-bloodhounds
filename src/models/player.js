@@ -25,6 +25,10 @@ class Player {
     this.#currentPosition = newPosition;
   }
 
+  updateLastSuspicionPosition(room) {
+    this.#lastSuspicionPosition = room;
+  }
+
   strand() {
     this.#isStranded = true;
     return this;
@@ -41,6 +45,10 @@ class Player {
   answerSuspicion(cards) {
     const matchingCards = cards.filter(card => this.#includesCard(card));
     return matchingCards;
+  }
+
+  lastSuspicionPosition() {
+    return this.#lastSuspicionPosition;
   }
 
   info() {

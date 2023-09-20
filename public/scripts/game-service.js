@@ -93,4 +93,8 @@ class GameService {
       headers: { "content-type": "application/json" }
     });
   }
+
+  getLastSuspicionPosition() {
+    return fetch("/game/last-suspicion-position").then(res => res.json());
+  }
 }

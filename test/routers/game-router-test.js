@@ -227,6 +227,36 @@ describe("PATCH /game/move-pawn", () => {
       .expect(400)
       .end(done);
   });
+
+  it("should move the pawn to a room and update the player's last suspicion position", (context, done) => {
+    const players = {
+      add: context.mock.fn(),
+      info: context.mock.fn(() => "Mock Data"),
+      getNextPlayer: context.mock.fn(() => ({
+        info: () => ({ id: 1 })
+      })),
+      updateLastSuspicionPosition: context.mock.fn(),
+      updatePlayerPosition: () => {},
+      getPlayerPosition: () => {},
+      getCharacterPositions: () => ({})
+    };
+
+    const board = {
+      getPosition: () => ({ room: "lounge", canMove: true })
+    };
+
+    const game = new Game({ players, board });
+    const app = createApp();
+    app.context = { game };
+
+    game.start();
+
+    request(app)
+      .patch("/game/move-pawn")
+      .set("Cookie", "playerId=1")
+      .expect(200)
+      .end(done);
+  });
 });
 
 describe("GET /game/cards", () => {
@@ -501,6 +531,22 @@ describe("POST /game/suspect", () => {
       .expect(401)
       .expect("content-type", /application\/json/)
       .expect({ error: "not your turn" })
+      .end(done);
+  });
+});
+
+describe("GET /last-suspicion-position", () => {
+  it("should give the last suspicion position of the current player", (context, done) => {
+    const getLastSuspicionPosition = context.mock.fn(() => "lounge");
+    const game = { getLastSuspicionPosition };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .get("/game/last-suspicion-position")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .expect({ room: "lounge" })
       .end(done);
   });
 });

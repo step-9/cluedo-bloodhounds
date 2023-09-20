@@ -156,6 +156,13 @@ const sendLastSuspicionCombination = (req, res) => {
   res.json({ suspicionCombination });
 };
 
+const sendLastSuspicionPosition = (req, res) => {
+  const { game } = req.app.context;
+  const { playerId } = req.cookies;
+  const room = game.getLastSuspicionPosition(+playerId);
+  res.json({ room });
+};
+
 module.exports = {
   serveGamePage,
   serveInitialGameState,
@@ -172,5 +179,6 @@ module.exports = {
   handleRollDice,
   handleStartSuspicionRequest,
   handleSuspicion,
-  sendLastSuspicionCombination
+  sendLastSuspicionCombination,
+  sendLastSuspicionPosition
 };

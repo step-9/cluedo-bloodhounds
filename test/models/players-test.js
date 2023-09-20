@@ -183,4 +183,48 @@ describe("Players", () => {
       assert.deepStrictEqual(playerPosition, { x: 0, y: 0 });
     });
   });
+
+  describe("getLastSuspicionPosition", () => {
+    it("should give the position of the player mapped to player id", () => {
+      const gourab = new Player({
+        name: "gourab",
+        id: 1,
+        position: { x: 0, y: 0 },
+        cards: []
+      });
+
+      const raj = new Player({
+        name: "raj",
+        id: 2,
+        position: { x: 4, y: 4 },
+        cards: []
+      });
+      const players = new Players([gourab, raj]);
+
+      players.updateLastSuspicionPosition(1, "lounge");
+      const lastSuspicionPosition = players.getLastSuspicionPosition(1);
+
+      assert.strictEqual(lastSuspicionPosition, "lounge");
+    });
+
+    it("should throw an error if player doesn't exist", () => {
+      const gourab = new Player({
+        name: "gourab",
+        id: 1,
+        position: { x: 0, y: 0 },
+        cards: []
+      });
+
+      const raj = new Player({
+        name: "raj",
+        id: 2,
+        position: { x: 4, y: 4 },
+        cards: []
+      });
+      const players = new Players([gourab, raj]);
+
+      assert.throws(() => players.updateLastSuspicionPosition(3, "lounge"));
+      assert.throws(() => players.getLastSuspicionPosition(3));
+    });
+  });
 });
