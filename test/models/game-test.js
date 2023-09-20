@@ -279,7 +279,7 @@ describe("Game", () => {
   });
 
   describe("findPossiblePositions", () => {
-    it("Should give the players info", context => {
+    it("Should give all the possible possitions based on the step count", context => {
       const players = {
         info: context.mock.fn(() => "mockData"),
         getCharacterPositions: context.mock.fn(() => ({ 1: { x: 7, y: 7 } })),
@@ -302,6 +302,24 @@ describe("Game", () => {
       };
 
       assert.deepStrictEqual(game.findPossiblePositions(2), expectedPositions);
+    });
+
+    it("Should give possible positions as empty when when there is no where to move", context => {
+      const players = {
+        info: context.mock.fn(() => "mockData"),
+        getCharacterPositions: context.mock.fn(() => ({ 1: { x: 7, y: 5 } })),
+        getPlayerPosition: () => ({ x: 7, y: 5 })
+      };
+
+      const board = new Board({
+        validTiles,
+        rooms
+      });
+
+      const game = new Game({ players, board });
+      const expectedPositions = {};
+
+      assert.deepStrictEqual(game.findPossiblePositions(0), expectedPositions);
     });
   });
 

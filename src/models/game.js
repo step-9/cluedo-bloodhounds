@@ -216,11 +216,18 @@ class Game {
       this.#players.getCharacterPositions()
     );
 
-    return this.#board.getPossibleTiles(
+    const possiblePositions = this.#board.getPossibleTiles(
       stepCount,
       currentPlayerPos,
       characterPositions
     );
+
+    if (Object.keys(possiblePositions).length === 0) {
+      this.#canMovePawn = false;
+      this.#shouldEndTurn = true;
+    }
+
+    return possiblePositions;
   }
 
   start() {

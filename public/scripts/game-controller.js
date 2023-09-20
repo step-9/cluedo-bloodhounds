@@ -236,6 +236,8 @@ class GameController {
         .then(({ diceRollCombination, possiblePositions }) => {
           this.#view.highlightPositions(possiblePositions);
           this.#view.renderDice(diceRollCombination);
+          if (Object.keys(possiblePositions).length === 0)
+            this.#view.renderEndTurnButton();
         });
     });
 
