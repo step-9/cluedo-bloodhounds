@@ -278,6 +278,11 @@ class View {
     const accusationForm = dialog.querySelector("#accuse-form");
     this.#createAndAddSelections(selections, cardsInfo);
     this.#setupAccusationForm(accusationForm, dialog);
+
+    dialog.oncancel = event => {
+      event.preventDefault();
+    };
+
     return dialog;
   }
 
@@ -565,6 +570,10 @@ class View {
     const suspect = cardsInfo.suspect;
     this.#createAndAddSelections(selections, { weapon, suspect, room: [room] });
     this.#setupSuspicionForm(suspicionForm, dialog);
+
+    dialog.oncancel = event => {
+      event.preventDefault();
+    };
     return dialog;
   }
 
