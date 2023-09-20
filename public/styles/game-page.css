@@ -158,7 +158,6 @@ body {
   padding-top: 1em;
   border-radius: 5px;
   color: black;
-  box-shadow: 1px -8px 8px #404040;
   background-color: #ddd;
   border: 2px solid black;
 }
@@ -192,6 +191,10 @@ body {
   flex-direction: column;
   align-items: center;
   position: relative;
+}
+
+#cards > .card {
+  box-shadow: 1px -8px 8px #404040;
 }
 
 #cards > div:nth-child(1) {
