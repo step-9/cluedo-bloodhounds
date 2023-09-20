@@ -11,6 +11,10 @@ class Board {
     return `${x},${y}`;
   }
 
+  #arePosSame(pos1, pos2) {
+    return pos1.x === pos2.x && pos1.y === pos2.y;
+  }
+
   #isValidTile(tileCoordinates, playerPositions) {
     const tilePosition = this.#stringifyTile(tileCoordinates);
     const isValidTile = this.#validTiles.tiles[tilePosition] !== undefined;
@@ -21,17 +25,6 @@ class Board {
     return isValidTile && !isOccupied;
   }
 
-  #arePosSame(pos1, pos2) {
-    return pos1.x === pos2.x && pos1.y === pos2.y;
-  }
-
-  #isValidNeighbour(pos, visited) {
-    return (
-      this.#isValidTile(pos, []) &&
-      !visited.some(pos2 => this.#arePosSame(pos, pos2))
-    );
-  }
-
   #getNeighbours({ x, y }, visited) {
     const neighbours = [];
     neighbours.push({ x: x, y: y + 1 });
@@ -39,7 +32,7 @@ class Board {
     neighbours.push({ x: x + 1, y: y });
     neighbours.push({ x: x - 1, y: y });
 
-    return neighbours.filter(pos => this.#isValidNeighbour(pos, visited));
+    return neighbours.filter(pos => this.#isValidTile(pos, visited));
   }
 
   #getRoomDetails({ x, y }) {
@@ -75,39 +68,37 @@ class Board {
     const neighbours = this.#getNeighbours(startingPos, visited);
 
     neighbours.forEach(pos => {
-      const positions = this.#getPossiblePositions(pos, stepsLeft, [
-        ...visited,
-        startingPos
-      ]);
+      const positions = this.#getPossiblePositions(
+        pos,
+        stepsLeft,
+        visited.concat([startingPos])
+      );
 
-      possiblePositions = { ...possiblePositions, ...positions };
+      Object.assign(possiblePositions, positions);
     });
 
     return possiblePositions;
   }
 
-  #getStartingPositions(room, playerPositions) {
-    const startingPositions = room[1].doors
+  #getStartingPositions(doors, playerPositions) {
+    return doors
       .map(startingPosition =>
-        this.#getNeighbours(startingPosition, [startingPosition])
+        this.#getNeighbours(startingPosition, playerPositions)
       )
       .flat();
-
-    return startingPositions.filter(pos =>
-      this.#isValidNeighbour(pos, playerPositions)
-    );
   }
 
   getPossibleTiles(stepCount, currentPosition, playersPositions = []) {
     let possiblePositions = {};
     let stepsLeft = stepCount;
-    let visited = [...playersPositions];
+    let visited = playersPositions;
     let startingPositions = [currentPosition];
 
     const room = this.#getRoomDetails(currentPosition);
     if (room) {
-      visited = visited.concat(room[1].doors);
-      startingPositions = this.#getStartingPositions(room, playersPositions);
+      const doors = room[1].doors;
+      visited = visited.concat(doors);
+      startingPositions = this.#getStartingPositions(doors, playersPositions);
       stepsLeft -= 1;
     }
 
@@ -118,7 +109,7 @@ class Board {
         visited
       );
 
-      possiblePositions = { ...possiblePositions, ...positions };
+      Object.assign(possiblePositions, positions);
     });
 
     return possiblePositions;
