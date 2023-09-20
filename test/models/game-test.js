@@ -279,7 +279,7 @@ describe("Game", () => {
   });
 
   describe("findPossiblePositions", () => {
-    it("Should give all the possible possitions based on the step count", context => {
+    it("Should give all the possible possitions based on the step", context => {
       const players = {
         info: context.mock.fn(() => "mockData"),
         getCharacterPositions: context.mock.fn(() => ({ 1: { x: 7, y: 7 } })),

@@ -1,5 +1,4 @@
 class Board {
-  //eslint-disable-next-line no-unused-private-class-members
   #rooms;
   #validTiles;
 
@@ -20,25 +19,6 @@ class Board {
     );
 
     return isValidTile && !isOccupied;
-  }
-
-  #calculateAllPossiblePos(stepCount, currentPosition) {
-    const positions = [];
-    let x = 0;
-    let y = stepCount;
-
-    for (let i = 0; i <= stepCount; i++) {
-      for (let j = 0; j <= stepCount; j++) {
-        positions.push({
-          x: x + j + currentPosition.x,
-          y: y - j + currentPosition.y
-        });
-      }
-      x--;
-      y--;
-    }
-
-    return positions;
   }
 
   #arePosSame(pos1, pos2) {
@@ -62,17 +42,6 @@ class Board {
     return neighbours.filter(pos => this.#isValidNeighbour(pos, visited));
   }
 
-  #isPathExists(from, to, stepCount, visited) {
-    if (stepCount < 0) return false;
-    if (this.#arePosSame(from, to) && stepCount === 0) return true;
-    const stepsLeft = stepCount - 1;
-
-    const neighbours = this.#getNeighbours(from, visited);
-    return neighbours.some(pos =>
-      this.#isPathExists(pos, to, stepsLeft, [...visited, from])
-    );
-  }
-
   #getRoomDetails({ x, y }) {
     const rooms = Object.entries(this.#rooms);
 
@@ -85,53 +54,71 @@ class Board {
     });
   }
 
-  #canReachEntrance(from, to, stepCount, visited) {
-    if (stepCount < 0) return false;
+  #isDoor(position) {
+    const doors = Object.values(this.#validTiles.doors);
+    return doors.some(door => this.#arePosSame(door, position));
+  }
 
-    if (this.#arePosSame(from, to) && stepCount >= 0) return true;
+  #getPossiblePositions(startingPos, stepCount, visited) {
+    if (stepCount < 0) return {};
+    if (this.#isDoor(startingPos)) {
+      const [room] = this.#getRoomDetails(startingPos);
+      return { [room]: room };
+    }
+    if (stepCount === 0) {
+      if (!this.#isValidTile(startingPos, visited)) return {};
+      return { [this.#stringifyTile(startingPos)]: startingPos };
+    }
+
     const stepsLeft = stepCount - 1;
+    let possiblePositions = {};
+    const neighbours = this.#getNeighbours(startingPos, visited);
 
-    const neighbours = this.#getNeighbours(from, visited);
-    return neighbours.some(pos =>
-      this.#canReachEntrance(pos, to, stepsLeft, [...visited, from])
+    neighbours.forEach(pos => {
+      const positions = this.#getPossiblePositions(pos, stepsLeft, [
+        ...visited,
+        startingPos
+      ]);
+
+      possiblePositions = { ...possiblePositions, ...positions };
+    });
+
+    return possiblePositions;
+  }
+
+  #getStartingPositions(room, playerPositions) {
+    const startingPositions = room[1].doors
+      .map(startingPosition =>
+        this.#getNeighbours(startingPosition, [startingPosition])
+      )
+      .flat();
+
+    return startingPositions.filter(pos =>
+      this.#isValidNeighbour(pos, playerPositions)
     );
   }
 
   getPossibleTiles(stepCount, currentPosition, playersPositions = []) {
-    const possiblePositions = {};
+    let possiblePositions = {};
+    let stepsLeft = stepCount;
+    let visited = [...playersPositions];
     let startingPositions = [currentPosition];
+
     const room = this.#getRoomDetails(currentPosition);
-    if (room) startingPositions = room[1].doors;
+    if (room) {
+      visited = visited.concat(room[1].doors);
+      startingPositions = this.#getStartingPositions(room, playersPositions);
+      stepsLeft -= 1;
+    }
 
     startingPositions.forEach(startingPos => {
-      this.#calculateAllPossiblePos(stepCount, startingPos).forEach(pos => {
-        if (this.#isValidTile(pos, playersPositions)) {
-          const isPathExists = this.#isPathExists(
-            startingPos,
-            pos,
-            stepCount,
-            playersPositions
-          );
+      const positions = this.#getPossiblePositions(
+        startingPos,
+        stepsLeft,
+        visited
+      );
 
-          if (isPathExists) possiblePositions[`${pos.x},${pos.y}`] = pos;
-        }
-      });
-
-      const currentRoom = this.#getRoomDetails(startingPos) || [];
-      const doors = Object.values(this.#validTiles.doors);
-      doors.forEach(({ x, y, room }) => {
-        if (possiblePositions[room] || room === currentRoom[0]) return;
-        const doorPos = { x, y };
-
-        const canReachEntrance = this.#canReachEntrance(
-          startingPos,
-          doorPos,
-          stepCount,
-          playersPositions
-        );
-
-        if (canReachEntrance) possiblePositions[room] = room;
-      });
+      possiblePositions = { ...possiblePositions, ...positions };
     });
 
     return possiblePositions;
