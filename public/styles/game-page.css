@@ -462,8 +462,9 @@ select {
   background-color: green;
 }
 
-.game-over-msg {
+.game-over-msg,
+.invalidation-msg {
   color: #444;
   text-shadow: 0 0 0 10px blueviolet;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }

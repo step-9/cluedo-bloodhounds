@@ -9,6 +9,11 @@ const createPlayers = playerNames => {
   });
 };
 
+const DAGGER = { type: "weapon", title: "dagger" };
+const MUSTARD = { type: "suspect", title: "mustard" };
+const SPANNER = { type: "weapon", title: "spanner" };
+const LOUNGE = { type: "room", title: "lounge" };
+
 describe("Players", () => {
   describe("getNextPlayer", () => {
     it("should give the next active player", () => {
@@ -225,6 +230,51 @@ describe("Players", () => {
 
       assert.throws(() => players.updateLastSuspicionPosition(3, "lounge"));
       assert.throws(() => players.getLastSuspicionPosition(3));
+    });
+  });
+
+  describe("ruleOutSuspicion", () => {
+    it("should give player who invalidates the suspicion combination along with matching cards", () => {
+      const gourab = new Player({
+        name: "gourab",
+        id: 1,
+        position: { x: 0, y: 0 },
+        cards: [DAGGER, MUSTARD]
+      });
+
+      const raj = new Player({
+        name: "raj",
+        id: 2,
+        position: { x: 4, y: 4 },
+        cards: [SPANNER, LOUNGE]
+      });
+      const players = new Players([gourab, raj]);
+
+      const invalidationResult = players.ruleOutSuspicion(1, [SPANNER, LOUNGE]);
+
+      assert.deepStrictEqual(invalidationResult, {
+        invalidatedBy: 2,
+        matchingCards: [SPANNER, LOUNGE]
+      });
+    });
+
+    it("should give nothing when no player has invalidated the suspicion combination", () => {
+      const gourab = new Player({
+        name: "gourab",
+        id: 1,
+        position: { x: 0, y: 0 },
+        cards: [DAGGER, LOUNGE]
+      });
+
+      const raj = new Player({
+        name: "raj",
+        id: 2,
+        position: { x: 4, y: 4 },
+        cards: [SPANNER]
+      });
+      const players = new Players([gourab, raj]);
+
+      assert.deepStrictEqual(players.ruleOutSuspicion(1, [MUSTARD]), {});
     });
   });
 });

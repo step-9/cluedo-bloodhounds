@@ -150,6 +150,17 @@ class Game {
     this.#action = "suspected";
   }
 
+  ruleOutSuspicion() {
+    const suspicionCombination = Object.entries(
+      this.#lastSuspicionCombination
+    ).map(([type, title]) => ({ type, title }));
+
+    return this.#players.ruleOutSuspicion(
+      this.#currentPlayerId,
+      suspicionCombination
+    );
+  }
+
   getGameOverInfo() {
     return {
       killingCombination: this.#killingCombination,

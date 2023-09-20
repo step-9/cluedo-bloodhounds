@@ -103,12 +103,18 @@ class GameController {
   #showSuspicion(currentPlayerId) {
     this.#gameService
       .getSuspicionCombination()
-      .then(({ suspicionCombination }) => {
+      .then(({ suspicionCombination, invalidatedCard, invalidatedBy }) => {
         this.#view.hideAllMessages();
         const isYourTurn = this.#playerId === currentPlayerId;
-        const name = isYourTurn ? "YOU" : this.#playersNames[currentPlayerId];
+        const name = isYourTurn ? "You" : this.#playersNames[currentPlayerId];
+        const invalidatorName = this.#playersNames[invalidatedBy] || "None";
 
-        this.#view.renderSuspicionCombination(name, suspicionCombination);
+        this.#view.renderSuspicionCombination(
+          name,
+          suspicionCombination,
+          invalidatorName,
+          invalidatedCard
+        );
       });
   }
 

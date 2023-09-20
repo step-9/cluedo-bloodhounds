@@ -482,13 +482,38 @@ describe("PATCH /game/suspicion-state", () => {
 
 describe("GET /game/suspicion-combination", () => {
   it("should give result of last suspicion", (context, done) => {
+    const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
     const getLastSuspicionCombination = context.mock.fn();
-    const game = { getLastSuspicionCombination };
+    const ruleOutSuspicion = context.mock.fn(() => ({
+      invalidatedBy: 2,
+      matchingCards: []
+    }));
+    const game = { getLastSuspicionCombination, ruleOutSuspicion, state };
     const app = createApp();
     app.context = { game };
 
     request(app)
       .get("/game/suspicion-combination")
+      .set("Cookie", "playerId=1")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .end(done);
+  });
+
+  it("should give result of last suspicion", (context, done) => {
+    const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
+    const getLastSuspicionCombination = context.mock.fn();
+    const ruleOutSuspicion = context.mock.fn(() => ({
+      invalidatedBy: 2,
+      matchingCards: []
+    }));
+    const game = { getLastSuspicionCombination, ruleOutSuspicion, state };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .get("/game/suspicion-combination")
+      .set("Cookie", "playerId=2")
       .expect(200)
       .expect("content-type", /application\/json/)
       .end(done);

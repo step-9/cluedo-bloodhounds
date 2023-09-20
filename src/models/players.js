@@ -26,6 +26,10 @@ class Players {
     return this.#players.find(player => player.info().id === playerId);
   }
 
+  findPlayerIndex(playerId) {
+    return this.#players.findIndex(player => player.info().id === playerId);
+  }
+
   getPlayerPosition(playerId) {
     const player = this.findPlayer(playerId);
     return player.getPosition();
@@ -67,6 +71,29 @@ class Players {
 
   info() {
     return this.#players.map(toPlayerInfo);
+  }
+
+  ruleOutSuspicion(suspectingPlayerId, suspicionCombination) {
+    const suspectingPlayerIndex = this.findPlayerIndex(suspectingPlayerId);
+    const totalPlayers = this.#players.length;
+
+    let playerIndex = (suspectingPlayerIndex + 1) % totalPlayers;
+
+    while (playerIndex !== suspectingPlayerIndex) {
+      const player = this.#players[playerIndex];
+      const matchingCards = player.answerSuspicion(suspicionCombination);
+
+      if (matchingCards.length > 0) {
+        return {
+          invalidatedBy: player.info().id,
+          matchingCards
+        };
+      }
+
+      playerIndex = (playerIndex + 1) % totalPlayers;
+    }
+
+    return {};
   }
 }
 

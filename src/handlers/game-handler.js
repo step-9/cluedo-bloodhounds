@@ -152,8 +152,18 @@ const handleSuspicion = (req, res) => {
 
 const sendLastSuspicionCombination = (req, res) => {
   const { game } = req.app.context;
-  const suspicionCombination = game.getLastSuspicionCombination();
-  res.json({ suspicionCombination });
+  const { playerId } = req.cookies;
+  const result = {};
+  result.suspicionCombination = game.getLastSuspicionCombination();
+  const { currentPlayerId } = game.state();
+
+  const { invalidatedBy, matchingCards } = game.ruleOutSuspicion();
+  result.invalidatedBy = invalidatedBy;
+
+  if (currentPlayerId === +playerId)
+    result.invalidatedCard = (matchingCards || [])[0];
+
+  res.json(result);
 };
 
 const sendLastSuspicionPosition = (req, res) => {

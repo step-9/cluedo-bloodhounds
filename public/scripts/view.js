@@ -579,19 +579,33 @@ class View {
     }
   }
 
-  renderSuspicionCombination(suspectorName, suspicionCombination) {
+  renderSuspicionCombination(
+    suspectorName,
+    suspicionCombination,
+    invalidatorName,
+    invalidatedCard
+  ) {
     const message = this.#createGameOverMsg(`${suspectorName} Suspected`);
+    const invalidationMessage = document.createElement("h3");
+    invalidationMessage.innerText = `${invalidatorName} has invalidated ${
+      invalidatedCard?.title || ""
+    }`;
+    invalidationMessage.classList.add("invalidation-msg");
 
     const suspectedCards = this.#createCardElements(suspicionCombination);
     const cardsContainer = this.#createCardsContainer("suspicion-combination");
     cardsContainer.append(...suspectedCards);
 
-    this.#notificationContainer.replaceChildren(message, cardsContainer);
+    this.#notificationContainer.replaceChildren(
+      message,
+      cardsContainer,
+      invalidationMessage
+    );
     this.#notificationContainer.showModal();
 
     setTimeout(() => {
       this.#notificationContainer.close();
-    }, 4000);
+    }, 8000);
   }
 
   isSuspicionDialogPresent() {

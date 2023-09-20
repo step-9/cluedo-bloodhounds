@@ -360,4 +360,27 @@ describe("Game", () => {
       assert.strictEqual(game.getLastSuspicionPosition(1), "lounge");
     });
   });
+
+  describe("ruleOutSuspicion", () => {
+    it("should give id of the invalidator and matching cards", () => {
+      const DAGGER = { type: "weapon", title: "dagger" };
+      const MUSTARD = { type: "suspect", title: "mustard" };
+
+      const game = new Game({
+        players: {
+          ruleOutSuspicion: () => ({
+            invalidatedBy: 2,
+            matchingCards: [DAGGER, MUSTARD]
+          })
+        }
+      });
+
+      game.validateSuspicion(1, { weapon: "dagger", suspect: "mustard" });
+
+      assert.deepStrictEqual(game.ruleOutSuspicion(), {
+        invalidatedBy: 2,
+        matchingCards: [DAGGER, MUSTARD]
+      });
+    });
+  });
 });
