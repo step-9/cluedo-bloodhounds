@@ -8,8 +8,19 @@
 }
 
 .highlight-tile {
-  fill: hsl(30, 52%, 60%);
+  fill: hsl(30 52% 60%);
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   cursor: pointer;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
 .start-tile {
