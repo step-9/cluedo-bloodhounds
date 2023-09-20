@@ -593,4 +593,8 @@ class View {
       this.#notificationContainer.close();
     }, 4000);
   }
+
+  isSuspicionDialogPresent() {
+    return document.querySelector("#suspicion-popup");
+  }
 }

@@ -181,6 +181,8 @@ class GameController {
 
       if (this.#playerId !== currentPlayerId) return;
 
+      if (this.#view.isSuspicionDialogPresent()) return;
+
       this.#gameService.getLastSuspicionPosition().then(({ room }) => {
         this.#gameService.getCardsInfo().then(cardsInfo => {
           this.#view.renderSuspicionDialog({
