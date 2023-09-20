@@ -224,6 +224,7 @@ class Game {
     const currentPlayerPos = this.#players.getPlayerPosition(
       this.#currentPlayerId
     );
+    
     const characterPositions = Object.values(
       this.#players.getCharacterPositions()
     );

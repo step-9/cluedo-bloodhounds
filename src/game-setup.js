@@ -47,7 +47,6 @@ const shuffleAndDealCards = (playersData, cards) => {
 
 const assignCharacters = (playersData, shuffler) => {
   const characters = cardsData.suspect;
-  console.log(characters);
   return shuffler.shuffle(playersData).map(getCharacterAssigner(characters));
 };
 
