@@ -246,6 +246,7 @@ describe("PATCH /game/move-pawn", () => {
     };
 
     const game = new Game({ players, board });
+    game.updateDiceCombination([]);
     const app = createApp();
     app.context = { game };
 

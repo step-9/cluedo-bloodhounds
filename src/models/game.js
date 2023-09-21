@@ -1,21 +1,22 @@
 class Game {
   #board;
   #players;
-  #currentPlayerId;
-  #isAccusing;
-  #isGameWon;
-  #isGameOver;
-  #strandedPlayerIds;
-  #isPlayerMovable;
-  #shouldEndTurn;
   #killingCombination;
-  #canAccuse;
-  #canRollDice;
-  #action;
+  #currentPlayerId;
   #lastAccusationCombination;
   #lastSuspicionCombination;
   #lastDiceCombination;
   #possiblePositions;
+  #action;
+  #isGameWon;
+  #isGameOver;
+
+  #strandedPlayerIds;
+
+  #isAccusing;
+  #shouldEndTurn;
+  #canAccuse;
+  #canRollDice;
   #canMovePawn;
   #isSuspecting;
 
@@ -27,7 +28,6 @@ class Game {
     this.#isGameWon = false;
     this.#isGameOver = false;
     this.#strandedPlayerIds = [];
-    this.#isPlayerMovable = true;
     this.#canAccuse = true;
     this.#canRollDice = true;
     this.#shouldEndTurn = false;
@@ -53,7 +53,6 @@ class Game {
   changeTurn() {
     const currentPlayer = this.#players.getNextPlayer();
     this.#currentPlayerId = currentPlayer.info().id;
-    this.#isPlayerMovable = true;
     this.#canAccuse = true;
     this.#shouldEndTurn = false;
     this.#canRollDice = true;
@@ -85,7 +84,7 @@ class Game {
 
   movePawn(tileCoordinates, playerId) {
     const isCurrentPlayer = playerId === this.#currentPlayerId;
-    if (!isCurrentPlayer || !this.#isPlayerMovable) return { isMoved: false };
+    if (!isCurrentPlayer || !this.#canMovePawn) return { isMoved: false };
     const stepCount = this.#lastDiceCombination.reduce((sum, a) => sum + a, 0);
 
     const currentPlayerPos = this.#players.getPlayerPosition(
@@ -103,7 +102,7 @@ class Game {
     );
 
     if (canMove) {
-      this.#isPlayerMovable = false;
+      this.#canMovePawn = false;
       this.#shouldEndTurn = true;
       this.#canAccuse = true;
       this.#players.updatePlayerPosition(playerId, newPos);
@@ -224,7 +223,7 @@ class Game {
     const currentPlayerPos = this.#players.getPlayerPosition(
       this.#currentPlayerId
     );
-    
+
     const characterPositions = Object.values(
       this.#players.getCharacterPositions()
     );
