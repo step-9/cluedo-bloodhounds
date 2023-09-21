@@ -106,15 +106,17 @@ class GameController {
       .then(({ suspicionCombination, invalidatedCard, invalidatedBy }) => {
         this.#view.hideAllMessages();
         const isYourTurn = this.#playerId === currentPlayerId;
-        const name = isYourTurn ? "You" : this.#playersNames[currentPlayerId];
+        const suspectorName = isYourTurn
+          ? "You"
+          : this.#playersNames[currentPlayerId];
         const invalidatorName = this.#playersNames[invalidatedBy] || "None";
 
-        this.#view.renderSuspicionCombination(
-          name,
+        this.#view.renderSuspicionCombination({
+          suspectorName,
           suspicionCombination,
           invalidatorName,
           invalidatedCard
-        );
+        });
       });
   }
 
@@ -277,6 +279,8 @@ class GameController {
     this.#gameService.getCardsInfo().then(cardsInfo => {
       this.#view.setupAccuseDialog(cardsInfo);
     });
+
+    this.#view.setup();
 
     this.#pollingInterval = setInterval(
       () => this.#fetchAndRenderCurrentState(),

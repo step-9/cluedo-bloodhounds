@@ -4,7 +4,8 @@
     <link rel="stylesheet" href="/styles/game-page.css" />
     <link rel="stylesheet" href="/styles/avatar.css" />
     <link rel="stylesheet" href="/styles/tiles.css" />
-    <script src="/scripts/view.js"></script>
+    <script src="/scripts/views/popup-view.js"></script>
+    <script src="/scripts/views/view.js"></script>
     <script src="/scripts/common.js"></script>
     <script src="/scripts/event-emitter.js"></script>
     <script src="/scripts/game-service.js"></script>
@@ -21,8 +22,11 @@
       </section>
 
       <section id="middle-pane">
-        <dialog class="popup result-container"></dialog>
-        <dialog id="notification" class="popup result-container"></dialog>
+        <dialog id="result-container" class="popup result-container"></dialog>
+        <dialog
+          id="notification-container"
+          class="popup result-container"
+        ></dialog>
         <div id="board"></div>
       </section>
 
