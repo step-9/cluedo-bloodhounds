@@ -27,26 +27,38 @@
   ry: 15;
 }
 
-.mustard-pawn {
+#mustard-pawn {
   fill: yellow;
+  stroke: hsl(0, 0%, 30%);
+  stroke-width: 20px;
 }
 
-.scarlet-pawn {
+#scarlet-pawn {
   fill: red;
+  stroke: hsl(0, 0%, 30%);
+  stroke-width: 20px;
 }
 
-.white-pawn {
+#white-pawn {
   fill: white;
+  stroke: hsl(0, 0%, 30%);
+  stroke-width: 20px;
 }
 
-.green-pawn {
+#green-pawn {
   fill: green;
+  stroke: hsl(0, 0%, 30%);
+  stroke-width: 20px;
 }
 
-.peacock-pawn {
+#peacock-pawn {
   fill: #0000ff;
+  stroke: hsl(0, 0%, 30%);
+  stroke-width: 20px;
 }
 
-.plum-pawn {
+#plum-pawn {
   fill: #800080;
+  stroke: hsl(0, 0%, 30%);
+  stroke-width: 20px;
 }

@@ -46,14 +46,34 @@ class View {
     currentPlayer.classList.add("highlight");
   }
 
-  updateCharacterPositions(characterPositions) {
-    Object.entries(characterPositions).forEach(([character, { x, y }]) => {
-      const pawn = `${character}-pawn`;
-      const previousPositionElement = document.querySelector(`.${pawn}`);
-      previousPositionElement?.classList.remove(pawn);
+  #createMarker(x, y) {
+    const marker = document.querySelector("#marker");
+    const tile = document.getElementById(`${x},${y}`);
+    const xCoordinate = tile.x.baseVal.value;
+    const yCoordinate = tile.y.baseVal.value;
+    const xOffset = 3.2;
+    const yOffset = -8;
+    const pawnMarker = marker.cloneNode(true);
 
-      const currentPositionElement = document.getElementById(`${x},${y}`);
-      currentPositionElement.classList.add(pawn);
+    pawnMarker.setAttribute("x", xCoordinate + xOffset);
+    pawnMarker.setAttribute("y", yCoordinate + yOffset);
+
+    return pawnMarker;
+  }
+
+  updateCharacterPositions(characterPositions) {
+    const boardSvg = document.querySelector("#g13");
+
+    Object.entries(characterPositions).forEach(([character, { x, y }]) => {
+      const pawnName = `${character}-pawn`;
+
+      const lastPawnElement = document.querySelector(`#${pawnName}`);
+      lastPawnElement?.remove();
+
+      const pawnMarker = this.#createMarker(x, y);
+      pawnMarker.id = pawnName;
+
+      boardSvg.append(pawnMarker);
     });
   }
 
@@ -313,7 +333,6 @@ class View {
 
   setup() {
     const { playAgain, accuse, suspect } = this.#listeners;
-
     this.#popupView.addListener("renderEndTurnButton", () =>
       this.renderEndTurnButton()
     );

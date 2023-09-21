@@ -4663,7 +4663,7 @@ y=&quot;230.85973&quot; width=&quot;30&quot; height=&quot;30&quot; style=&quot;f
        d="M 172.268,501.67 C 26.97,291.031 0,269.413 0,192 0,85.961 85.961,0 192,0 c 106.039,0 192,85.961 192,192 0,77.413 -26.97,99.031 -172.268,309.67 -9.535,13.774 -29.93,13.773 -39.464,0 z"
       />
     <circle
-       style="fill:#f2f2f2;stroke-width:0.108596;stroke-linejoin:bevel"
+       style="fill:hsl(0 0% 90% / 1);stroke-width:10px;stroke-linejoin:bevel"
        cx="192.09845"
        cy="191.99371"
        r="79.81041" />
