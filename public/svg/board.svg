@@ -115,7 +115,7 @@ y=&quot;230.85973&quot; width=&quot;30&quot; height=&quot;30&quot; style=&quot;f
    y="260.85974"
    width="30"
    height="30"
-   style="fill:#800080;stroke:#000000;stroke-width:1"
+   style="fill:hsl(300 100% 15%);stroke:#000000;stroke-width:1"
    id="0,5"
    class="start-tile" />
 <rect
@@ -569,7 +569,7 @@ y=&quot;230.85973&quot; width=&quot;30&quot; height=&quot;30&quot; style=&quot;f
    y="650.85974"
    width="30"
    height="30"
-   style="fill:#0000ff;stroke:#000000;stroke-width:1"
+   style="fill:hsl(240 100% 30%);stroke:#000000;stroke-width:1"
    id="0,18"
    class="start-tile" />
 <rect
@@ -2928,7 +2928,7 @@ y=&quot;230.85973&quot; width=&quot;30&quot; height=&quot;30&quot; style=&quot;f
    y="320.85974"
    width="30"
    height="30"
-   style="fill:#ffff00;stroke:#000000;stroke-width:1"
+   style="fill:hsl(60 100% 40%);stroke:#000000;stroke-width:1"
    id="23,7"
    class="start-tile" />
 <rect
@@ -4471,7 +4471,7 @@ y=&quot;230.85973&quot; width=&quot;30&quot; height=&quot;30&quot; style=&quot;f
    y="830.85974"
    width="30"
    height="30"
-   style="fill:#008000;stroke:#000000;stroke-width:1"
+   style="fill:hsl(120 100% 15%);stroke:#000000;stroke-width:1"
    id="9,24"
    class="start-tile" />
 <rect
@@ -4507,7 +4507,7 @@ y=&quot;230.85973&quot; width=&quot;30&quot; height=&quot;30&quot; style=&quot;f
    y="830.85974"
    width="30"
    height="30"
-   style="fill:#ffffff;stroke:#000000;stroke-width:1"
+   style="fill:hsl(0 0% 80% / 1);stroke:#000000;stroke-width:1"
    id="14,24"
    class="start-tile" />
 <rect
