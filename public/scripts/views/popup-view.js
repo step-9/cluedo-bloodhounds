@@ -15,6 +15,45 @@ class PopupView {
     this.#listeners[eventName] = listener;
   }
 
+  notifyPlayerStranded(accuserName, accusationCombination) {
+    const message = this.#createGameOverMsg(`${accuserName} Stranded!!`);
+
+    const accusedCards = this.#createCardElements(accusationCombination);
+    const cardsContainer = this.#createCardsContainer("accusation-combination");
+    cardsContainer.append(...accusedCards);
+
+    this.#notificationContainer.replaceChildren(message, cardsContainer);
+    this.#notificationContainer.showModal();
+
+    setTimeout(() => {
+      this.#notificationContainer.close();
+    }, 3000);
+  }
+
+  #createCardElement(title) {
+    return this.#htmlGenerator(["div", { class: "card" }, title]);
+  }
+
+  #createMessageElement(message) {
+    return this.#htmlGenerator([
+      "h3",
+      { id: "accusation-result-message" },
+      message
+    ]);
+  }
+
+  #createCardElements({ weapon, room, suspect }) {
+    const roomCard = this.#createCardElement(room);
+    const suspectCard = this.#createCardElement(suspect);
+    const weaponCard = this.#createCardElement(weapon);
+
+    return [roomCard, suspectCard, weaponCard];
+  }
+
+  #createCardsContainer(id) {
+    return this.#htmlGenerator(["div", { id }, []]);
+  }
+
   #createButton(value, id) {
     return this.#htmlGenerator([
       "input",
@@ -25,38 +64,6 @@ class PopupView {
         class: "button"
       },
       []
-    ]);
-  }
-
-  #createAccuseDialogFrame() {
-    return this.#htmlGenerator([
-      "dialog",
-      { id: "accusation-popup", class: "popup" },
-      [
-        ["h3", { class: "popup-header" }, "Select Accusation Combination"],
-        [
-          "form",
-          { id: "accuse-form" },
-          [
-            ["div", { class: "selections" }, []],
-            [
-              "div",
-              { id: "buttons" },
-              [
-                [
-                  "button",
-                  {
-                    value: "default",
-                    id: "accuse-confirm-btn",
-                    class: "button"
-                  },
-                  "Confirm"
-                ]
-              ]
-            ]
-          ]
-        ]
-      ]
     ]);
   }
 
@@ -113,6 +120,38 @@ class PopupView {
     return { room, weapon, suspect };
   }
 
+  #createAccuseDialogFrame() {
+    return this.#htmlGenerator([
+      "dialog",
+      { id: "accusation-popup", class: "popup" },
+      [
+        ["h3", { class: "popup-header" }, "Select Accusation Combination"],
+        [
+          "form",
+          { id: "accuse-form" },
+          [
+            ["div", { class: "selections" }, []],
+            [
+              "div",
+              { id: "buttons" },
+              [
+                [
+                  "button",
+                  {
+                    value: "default",
+                    id: "accuse-confirm-btn",
+                    class: "button"
+                  },
+                  "Confirm"
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]);
+  }
+
   #setupAccusationForm(accusationForm, dialog) {
     accusationForm.onsubmit = event => {
       event.preventDefault();
@@ -133,100 +172,12 @@ class PopupView {
     return dialog;
   }
 
-  #createGameOverMsg(message) {
-    return this.#htmlGenerator(["h3", { class: "game-over-msg" }, message]);
-  }
-
-  #createHomeBtn() {
-    const btn = this.#createButton("Play Again", "home");
-    btn.onclick = () => this.#listeners.playAgain();
-    return btn;
-  }
-
-  #displayAllPlayersStranded(killingCombination) {
-    const message = this.#createGameOverMsg("All Players stranded");
-    const secretCards = this.#createCardElements(killingCombination);
-    const cardsContainer = this.#createCardsContainer("killing-combination");
-    cardsContainer.append(...secretCards);
-    const btn = this.#createHomeBtn();
-    this.#resultContainer.replaceChildren(message, cardsContainer, btn);
-    this.#resultContainer.showModal();
-  }
-
-  #displayWinner(playerName, killingCombination) {
-    const message = this.#createGameOverMsg(`${playerName} Won!!`);
-    const btn = this.#createHomeBtn();
-    const secretCards = this.#createCardElements(killingCombination);
-    const cardsContainer = this.#createCardsContainer("killing-combination");
-    cardsContainer.append(...secretCards);
-    this.#resultContainer.replaceChildren(message, cardsContainer, btn);
-    this.#resultContainer.showModal();
-  }
-
-  displayGameOver({
-    isYourTurn,
-    isGameWon,
-    playerNames,
-    currentPlayerId,
-    killingCombination
-  }) {
-    if (isYourTurn) {
-      return setTimeout(() => {
-        if (!isGameWon)
-          return this.#displayAllPlayersStranded(killingCombination);
-        this.#displayWinner(playerNames[currentPlayerId], killingCombination);
-      }, 2000);
-    }
-
-    if (!isGameWon) return this.#displayAllPlayersStranded(killingCombination);
-    this.#displayWinner(playerNames[currentPlayerId], killingCombination);
-  }
-
-  notifyPlayerStranded(accuserName, accusationCombination) {
-    const message = this.#createGameOverMsg(`${accuserName} Stranded!!`);
-
-    const accusedCards = this.#createCardElements(accusationCombination);
-    const cardsContainer = this.#createCardsContainer("accusation-combination");
-    cardsContainer.append(...accusedCards);
-
-    this.#notificationContainer.replaceChildren(message, cardsContainer);
-    this.#notificationContainer.showModal();
-
-    setTimeout(() => {
-      this.#notificationContainer.close();
-    }, 3000);
-  }
-
   setupAccuseDialog(cardsInfo) {
     const accuseDialog = this.#createAccuseDialog(cardsInfo);
     accuseDialog.oncancel = event => {
       event.preventDefault();
     };
     this.#middlePane.append(accuseDialog);
-  }
-
-  #createCardElement(title) {
-    return this.#htmlGenerator(["div", { class: "card" }, title]);
-  }
-
-  #createMessageElement(message) {
-    return this.#htmlGenerator([
-      "h3",
-      { id: "accusation-result-message" },
-      message
-    ]);
-  }
-
-  #createCardElements({ weapon, room, suspect }) {
-    const roomCard = this.#createCardElement(room);
-    const suspectCard = this.#createCardElement(suspect);
-    const weaponCard = this.#createCardElement(weapon);
-
-    return [roomCard, suspectCard, weaponCard];
-  }
-
-  #createCardsContainer(id) {
-    return this.#htmlGenerator(["div", { id }, []]);
   }
 
   renderAccusationResult({ killingCombination, isWon }) {
@@ -350,6 +301,55 @@ class PopupView {
     setTimeout(() => {
       this.#notificationContainer.close();
     }, 4000);
+  }
+
+  #createGameOverMsg(message) {
+    return this.#htmlGenerator(["h3", { class: "game-over-msg" }, message]);
+  }
+
+  #createHomeBtn() {
+    const btn = this.#createButton("Play Again", "home");
+    btn.onclick = () => this.#listeners.playAgain();
+    return btn;
+  }
+
+  #displayAllPlayersStranded(killingCombination) {
+    const message = this.#createGameOverMsg("All Players stranded");
+    const secretCards = this.#createCardElements(killingCombination);
+    const cardsContainer = this.#createCardsContainer("killing-combination");
+    cardsContainer.append(...secretCards);
+    const btn = this.#createHomeBtn();
+    this.#resultContainer.replaceChildren(message, cardsContainer, btn);
+    this.#resultContainer.showModal();
+  }
+
+  #displayWinner(playerName, killingCombination) {
+    const message = this.#createGameOverMsg(`${playerName} Won!!`);
+    const btn = this.#createHomeBtn();
+    const secretCards = this.#createCardElements(killingCombination);
+    const cardsContainer = this.#createCardsContainer("killing-combination");
+    cardsContainer.append(...secretCards);
+    this.#resultContainer.replaceChildren(message, cardsContainer, btn);
+    this.#resultContainer.showModal();
+  }
+
+  displayGameOver({
+    isYourTurn,
+    isGameWon,
+    playerNames,
+    currentPlayerId,
+    killingCombination
+  }) {
+    if (isYourTurn) {
+      return setTimeout(() => {
+        if (!isGameWon)
+          return this.#displayAllPlayersStranded(killingCombination);
+        this.#displayWinner(playerNames[currentPlayerId], killingCombination);
+      }, 2000);
+    }
+
+    if (!isGameWon) return this.#displayAllPlayersStranded(killingCombination);
+    this.#displayWinner(playerNames[currentPlayerId], killingCombination);
   }
 
   setup() {
