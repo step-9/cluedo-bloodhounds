@@ -54,7 +54,9 @@ const setupGame = (playersData, cards, shuffler) => {
   const killingCombination = cards.getKillingCombination();
   const playersInfoWithCharacter = assignCharacters(playersData, shuffler);
   const playersInfo = shuffleAndDealCards(playersInfoWithCharacter, cards);
-  const playerInstances = playersInfo.map(playerInfo => new Player(playerInfo));
+  const playerInstances = playersInfo.map(playerInfo =>
+    new Player(playerInfo).setupInitialPermissions()
+  );
   const players = new Players(playerInstances);
 
   return { players, killingCombination };

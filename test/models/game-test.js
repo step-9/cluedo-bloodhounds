@@ -4,19 +4,34 @@ const Game = require("../../src/models/game");
 const Board = require("../../src/models/board");
 const rooms = require("../../resources/rooms.json");
 const validTiles = require("../../resources/valid-tiles.json");
+const Player = require("../../src/models/player");
+const Players = require("../../src/models/players");
+
+const createPlayer = (id, name, cards, character, position) =>
+  new Player({
+    id,
+    name,
+    character,
+    cards,
+    position
+  }).setupInitialPermissions();
+
+const createPlayers = () => {
+  const gourab = new Player({
+    id: 1,
+    name: "gourab",
+    cards: [],
+    character: "mustard",
+    position: { x: 1, y: 4 }
+  }).setupInitialPermissions();
+
+  return new Players([gourab]);
+};
 
 describe("Game", () => {
   describe("start", () => {
     it("should start the game", context => {
-      const players = {
-        add: context.mock.fn(),
-        info: context.mock.fn(() => "Mock Data"),
-        getCharacterPositions: context.mock.fn(),
-        getNextPlayer: context.mock.fn(() => ({
-          info: () => ({ id: 1 })
-        }))
-      };
-
+      const players = createPlayers();
       const game = new Game({ players });
 
       game.start();
@@ -33,13 +48,7 @@ describe("Game", () => {
 
   describe("getCardsOfPlayer", () => {
     it("should give the cards of player with given id", context => {
-      const player = {
-        info: context.mock.fn(() => ({ cards: [] }))
-      };
-      const players = {
-        findPlayer: context.mock.fn(() => player)
-      };
-
+      const players = createPlayers();
       const game = new Game({ players });
 
       assert.deepStrictEqual(game.getCardsOfPlayer(1), []);
@@ -48,14 +57,7 @@ describe("Game", () => {
 
   describe("state", () => {
     it("Should give the current game state", context => {
-      const player = {
-        info: context.mock.fn(() => ({ id: 1 }))
-      };
-      const players = {
-        getNextPlayer: context.mock.fn(() => player),
-        getCharacterPositions: () => {},
-        info: context.mock.fn(() => ({ id: 1 }))
-      };
+      const players = createPlayers();
       const game = new Game({ players });
 
       game.start();
@@ -66,15 +68,7 @@ describe("Game", () => {
 
   describe("change turn", () => {
     it("should change the current player to the next player", context => {
-      const player = {
-        info: context.mock.fn(() => ({ id: 1 }))
-      };
-
-      const players = {
-        getNextPlayer: context.mock.fn(() => player),
-        getCharacterPositions: () => {},
-        info: context.mock.fn(() => ({ id: 1 }))
-      };
+      const players = createPlayers();
 
       const game = new Game({ players });
 
@@ -86,14 +80,11 @@ describe("Game", () => {
   });
 
   describe("toggleIsAccusing", () => {
-    it("should toggle the isAccusing status", context => {
-      const game = new Game({
-        players: {
-          getCharacterPositions: () => {},
-          info: context.mock.fn(() => [])
-        }
-      });
+    it("should toggle the isAccusing status", () => {
+      const players = createPlayers();
+      const game = new Game({ players });
 
+      game.start();
       game.toggleIsAccusing();
 
       assert.strictEqual(game.state().action, "accusing");
@@ -108,14 +99,9 @@ describe("Game", () => {
         suspect: "mustard"
       };
 
-      const game = new Game({
-        players: {
-          getCharacterPositions: () => {},
-          strandPlayer: () => {},
-          info: context.mock.fn(() => [])
-        },
-        killingCombination
-      });
+      const players = createPlayers();
+      const game = new Game({ players, killingCombination });
+      game.start();
 
       const expectedAccusationResult = {
         killingCombination: {
@@ -141,15 +127,9 @@ describe("Game", () => {
         room: "lounge",
         suspect: "plum"
       };
-
-      const game = new Game({
-        players: {
-          getCharacterPositions: () => {},
-          info: context.mock.fn(() => []),
-          strandPlayer: context.mock.fn()
-        },
-        killingCombination
-      });
+      const players = createPlayers();
+      const game = new Game({ players, killingCombination });
+      game.start();
 
       const playerId = 1;
       const playerAccusation = { ...killingCombination, suspect: "mustard" };
@@ -175,15 +155,9 @@ describe("Game", () => {
         room: "lounge",
         suspect: "plum"
       };
-
-      const game = new Game({
-        players: {
-          getCharacterPositions: () => {},
-          strandPlayer: () => {},
-          info: context.mock.fn(() => [])
-        },
-        killingCombination
-      });
+      const players = createPlayers();
+      const game = new Game({ players, killingCombination });
+      game.start();
 
       const accusingCombination = {
         weapon: "dagger",
@@ -202,13 +176,8 @@ describe("Game", () => {
 
   describe("getLastSuspicionCombination", () => {
     it("Should give the suspicion combination of last validation", context => {
-      const game = new Game({
-        players: {
-          getCharacterPositions: () => {},
-          strandPlayer: () => {},
-          info: context.mock.fn(() => [])
-        }
-      });
+      const players = createPlayers();
+      const game = new Game({ players });
 
       const suspicionCombination = {
         weapon: "dagger",
@@ -225,28 +194,23 @@ describe("Game", () => {
     });
   });
 
-  describe("setAction", () => {
-    it("Should set Action of game", () => {
-      const game = new Game({});
-      game.setAction("mockAction");
-
-      assert.strictEqual(game.state().action, "mockAction");
-    });
-  });
-
   describe("getCharacterPositions", () => {
     it("Should give the current positions of all characters", context => {
-      const getCharacterPositions = context.mock.fn(() => ({}));
-      const players = { getCharacterPositions };
+      const players = createPlayers();
       const game = new Game({ players });
+      game.start();
 
-      assert.deepStrictEqual(game.getCharacterPositions(), {});
+      assert.deepStrictEqual(game.getCharacterPositions(), {
+        mustard: { x: 1, y: 4 }
+      });
     });
   });
 
   describe("getLastDiceCombination", () => {
     it("Should give the last dice combination", () => {
-      const game = new Game({});
+      const players = createPlayers();
+      const game = new Game({ players });
+      game.start();
       game.updateDiceCombination([4, 4]);
 
       assert.deepStrictEqual(game.getLastDiceCombination(), [4, 4]);
@@ -255,23 +219,32 @@ describe("Game", () => {
 
   describe("playersInfo", () => {
     it("Should give the players info", context => {
-      const players = {
-        info: context.mock.fn(() => "mockData"),
-        getCharacterPositions: context.mock.fn(() => "mockData")
-      };
-
+      const players = createPlayers();
       const game = new Game({ players });
+
+      game.start();
       const expectedPlayerInfo = {
-        players: "mockData",
-        currentPlayerId: null,
+        players: [
+          {
+            cards: [],
+            id: 1,
+            name: "gourab",
+            character: "mustard",
+            isStranded: false,
+            currentPosition: { x: 1, y: 4 },
+            lastSuspicionPosition: null
+          }
+        ],
+        currentPlayerId: 1,
         strandedPlayerIds: [],
-        canAccuse: true,
-        shouldEndTurn: false,
-        characterPositions: "mockData",
+        characterPositions: { mustard: { x: 1, y: 4 } },
         diceRollCombination: [0, 0],
+        isAccusing: false,
+        isSuspecting: false,
+        canAccuse: true,
         canRollDice: true,
         canMovePawn: false,
-        isSuspecting: false
+        shouldEndTurn: false
       };
 
       assert.deepStrictEqual(game.playersInfo(), expectedPlayerInfo);
@@ -279,19 +252,15 @@ describe("Game", () => {
   });
 
   describe("findPossiblePositions", () => {
-    it("Should give all the possible possitions based on the step", context => {
-      const players = {
-        info: context.mock.fn(() => "mockData"),
-        getCharacterPositions: context.mock.fn(() => ({ 1: { x: 7, y: 7 } })),
-        getPlayerPosition: () => ({ x: 7, y: 5 })
-      };
-
-      const board = new Board({
-        validTiles,
-        rooms
-      });
-
+    it("Should give all the possible possitions based on the step", () => {
+      const sauma = createPlayer(1, "sauma", [], "green", { x: 7, y: 5 });
+      const gourab = createPlayer(2, "gourab", [], "plum", { x: 7, y: 7 });
+      const players = new Players([sauma, gourab]);
+      const board = new Board({ validTiles, rooms });
       const game = new Game({ players, board });
+
+      game.start();
+
       const expectedPositions = {
         "8,6": { x: 8, y: 6 },
         "6,6": { x: 6, y: 6 },
@@ -304,19 +273,13 @@ describe("Game", () => {
       assert.deepStrictEqual(game.findPossiblePositions(2), expectedPositions);
     });
 
-    it("Should give possible positions as empty when when there is no where to move", context => {
-      const players = {
-        info: context.mock.fn(() => "mockData"),
-        getCharacterPositions: context.mock.fn(() => ({ 1: { x: 7, y: 5 } })),
-        getPlayerPosition: () => ({ x: 7, y: 5 })
-      };
-
-      const board = new Board({
-        validTiles,
-        rooms
-      });
-
+    it("Should give possible positions as empty when when there is no where to move", () => {
+      const sauma = createPlayer(1, "sauma", [], "green", { x: 7, y: 5 });
+      const players = new Players([sauma]);
+      const board = new Board({ validTiles, rooms });
       const game = new Game({ players, board });
+
+      game.start();
       const expectedPositions = {};
 
       assert.deepStrictEqual(game.findPossiblePositions(0), expectedPositions);
@@ -335,14 +298,11 @@ describe("Game", () => {
   });
 
   describe("toggleIsSuspecting", () => {
-    it("should toggle the isSuspecting status", context => {
-      const game = new Game({
-        players: {
-          getCharacterPositions: () => {},
-          info: context.mock.fn(() => [])
-        }
-      });
+    it("should toggle the isSuspecting status", () => {
+      const players = createPlayers();
+      const game = new Game({ players });
 
+      game.start();
       game.toggleIsSuspecting();
 
       assert.strictEqual(game.state().action, "suspecting");
@@ -366,15 +326,16 @@ describe("Game", () => {
       const DAGGER = { type: "weapon", title: "dagger" };
       const MUSTARD = { type: "suspect", title: "mustard" };
 
-      const game = new Game({
-        players: {
-          ruleOutSuspicion: () => ({
-            invalidatedBy: 2,
-            matchingCards: [DAGGER, MUSTARD]
-          })
-        }
+      const gourab = createPlayer(1, "gourab", [], "mustard", { x: 1, y: 4 });
+      const sauma = createPlayer(2, "sauma", [DAGGER, MUSTARD], "scarlet", {
+        x: 0,
+        y: 8
       });
 
+      const players = new Players([gourab, sauma]);
+      const game = new Game({ players });
+
+      game.start();
       game.validateSuspicion(1, { weapon: "dagger", suspect: "mustard" });
 
       assert.deepStrictEqual(game.ruleOutSuspicion(), {

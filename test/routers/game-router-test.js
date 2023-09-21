@@ -148,11 +148,11 @@ describe("PATCH /game/move-pawn", () => {
     });
 
     const game = new Game({ players, board });
+    game.start();
     game.updateDiceCombination([1, 1]);
+
     const app = createApp();
     app.context = { game };
-
-    game.start();
 
     request(app)
       .patch("/game/move-pawn")
@@ -186,11 +186,11 @@ describe("PATCH /game/move-pawn", () => {
     });
 
     const game = new Game({ players, board });
+    game.start();
     game.updateDiceCombination([1, 1]);
+
     const app = createApp();
     app.context = { game };
-
-    game.start();
 
     request(app)
       .patch("/game/move-pawn")
@@ -201,13 +201,14 @@ describe("PATCH /game/move-pawn", () => {
   });
 
   it("should not move the pawn if the it's not the player's turn", (context, done) => {
-    const players = {
-      add: context.mock.fn(),
-      info: context.mock.fn(() => "Mock Data"),
-      getNextPlayer: context.mock.fn(() => ({
-        info: () => ({ id: 1 })
-      }))
-    };
+    const gourab = new Player({
+      id: 1,
+      name: "gourab",
+      cards: [],
+      character: "mustard",
+      position: { x: 1, y: 4 }
+    });
+    const players = new Players([gourab]);
 
     const board = new Board({
       blockedTiles: [{ x: 1, y: 2 }],
@@ -229,28 +230,25 @@ describe("PATCH /game/move-pawn", () => {
   });
 
   it("should move the pawn to a room and update the player's last suspicion position", (context, done) => {
-    const players = {
-      add: context.mock.fn(),
-      info: context.mock.fn(() => "Mock Data"),
-      getNextPlayer: context.mock.fn(() => ({
-        info: () => ({ id: 1 })
-      })),
-      updateLastSuspicionPosition: context.mock.fn(),
-      updatePlayerPosition: () => {},
-      getPlayerPosition: () => {},
-      getCharacterPositions: () => ({})
-    };
+    const gourab = new Player({
+      id: 1,
+      name: "gourab",
+      cards: [],
+      character: "mustard",
+      position: { x: 1, y: 4 }
+    });
+    const players = new Players([gourab]);
 
     const board = {
       getPosition: () => ({ room: "lounge", canMove: true })
     };
 
     const game = new Game({ players, board });
+    game.start();
     game.updateDiceCombination([]);
+
     const app = createApp();
     app.context = { game };
-
-    game.start();
 
     request(app)
       .patch("/game/move-pawn")

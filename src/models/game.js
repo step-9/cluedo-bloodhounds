@@ -2,41 +2,31 @@ class Game {
   #board;
   #players;
   #killingCombination;
-  #currentPlayerId;
+  #currentPlayer;
   #lastAccusationCombination;
   #lastSuspicionCombination;
   #lastDiceCombination;
   #possiblePositions;
   #action;
+
   #isGameWon;
   #isGameOver;
+  #isAccusing;
+  #isSuspecting;
 
   #strandedPlayerIds;
-
-  #isAccusing;
-  #shouldEndTurn;
-  #canAccuse;
-  #canRollDice;
-  #canMovePawn;
-  #isSuspecting;
 
   constructor({ players, board, killingCombination }) {
     this.#board = board;
     this.#players = players;
-    this.#currentPlayerId = null;
-    this.#isAccusing = false;
-    this.#isGameWon = false;
-    this.#isGameOver = false;
+    this.#currentPlayer = null;
     this.#strandedPlayerIds = [];
-    this.#canAccuse = true;
-    this.#canRollDice = true;
-    this.#shouldEndTurn = false;
-    this.#canMovePawn = false;
     this.#killingCombination = killingCombination;
     this.#possiblePositions = {};
     this.#action = null;
-    this.#isSuspecting = false;
     this.#lastDiceCombination = [0, 0];
+    this.#isGameWon = this.#isGameOver = false;
+    this.#isAccusing = this.#isSuspecting = false;
   }
 
   #areAllPlayersStranded() {
@@ -51,44 +41,40 @@ class Game {
   }
 
   changeTurn() {
-    const currentPlayer = this.#players.getNextPlayer();
-    this.#currentPlayerId = currentPlayer.info().id;
-    this.#canAccuse = true;
-    this.#shouldEndTurn = false;
-    this.#canRollDice = true;
-    this.#canMovePawn = false;
     this.#action = "turnEnded";
+    this.#currentPlayer = this.#players.getNextPlayer();
+    this.#currentPlayer.setupInitialPermissions();
   }
 
   toggleIsAccusing() {
-    this.#isAccusing = !this.#isAccusing;
+    this.#isAccusing = true;
     this.#action = "accusing";
+    this.#currentPlayer.startAccusing();
   }
 
   toggleIsSuspecting() {
-    this.#isSuspecting = !this.#isSuspecting;
+    this.#isSuspecting = true;
     this.#action = "suspecting";
-  }
-
-  setAction(action) {
-    this.#action = action;
   }
 
   state() {
     return {
-      currentPlayerId: this.#currentPlayerId,
+      currentPlayerId: this.#currentPlayer.id,
       action: this.#action,
       isGameOver: this.#isGameOver
     };
   }
 
   movePawn(tileCoordinates, playerId) {
-    const isCurrentPlayer = playerId === this.#currentPlayerId;
-    if (!isCurrentPlayer || !this.#canMovePawn) return { isMoved: false };
+    const isCurrentPlayer = playerId === this.#currentPlayer.id;
+    const canMovePawn = this.#currentPlayer.permissions.canMovePawn;
+
+    if (!isCurrentPlayer || !canMovePawn) return { isMoved: false };
+
     const stepCount = this.#lastDiceCombination.reduce((sum, a) => sum + a, 0);
 
     const currentPlayerPos = this.#players.getPlayerPosition(
-      this.#currentPlayerId
+      this.#currentPlayer.id
     );
     const characterPositions = Object.values(
       this.#players.getCharacterPositions()
@@ -102,17 +88,14 @@ class Game {
     );
 
     if (canMove) {
-      this.#canMovePawn = false;
-      this.#shouldEndTurn = true;
-      this.#canAccuse = true;
-      this.#players.updatePlayerPosition(playerId, newPos);
+      this.#currentPlayer.movePawn(newPos);
       this.#action = "updateBoard";
       const result = { isMoved: true };
 
       if (room) {
         result.canSuspect = true;
         result.room = room;
-        this.#players.updateLastSuspicionPosition(playerId, room);
+        this.#currentPlayer.updateLastSuspicionPosition(room);
       }
 
       return result;
@@ -122,17 +105,17 @@ class Game {
   }
 
   playersInfo() {
+    const permissions = this.#currentPlayer.permissions;
+
     return {
       players: this.#players.info(),
-      currentPlayerId: this.#currentPlayerId,
+      currentPlayerId: this.#currentPlayer.id,
       strandedPlayerIds: this.#strandedPlayerIds,
-      canAccuse: this.#canAccuse,
-      shouldEndTurn: this.#shouldEndTurn,
       characterPositions: this.#players.getCharacterPositions(),
       diceRollCombination: this.#lastDiceCombination,
-      canRollDice: this.#canRollDice,
-      canMovePawn: this.#canMovePawn,
-      isSuspecting: this.#isSuspecting
+      isAccusing: this.#isAccusing,
+      isSuspecting: this.#isSuspecting,
+      ...permissions
     };
   }
 
@@ -155,7 +138,7 @@ class Game {
     ).map(([type, title]) => ({ type, title }));
 
     return this.#players.ruleOutSuspicion(
-      this.#currentPlayerId,
+      this.#currentPlayer.id,
       suspicionCombination
     );
   }
@@ -188,11 +171,8 @@ class Game {
     }
 
     this.#isAccusing = false;
-    this.#shouldEndTurn = true;
-    this.#canAccuse = false;
-    this.#canRollDice = false;
-    this.#canMovePawn = false;
     this.#action = "accused";
+    this.#currentPlayer.allow("endTurn");
 
     return {
       isWon: this.#isGameWon,
@@ -205,10 +185,10 @@ class Game {
   }
 
   updateDiceCombination(diceCombination) {
-    this.#lastDiceCombination = diceCombination;
     this.#action = "diceRolled";
-    this.#canRollDice = false;
-    this.#canMovePawn = true;
+    this.#currentPlayer.allow("movePawn");
+    this.#currentPlayer.revoke("rollDice");
+    this.#lastDiceCombination = diceCombination;
   }
 
   updatePossiblePositions(possiblePositions) {
@@ -220,9 +200,7 @@ class Game {
   }
 
   findPossiblePositions(stepCount) {
-    const currentPlayerPos = this.#players.getPlayerPosition(
-      this.#currentPlayerId
-    );
+    const currentPlayerPos = this.#currentPlayer.getPosition();
 
     const characterPositions = Object.values(
       this.#players.getCharacterPositions()
@@ -235,16 +213,15 @@ class Game {
     );
 
     if (Object.keys(possiblePositions).length === 0) {
-      this.#canMovePawn = false;
-      this.#shouldEndTurn = true;
+      this.#currentPlayer.revoke("movePawn");
+      this.#currentPlayer.allow("endTurn");
     }
 
     return possiblePositions;
   }
 
   start() {
-    const currentPlayer = this.#players.getNextPlayer();
-    this.#currentPlayerId = currentPlayer.info().id;
+    this.#currentPlayer = this.#players.getNextPlayer();
   }
 
   getLastSuspicionPosition(playerId) {
