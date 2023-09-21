@@ -344,4 +344,45 @@ describe("Game", () => {
       });
     });
   });
+
+  describe("invalidateSuspicion", () => {
+    it("should invalidate the suspicion and change the action performed in the game to invalidated", () => {
+      const MUSTARD = { type: "suspect", title: "mustard" };
+
+      const gourab = createPlayer(1, "gourab", [], "mustard", { x: 1, y: 4 });
+      const sauma = createPlayer(2, "sauma", [MUSTARD], "scarlet", {
+        x: 0,
+        y: 8
+      });
+      const players = new Players([gourab, sauma]);
+      const game = new Game({ players });
+      game.start();
+      game.validateSuspicion(1, { weapon: "dagger", suspect: "mustard" });
+      game.invalidateSuspicion(2, "mustard");
+
+      assert.deepStrictEqual(game.state(), {
+        currentPlayerId: 1,
+        action: "invalidated",
+        isGameOver: false
+      });
+    });
+
+    it("should throw an error if the card invalidated is not present in the suspicion combination", () => {
+      const MUSTARD = { type: "suspect", title: "mustard" };
+
+      const gourab = createPlayer(1, "gourab", [], "mustard", { x: 1, y: 4 });
+      const sauma = createPlayer(2, "sauma", [MUSTARD], "scarlet", {
+        x: 0,
+        y: 8
+      });
+      const players = new Players([gourab, sauma]);
+      const game = new Game({ players });
+      game.start();
+      game.validateSuspicion(1, { weapon: "dagger", suspect: "mustard" });
+
+      assert.throws(() => game.invalidateSuspicion(2, "plum"), {
+        message: "Card not present"
+      });
+    });
+  });
 });

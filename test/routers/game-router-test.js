@@ -559,7 +559,7 @@ describe("POST /game/suspect", () => {
   });
 });
 
-describe("GET /last-suspicion-position", () => {
+describe("GET /game/last-suspicion-position", () => {
   it("should give the last suspicion position of the current player", (context, done) => {
     const getLastSuspicionPosition = context.mock.fn(() => "lounge");
     const game = { getLastSuspicionPosition };
@@ -571,6 +571,20 @@ describe("GET /last-suspicion-position", () => {
       .expect(200)
       .expect("content-type", /application\/json/)
       .expect({ room: "lounge" })
+      .end(done);
+  });
+});
+
+describe("POST /game/suspect/invalidate", () => {
+  it("should post the invalidated card", (_, done) => {
+    const game = { invalidateSuspicion: () => {} };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .post("/game/suspect/invalidate")
+      .send({ title: "mustard" })
+      .expect(200)
       .end(done);
   });
 });

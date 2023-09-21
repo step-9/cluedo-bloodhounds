@@ -4,7 +4,7 @@ class Game {
   #killingCombination;
   #currentPlayer;
   #lastAccusationCombination;
-  #lastSuspicionCombination;
+  #lastSuspicion;
   #lastDiceCombination;
   #possiblePositions;
   #action;
@@ -27,6 +27,7 @@ class Game {
     this.#lastDiceCombination = [0, 0];
     this.#isGameWon = this.#isGameOver = false;
     this.#isAccusing = this.#isSuspecting = false;
+    this.#lastSuspicion = {};
   }
 
   #areAllPlayersStranded() {
@@ -124,17 +125,18 @@ class Game {
   }
 
   getLastSuspicionCombination() {
-    return this.#lastSuspicionCombination;
+    return this.#lastSuspicion.combination;
   }
 
   validateSuspicion(playerId, suspicionCombination) {
-    this.#lastSuspicionCombination = suspicionCombination;
+    this.#lastSuspicion.combination = suspicionCombination;
+    this.#lastSuspicion.suspectorId = playerId;
     this.#action = "suspected";
   }
 
   ruleOutSuspicion() {
     const suspicionCombination = Object.entries(
-      this.#lastSuspicionCombination
+      this.#lastSuspicion.combination
     ).map(([type, title]) => ({ type, title }));
 
     return this.#players.ruleOutSuspicion(
@@ -226,6 +228,16 @@ class Game {
 
   getLastSuspicionPosition(playerId) {
     return this.#players.getLastSuspicionPosition(playerId);
+  }
+
+  invalidateSuspicion(invalidatorId, cardTitle) {
+    const { combination } = this.#lastSuspicion;
+    const isCardPresent = Object.values(combination).includes(cardTitle);
+    if (!isCardPresent) throw new Error("Card not present");
+
+    this.#lastSuspicion.invalidatorId = invalidatorId;
+    this.#lastSuspicion.invalidatedCard = cardTitle;
+    this.#action = "invalidated";
   }
 }
 

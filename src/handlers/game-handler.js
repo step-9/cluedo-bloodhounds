@@ -173,6 +173,16 @@ const sendLastSuspicionPosition = (req, res) => {
   res.json({ room });
 };
 
+const handleInvalidation = (req, res) => {
+  const { game } = req.app.context;
+  const { title } = req.body;
+  const { playerId } = req.cookies;
+
+  game.invalidateSuspicion(playerId, title);
+
+  res.end();
+};
+
 module.exports = {
   serveGamePage,
   serveInitialGameState,
@@ -190,5 +200,6 @@ module.exports = {
   handleStartSuspicionRequest,
   handleSuspicion,
   sendLastSuspicionCombination,
-  sendLastSuspicionPosition
+  sendLastSuspicionPosition,
+  handleInvalidation
 };
