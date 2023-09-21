@@ -312,7 +312,7 @@ class View {
   }
 
   setup() {
-    const { playAgain, accuse, suspect, onEndTurn } = this.#listeners;
+    const { playAgain, accuse, suspect } = this.#listeners;
 
     this.#popupView.addListener("renderEndTurnButton", () =>
       this.renderEndTurnButton()
