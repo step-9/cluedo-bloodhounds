@@ -119,8 +119,17 @@ class Game {
     return { isMoved: false };
   }
 
+  #getRoomName() {
+    const characterPositions = this.#board.getCharacterPositions();
+    const currentCharacter = this.#currentPlayer.info().character;
+    return (this.#board.getRoomDetails(
+      characterPositions[currentCharacter]
+    ) || [""])[0];
+  }
+
   playersInfo() {
     const permissions = this.#currentPlayer.permissions;
+    const roomName = this.#getRoomName();
 
     return {
       players: this.#players.info(),
@@ -130,6 +139,7 @@ class Game {
       diceRollCombination: this.#lastDiceCombination,
       isAccusing: this.#isAccusing,
       isSuspecting: this.#isSuspecting,
+      roomName,
       ...permissions
     };
   }

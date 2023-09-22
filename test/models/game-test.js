@@ -328,7 +328,8 @@ describe("Game", () => {
         canRollDice: true,
         canMovePawn: false,
         canSuspect: false,
-        shouldEndTurn: false
+        shouldEndTurn: false,
+        roomName: ""
       };
 
       assert.deepStrictEqual(game.playersInfo(), expectedPlayerInfo);
