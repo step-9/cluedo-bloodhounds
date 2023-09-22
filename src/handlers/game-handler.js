@@ -196,6 +196,18 @@ const sendInvalidatedCard = (req, res) => {
   res.json({ invalidatedCard, invalidatorId });
 };
 
+const cancelAccusation = (req, res) => {
+  const { game } = req.app.context;
+  const { playerId } = req.cookies;
+
+  const { currentPlayerId } = game.state();
+  if (currentPlayerId !== +playerId) return respondNotYourTurn(req, res);
+
+  game.cancelAccusation();
+
+  res.end();
+};
+
 module.exports = {
   serveGamePage,
   serveInitialGameState,
@@ -215,5 +227,6 @@ module.exports = {
   sendLastSuspicionCombination,
   sendLastSuspicionPosition,
   handleInvalidation,
-  sendInvalidatedCard
+  sendInvalidatedCard,
+  cancelAccusation
 };

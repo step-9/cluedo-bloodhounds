@@ -61,6 +61,8 @@ class GameController {
   }
 
   #updateBoard(currentPlayerId) {
+    this.#view.hideAllMessages();
+
     this.#gameService
       .getUpdatedPositions()
       .then(positions =>
@@ -194,6 +196,8 @@ class GameController {
   }
 
   #showLastDiceRollCombination() {
+    this.#view.hideAllMessages();
+
     this.#gameService
       .getLastDiceRollCombination()
       .then(({ diceRollCombination, possiblePositions }) => {
@@ -265,6 +269,27 @@ class GameController {
     });
   }
 
+  #fetchAndRenderInitialState() {
+    this.#gameService.getInitialData().then(initialState => {
+      this.#storeInitialState(initialState);
+
+      this.#gameService.getBoardStructure().then(boardSvg => {
+        this.#view.setupGame(initialState, boardSvg);
+        this.#renderInitialGameState(initialState);
+        this.#fetchAndRenderCurrentState();
+        this.#view.disableStrandedPlayers(initialState.strandedPlayerIds);
+      });
+    });
+
+    this.#gameService.getCardsInfo().then(cardsInfo => {
+      this.#view.setupAccuseDialog(cardsInfo);
+    });
+  }
+
+  #restoreButtons({ canAccuse, shouldEndTurn, canRollDice }) {
+    this.#view.renderButtons({ canAccuse, shouldEndTurn, canRollDice });
+  }
+
   start() {
     this.#registerEvents();
 
@@ -327,21 +352,17 @@ class GameController {
         });
     });
 
-    this.#gameService.getInitialData().then(initialState => {
-      this.#storeInitialState(initialState);
-
-      this.#gameService.getBoardStructure().then(boardSvg => {
-        this.#view.setupGame(initialState, boardSvg);
-        this.#renderInitialGameState(initialState);
-        this.#fetchAndRenderCurrentState();
-        this.#view.disableStrandedPlayers(initialState.strandedPlayerIds);
+    this.#view.addListener("cancelAccusation", () => {
+      this.#gameService.cancelAccusation().then(() => {
+        this.#gameService
+          .getInitialData()
+          .then(({ canAccuse, shouldEndTurn, canRollDice }) => {
+            this.#restoreButtons({ canAccuse, shouldEndTurn, canRollDice });
+          });
       });
     });
 
-    this.#gameService.getCardsInfo().then(cardsInfo => {
-      this.#view.setupAccuseDialog(cardsInfo);
-    });
-
+    this.#fetchAndRenderInitialState();
     this.#view.setup();
 
     this.#pollingInterval = setInterval(

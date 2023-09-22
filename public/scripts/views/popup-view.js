@@ -140,6 +140,15 @@ class PopupView {
                 [
                   "button",
                   {
+                    type: "cancel",
+                    id: "accuse-cancel-btn",
+                    class: "button"
+                  },
+                  "Cancel"
+                ],
+                [
+                  "button",
+                  {
                     value: "default",
                     id: "accuse-confirm-btn",
                     class: "button"
@@ -154,7 +163,7 @@ class PopupView {
     ]);
   }
 
-  #setupAccusationForm(accusationForm, dialog) {
+  #setupAccusationForm(accusationForm, cancelBtn, dialog) {
     accusationForm.onsubmit = event => {
       event.preventDefault();
       const accusationCombination = this.#readFormData(accusationForm);
@@ -163,14 +172,24 @@ class PopupView {
       accuse(accusationCombination);
       dialog.close();
     };
+
+    cancelBtn.onclick = event => {
+      event.preventDefault();
+      const { cancelAccusation } = this.#listeners;
+      cancelAccusation();
+      dialog.close();
+    };
   }
 
   #createAccuseDialog(cardsInfo) {
     const dialog = this.#createAccuseDialogFrame();
     const selections = dialog.querySelector(".selections");
     const accusationForm = dialog.querySelector("#accuse-form");
+    const cancelBtn = dialog.querySelector("#accuse-cancel-btn");
+
     this.#createAndAddSelections(selections, cardsInfo);
-    this.#setupAccusationForm(accusationForm, dialog);
+    this.#setupAccusationForm(accusationForm, cancelBtn, dialog);
+
     return dialog;
   }
 

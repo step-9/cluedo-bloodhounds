@@ -7,7 +7,7 @@ const initialPositions = require("../../resources/initial-positions.json");
 
 describe("Board", () => {
   describe("getPossibleTiles", () => {
-    it("Should give all the possible positions according to number of steps", () => {
+    it("Should give the possible position according to number of steps", () => {
       const board = new Board({
         validTiles,
         rooms,

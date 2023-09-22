@@ -18,7 +18,8 @@ const {
   handleSuspicion,
   sendLastSuspicionPosition,
   handleInvalidation,
-  sendInvalidatedCard
+  sendInvalidatedCard,
+  cancelAccusation
 } = require("../handlers/game-handler");
 
 const createGameRouter = () => {
@@ -43,6 +44,7 @@ const createGameRouter = () => {
   gameRouter.get("/last-suspicion-position", sendLastSuspicionPosition);
   gameRouter.post("/suspect/invalidate", handleInvalidation);
   gameRouter.get("/suspect/invalidate", sendInvalidatedCard);
+  gameRouter.patch("/accuse", cancelAccusation);
 
   return gameRouter;
 };

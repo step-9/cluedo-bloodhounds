@@ -8,6 +8,7 @@ class Game {
   #lastDiceCombination;
   #possiblePositions;
   #action;
+  #lastAction;
 
   #isGameWon;
   #isGameOver;
@@ -23,7 +24,7 @@ class Game {
     this.#strandedPlayerIds = [];
     this.#killingCombination = killingCombination;
     this.#possiblePositions = {};
-    this.#action = null;
+    this.#action = "turnEnded";
     this.#lastDiceCombination = [0, 0];
     this.#isGameWon = this.#isGameOver = false;
     this.#isAccusing = this.#isSuspecting = false;
@@ -49,6 +50,7 @@ class Game {
 
   toggleIsAccusing() {
     this.#isAccusing = true;
+    this.#lastAction = this.#action;
     this.#action = "accusing";
     this.#currentPlayer.startAccusing();
   }
@@ -235,6 +237,12 @@ class Game {
 
   getLastSuspicion() {
     return this.#lastSuspicion;
+  }
+
+  cancelAccusation() {
+    this.#isAccusing = false;
+    this.#action = this.#lastAction;
+    this.#currentPlayer.cancelAccusing();
   }
 }
 

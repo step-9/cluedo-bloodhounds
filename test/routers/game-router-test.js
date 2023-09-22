@@ -631,3 +631,36 @@ describe("GET /game/suspect/invalidate", () => {
       .end(done);
   });
 });
+
+describe("PATCH /game/accuse", () => {
+  it("Should cancel the accusation", (_, done) => {
+    const game = {
+      cancelAccusation: () => ({}),
+      state: () => ({ currentPlayerId: 1 })
+    };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .patch("/game/accuse")
+      .set("Cookie", "playerId=1")
+      .send({ isAccusing: false })
+      .expect(200)
+      .end(done);
+  });
+
+  it("Should not allow any other player other than current player to cancel the accusation", (_, done) => {
+    const game = {
+      state: () => ({ currentPlayerId: 1 })
+    };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .patch("/game/accuse")
+      .set("Cookie", "playerId=2")
+      .send({ isAccusing: false })
+      .expect(401)
+      .end(done);
+  });
+});

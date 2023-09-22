@@ -109,4 +109,12 @@ class GameService {
   getInvalidatedCard() {
     return fetch("/game/suspect/invalidate").then(res => res.json());
   }
+
+  cancelAccusation() {
+    return fetch("/game/accuse", {
+      method: "PATCH",
+      body: JSON.stringify({ isAccusing: false }),
+      headers: { "content-type": "application/json" }
+    });
+  }
 }

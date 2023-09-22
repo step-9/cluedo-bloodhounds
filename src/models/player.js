@@ -5,6 +5,7 @@ class Player {
   #character;
   #isStranded;
   #permissions;
+  #lastPermissions;
   #lastSuspicionPosition;
 
   constructor({ name, id, character, cards }) {
@@ -83,10 +84,15 @@ class Player {
   }
 
   startAccusing() {
-    const permissionsToRevoke = ["accuse", "rollDice", "movePawn"];
+    this.#lastPermissions = { ...this.#permissions };
+    const permissionsToRevoke = ["accuse", "rollDice", "movePawn", "endTurn"];
     permissionsToRevoke.forEach(permission => this.revoke(permission));
 
-    this.allow("endTurn");
+    // this.allow("endTurn");
+  }
+
+  cancelAccusing() {
+    this.#permissions = { ...this.#lastPermissions };
   }
 
   info() {

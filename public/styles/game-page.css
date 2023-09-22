@@ -490,7 +490,8 @@ select {
 }
 
 #notification-close-btn,
-#suspicion-close-btn {
+#suspicion-close-btn,
+#accuse-cancel-btn {
   border: none;
   outline: none;
   border-radius: 0.4em;

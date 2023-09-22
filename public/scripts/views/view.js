@@ -201,7 +201,6 @@ class View {
         accuseDialog.showModal();
         startAccusation();
         this.removeAllButtons();
-        this.renderEndTurnButton();
       };
 
       this.#bottomPane.appendChild(accuseBtn);
@@ -306,6 +305,12 @@ class View {
     }
   }
 
+  renderButtons(permissions) {
+    const diceElement = this.#bottomPane.querySelector("#dices");
+    this.#bottomPane.replaceChildren(diceElement);
+    this.setupCurrentPlayerActions({ ...permissions, isYourTurn: true });
+  }
+
   setupAccuseDialog(cardsInfo) {
     this.#popupView.setupAccuseDialog(cardsInfo);
   }
@@ -341,7 +346,8 @@ class View {
   }
 
   setup() {
-    const { playAgain, accuse, suspect, invalidateCard } = this.#listeners;
+    const { playAgain, accuse, suspect, invalidateCard, cancelAccusation } =
+      this.#listeners;
 
     this.#popupView.addListener("renderEndTurnButton", () =>
       this.renderEndTurnButton()
@@ -350,6 +356,7 @@ class View {
     this.#popupView.addListener("accuse", accuse);
     this.#popupView.addListener("playAgain", playAgain);
     this.#popupView.addListener("invalidateCard", invalidateCard);
+    this.#popupView.addListener("cancelAccusation", cancelAccusation);
 
     this.#popupView.setup();
   }

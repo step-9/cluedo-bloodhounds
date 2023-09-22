@@ -38,7 +38,7 @@ describe("Game", () => {
       game.start();
 
       const expectedGameStatus = {
-        action: null,
+        action: "turnEnded",
         currentPlayerId: 1,
         isGameOver: false
       };
@@ -437,6 +437,43 @@ describe("Game", () => {
 
       assert.throws(() => game.invalidateSuspicion(2, "plum"), {
         message: "Card not present"
+      });
+    });
+  });
+
+  describe("getLastSuspicion", () => {
+    it("should give the last suspicion info", () => {
+      const gourab = createPlayer(1, "gourab", [], "mustard", { x: 1, y: 4 });
+      const players = new Players([gourab]);
+      const game = new Game({ players });
+      game.start();
+
+      game.validateSuspicion(1, { weapon: "dagger", suspect: "mustard" });
+
+      assert.deepStrictEqual(game.getLastSuspicion(), {
+        combination: {
+          suspect: "mustard",
+          weapon: "dagger"
+        },
+        suspectorId: 1
+      });
+    });
+  });
+
+  describe("cancelAccusation", () => {
+    it("should cancel the accusation done by the current player", () => {
+      const gourab = createPlayer(1, "gourab", [], "mustard", { x: 1, y: 4 });
+      const players = new Players([gourab]);
+      const game = new Game({ players });
+      game.start();
+
+      game.toggleIsAccusing();
+      game.cancelAccusation();
+
+      assert.deepStrictEqual(game.state(), {
+        action: "turnEnded",
+        currentPlayerId: 1,
+        isGameOver: false
       });
     });
   });

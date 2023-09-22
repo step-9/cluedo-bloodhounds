@@ -64,4 +64,21 @@ describe("Player", () => {
       assert.ok(!player.permissions.canMovePawn);
     });
   });
+
+  describe("cancelAccusing", () => {
+    it("should cancel the accusation and restore all permissions before accusation", () => {
+      const player = new Player({ cards: [] }).setupInitialPermissions();
+
+      const expectedPermissions = {
+        canAccuse: true,
+        canRollDice: true,
+        canMovePawn: false,
+        shouldEndTurn: false
+      };
+      player.startAccusing();
+      player.cancelAccusing();
+
+      assert.deepStrictEqual(player.permissions, expectedPermissions);
+    });
+  });
 });
