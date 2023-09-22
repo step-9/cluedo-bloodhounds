@@ -206,6 +206,15 @@ class GameController {
       });
   }
 
+  #showAccusationCancelMsg(currentPlayerId) {
+    this.#view.hideAllMessages();
+
+    const isYourTurn = this.#playerId === currentPlayerId;
+    if (isYourTurn) return;
+
+    this.#view.showAccusationCancelMsg(currentPlayerId);
+  }
+
   #showInvalidation(currentPlayerId) {
     this.#gameService
       .getInvalidatedCard()
@@ -267,6 +276,10 @@ class GameController {
     this.#eventEmitter.on("invalidated", currentPlayerId => {
       this.#showInvalidation(currentPlayerId);
     });
+
+    this.#eventEmitter.on("accusation-cancelled", currentPlayerId => {
+      this.#showAccusationCancelMsg(currentPlayerId);
+    });
   }
 
   #fetchAndRenderInitialState() {
@@ -286,8 +299,15 @@ class GameController {
     });
   }
 
-  #restoreButtons({ canAccuse, shouldEndTurn, canRollDice }) {
-    this.#view.renderButtons({ canAccuse, shouldEndTurn, canRollDice });
+  #restoreButtons({ canAccuse, shouldEndTurn, canRollDice, canMovePawn }) {
+    if (canMovePawn) this.#view.enableMove();
+
+    this.#view.renderButtons({
+      canAccuse,
+      shouldEndTurn,
+      canRollDice,
+      canMovePawn
+    });
   }
 
   start() {

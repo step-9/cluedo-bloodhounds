@@ -82,9 +82,12 @@ class View {
   }
 
   highlightPositions(positions) {
+    this.enableMove();
+
     const tiles = Object.keys(positions);
     tiles.forEach(tile => {
       const tileElement = document.getElementById(tile);
+      tileElement.onclick = () => this.#listeners.movePawn(tileElement.id);
       tileElement.classList.add("highlight-tile");
     });
   }
@@ -249,6 +252,13 @@ class View {
 
     accusingPlayer.classList.remove("hide");
     accusingPlayer.innerText = "I am Accusing";
+  }
+
+  showAccusationCancelMsg(currentPlayerId) {
+    const msgId = `#message-${currentPlayerId}`;
+    const accusingPlayer = document.querySelector(msgId);
+    accusingPlayer.classList.remove("hide");
+    accusingPlayer.innerText = "I have cancelled accusation";
   }
 
   renderSuspicionMessage(currentPlayerId) {

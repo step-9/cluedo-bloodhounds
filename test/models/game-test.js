@@ -494,7 +494,7 @@ describe("Game", () => {
       game.cancelAccusation();
 
       assert.deepStrictEqual(game.state(), {
-        action: "turnEnded",
+        action: "accusation-cancelled",
         currentPlayerId: 1,
         isGameOver: false
       });

@@ -259,8 +259,9 @@ class Game {
 
   cancelAccusation() {
     this.#isAccusing = false;
-    this.#action = this.#lastAction;
     this.#currentPlayer.cancelAccusing();
+    this.#action = "accusation-cancelled";
+    setTimeout(() => (this.#action = this.#lastAction), 1000);
   }
 }
 
