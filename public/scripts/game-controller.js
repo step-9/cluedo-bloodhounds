@@ -103,24 +103,32 @@ class GameController {
   #showSuspicion(currentPlayerId) {
     this.#gameService
       .getSuspicionCombination()
-      .then(({ suspicionCombination, matchingCards, invalidatedBy }) => {
-        this.#view.hideAllMessages();
-        const isYourTurn = this.#playerId === currentPlayerId;
-        const suspectorName = isYourTurn
-          ? "You"
-          : this.#playersNames[currentPlayerId];
-
-        const canInvalidate = this.#playerId === invalidatedBy;
-        const canAnyoneInvalidate = invalidatedBy;
-
-        this.#view.renderSuspicionCombination({
-          suspectorName,
+      .then(
+        ({
           suspicionCombination,
-          canInvalidate,
           matchingCards,
-          canAnyoneInvalidate
-        });
-      });
+          invalidatedBy,
+          characterPositions
+        }) => {
+          this.#view.updateCharacterPositions(characterPositions);
+          this.#view.hideAllMessages();
+          const isYourTurn = this.#playerId === currentPlayerId;
+          const suspectorName = isYourTurn
+            ? "You"
+            : this.#playersNames[currentPlayerId];
+
+          const canInvalidate = this.#playerId === invalidatedBy;
+          const canAnyoneInvalidate = invalidatedBy;
+
+          this.#view.renderSuspicionCombination({
+            suspectorName,
+            suspicionCombination,
+            canInvalidate,
+            matchingCards,
+            canAnyoneInvalidate
+          });
+        }
+      );
   }
 
   #displayGameOver({ currentPlayerId }) {
@@ -224,6 +232,7 @@ class GameController {
     this.#eventEmitter.on("suspected", currentPlayerId =>
       this.#showSuspicion(currentPlayerId)
     );
+
     this.#eventEmitter.on("invalidated", currentPlayerId => {
       this.#showInvalidation(currentPlayerId);
     });

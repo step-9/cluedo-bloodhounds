@@ -89,6 +89,13 @@ class Board {
       .flat();
   }
 
+  move(suspect, roomName) {
+    const roomInfo = this.#rooms[roomName];
+
+    const newPos = this.#getNextPos(roomInfo);
+    this.#characterPositions[suspect] = newPos;
+  }
+
   getPossibleTiles(stepCount, currentPlayerCharacter) {
     const playersPositions = Object.values(this.#characterPositions);
 

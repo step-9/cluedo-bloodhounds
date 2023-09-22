@@ -477,11 +477,17 @@ describe("GET /game/suspicion-combination", () => {
   it("should give result of last suspicion", (context, done) => {
     const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
     const getLastSuspicionCombination = context.mock.fn();
+    const getCharacterPositions = () => {};
     const ruleOutSuspicion = context.mock.fn(() => ({
       invalidatedBy: 2,
       matchingCards: []
     }));
-    const game = { getLastSuspicionCombination, ruleOutSuspicion, state };
+    const game = {
+      getLastSuspicionCombination,
+      ruleOutSuspicion,
+      state,
+      getCharacterPositions
+    };
     const app = createApp();
     app.context = { game };
 
@@ -496,11 +502,17 @@ describe("GET /game/suspicion-combination", () => {
   it("should give result of last suspicion", (context, done) => {
     const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
     const getLastSuspicionCombination = context.mock.fn();
+    const getCharacterPositions = () => {};
     const ruleOutSuspicion = context.mock.fn(() => ({
       invalidatedBy: 2,
       matchingCards: []
     }));
-    const game = { getLastSuspicionCombination, ruleOutSuspicion, state };
+    const game = {
+      getLastSuspicionCombination,
+      ruleOutSuspicion,
+      state,
+      getCharacterPositions
+    };
     const app = createApp();
     app.context = { game };
 
@@ -525,7 +537,8 @@ describe("POST /game/suspect", () => {
       killingCombination: suspicionCombination
     });
     const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
-    const game = { validateSuspicion, state };
+    const move = context.mock.fn();
+    const game = { validateSuspicion, state, move };
     const app = createApp({});
     app.context = { game };
 

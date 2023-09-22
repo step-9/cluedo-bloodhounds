@@ -150,6 +150,10 @@ class Game {
     return this.#lastDiceCombination;
   }
 
+  move(suspect, room) {
+    this.#board.move(suspect, room);
+  }
+
   validateAccuse(playerId, combination) {
     this.#lastAccusationCombination = combination;
     const killingCombinationCards = Object.entries(this.#killingCombination);

@@ -3,7 +3,6 @@ class Player {
   #name;
   #cards;
   #character;
-
   #isStranded;
   #permissions;
   #lastSuspicionPosition;

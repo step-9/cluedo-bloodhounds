@@ -67,6 +67,27 @@ describe("Game", () => {
     });
   });
 
+  describe("move", () => {
+    it("Should move the suspect to given room", context => {
+      const players = createPlayers();
+      const board = new Board({
+        validTiles,
+        rooms,
+        initialPositions: { ...initialPositions }
+      });
+
+      const game = new Game({ players, board });
+
+      game.start();
+      game.move("mustard", "kitchen");
+
+      assert.deepStrictEqual(game.getCharacterPositions().mustard, {
+        x: 19,
+        y: 20
+      });
+    });
+  });
+
   describe("change turn", () => {
     it("should change the current player to the next player", context => {
       const players = createPlayers();

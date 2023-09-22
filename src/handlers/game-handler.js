@@ -145,6 +145,8 @@ const handleSuspicion = (req, res) => {
   if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
 
   const combinationCards = req.body;
+  const { suspect, room } = combinationCards;
+  game.move(suspect, room);
   game.validateSuspicion(+playerId, combinationCards);
 
   res.json({});
@@ -155,6 +157,7 @@ const sendLastSuspicionCombination = (req, res) => {
   const { playerId } = req.cookies;
   const result = {};
   result.suspicionCombination = game.getLastSuspicionCombination();
+  result.characterPositions = game.getCharacterPositions();
 
   const { invalidatedBy, matchingCards } = game.ruleOutSuspicion();
   result.invalidatedBy = invalidatedBy;
