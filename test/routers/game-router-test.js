@@ -588,3 +588,39 @@ describe("POST /game/suspect/invalidate", () => {
       .end(done);
   });
 });
+
+describe("GET /game/suspect/invalidate", () => {
+  it("Should send the invalidator only id when current player is not asking", (_, done) => {
+    const game = {
+      getLastSuspicion: () => ({ invalidatorId: 2 }),
+      state: () => ({ currentPlayerId: 1 })
+    };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .get("/game/suspect/invalidate")
+      .set("Cookie", "playerId=2")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .expect({ invalidatorId: 2 })
+      .end(done);
+  });
+
+  it("Should send both the invalidatorId and invalidatedCard when current player is asking", (_, done) => {
+    const game = {
+      getLastSuspicion: () => ({ invalidatorId: 2, invalidatedCard: "lounge" }),
+      state: () => ({ currentPlayerId: 1 })
+    };
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .get("/game/suspect/invalidate")
+      .set("Cookie", "playerId=1")
+      .expect(200)
+      .expect("content-type", /application\/json/)
+      .expect({ invalidatorId: 2, invalidatedCard: "lounge" })
+      .end(done);
+  });
+});

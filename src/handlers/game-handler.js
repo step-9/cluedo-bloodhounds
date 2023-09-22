@@ -155,13 +155,11 @@ const sendLastSuspicionCombination = (req, res) => {
   const { playerId } = req.cookies;
   const result = {};
   result.suspicionCombination = game.getLastSuspicionCombination();
-  const { currentPlayerId } = game.state();
 
   const { invalidatedBy, matchingCards } = game.ruleOutSuspicion();
   result.invalidatedBy = invalidatedBy;
 
-  if (currentPlayerId === +playerId)
-    result.invalidatedCard = (matchingCards || [])[0];
+  if (invalidatedBy === +playerId) result.matchingCards = matchingCards;
 
   res.json(result);
 };
@@ -183,6 +181,18 @@ const handleInvalidation = (req, res) => {
   res.end();
 };
 
+const sendInvalidatedCard = (req, res) => {
+  const { game } = req.app.context;
+  const { playerId } = req.cookies;
+
+  const { currentPlayerId } = game.state();
+  const { invalidatorId, invalidatedCard } = game.getLastSuspicion();
+
+  if (currentPlayerId !== +playerId) return res.json({ invalidatorId });
+
+  res.json({ invalidatedCard, invalidatorId });
+};
+
 module.exports = {
   serveGamePage,
   serveInitialGameState,
@@ -201,5 +211,6 @@ module.exports = {
   handleSuspicion,
   sendLastSuspicionCombination,
   sendLastSuspicionPosition,
-  handleInvalidation
+  handleInvalidation,
+  sendInvalidatedCard
 };

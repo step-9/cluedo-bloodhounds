@@ -328,18 +328,24 @@ class View {
     this.#popupView.renderSuspicionCombination(suspicionResult);
   }
 
+  renderInvalidation(invalidatorName, invalidatedCard) {
+    this.#popupView.renderInvalidation(invalidatorName, invalidatedCard);
+  }
+
   isSuspicionDialogPresent() {
     return document.querySelector("#suspicion-popup");
   }
 
   setup() {
-    const { playAgain, accuse, suspect } = this.#listeners;
+    const { playAgain, accuse, suspect, invalidateCard } = this.#listeners;
+
     this.#popupView.addListener("renderEndTurnButton", () =>
       this.renderEndTurnButton()
     );
     this.#popupView.addListener("suspect", suspect);
     this.#popupView.addListener("accuse", accuse);
     this.#popupView.addListener("playAgain", playAgain);
+    this.#popupView.addListener("invalidateCard", invalidateCard);
 
     this.#popupView.setup();
   }

@@ -103,19 +103,20 @@ class GameController {
   #showSuspicion(currentPlayerId) {
     this.#gameService
       .getSuspicionCombination()
-      .then(({ suspicionCombination, invalidatedCard, invalidatedBy }) => {
+      .then(({ suspicionCombination, matchingCards, invalidatedBy }) => {
         this.#view.hideAllMessages();
         const isYourTurn = this.#playerId === currentPlayerId;
         const suspectorName = isYourTurn
           ? "You"
           : this.#playersNames[currentPlayerId];
-        const invalidatorName = this.#playersNames[invalidatedBy] || "None";
+
+        const canInvalidate = this.#playerId === invalidatedBy;
 
         this.#view.renderSuspicionCombination({
           suspectorName,
           suspicionCombination,
-          invalidatorName,
-          invalidatedCard
+          canInvalidate,
+          matchingCards
         });
       });
   }
@@ -170,6 +171,21 @@ class GameController {
       });
   }
 
+  #showInvalidation(currentPlayerId) {
+    this.#gameService
+      .getInvalidatedCard()
+      .then(({ invalidatedCard, invalidatorId }) => {
+        const isYourTurn = this.#playerId === currentPlayerId;
+        const invalidatorName = this.#playersNames[invalidatorId];
+
+        this.#view.renderInvalidation(
+          invalidatorName,
+          invalidatedCard,
+          isYourTurn
+        );
+      });
+  }
+
   #registerEvents() {
     this.#eventEmitter.on("updateBoard", () => this.#updateBoard());
     this.#eventEmitter.on("turnEnded", currentPlayerId =>
@@ -206,12 +222,20 @@ class GameController {
     this.#eventEmitter.on("suspected", currentPlayerId =>
       this.#showSuspicion(currentPlayerId)
     );
+    this.#eventEmitter.on("invalidated", currentPlayerId => {
+      this.#showInvalidation(currentPlayerId);
+    });
   }
 
   start() {
     this.#registerEvents();
 
     this.#view.addListener("onEndTurn", () => this.#endTurn());
+
+    this.#view.addListener("invalidateCard", invalidatedCardTitle => {
+      // alert(invalidatedCardTitle);
+      this.#gameService.sendInvalidatedCard(invalidatedCardTitle);
+    });
 
     this.#view.addListener("movePawn", rawTileId =>
       this.#sendMovePawnReq(rawTileId)

@@ -239,6 +239,10 @@ class Game {
     this.#lastSuspicion.invalidatedCard = cardTitle;
     this.#action = "invalidated";
   }
+
+  getLastSuspicion() {
+    return this.#lastSuspicion;
+  }
 }
 
 module.exports = Game;

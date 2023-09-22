@@ -1,3 +1,5 @@
+const isSameString = (a, b) => a.toLowerCase() === b.toLowerCase();
+
 class PopupView {
   #middlePane;
   #htmlGenerator;
@@ -31,7 +33,7 @@ class PopupView {
   }
 
   #createCardElement(title) {
-    return this.#htmlGenerator(["div", { class: "card" }, title]);
+    return this.#htmlGenerator(["div", { class: "card", value: title }, title]);
   }
 
   #createMessageElement(message) {
@@ -277,30 +279,75 @@ class PopupView {
   renderSuspicionCombination({
     suspectorName,
     suspicionCombination,
-    invalidatorName,
-    invalidatedCard
+    canInvalidate,
+    matchingCards
   }) {
-    const message = this.#createGameOverMsg(`${suspectorName} Suspected`);
-    const invalidationMessage = document.createElement("h3");
-    invalidationMessage.innerText = `${invalidatorName} has invalidated ${
-      invalidatedCard?.title || ""
-    }`;
-    invalidationMessage.classList.add("invalidation-msg");
+    this.#notificationContainer.oncancel = event => event.preventDefault();
 
+    const message = this.#createGameOverMsg(`${suspectorName} Suspected`);
+    const cardTitles = (matchingCards || []).map(({ title }) => title);
     const suspectedCards = this.#createCardElements(suspicionCombination);
     const cardsContainer = this.#createCardsContainer("suspicion-combination");
-    cardsContainer.append(...suspectedCards);
+    this.#notificationContainer.replaceChildren(message);
 
-    this.#notificationContainer.replaceChildren(
-      message,
+    let confirmBtn = "";
+    let invalidationMsg = "";
+
+    if (canInvalidate) {
+      confirmBtn = this.#createButton("Confirm", "invalidation-confirm-btn");
+      invalidationMsg = this.#htmlGenerator([
+        "p",
+        {},
+        "Select a card to invalidate"
+      ]);
+
+      suspectedCards.forEach(cardElement => {
+        const cardTitle = cardElement.getAttribute("value");
+
+        if (cardTitles.includes(cardTitle)) {
+          cardElement.classList.add("matching-card");
+
+          cardElement.onclick = () => {
+            invalidationMsg.innerText = `You are invalidating ${cardTitle}`;
+            confirmBtn.classList.add("selected-btn");
+            confirmBtn.onclick = () => {
+              this.#listeners.invalidateCard(cardTitle);
+              this.#notificationContainer.close();
+            };
+          };
+        }
+      });
+    }
+
+    cardsContainer.append(...suspectedCards);
+    this.#notificationContainer.append(
       cardsContainer,
-      invalidationMessage
+      invalidationMsg,
+      confirmBtn
     );
     this.#notificationContainer.showModal();
+  }
 
-    setTimeout(() => {
-      this.#notificationContainer.close();
-    }, 4000);
+  #findCardWithTitle(cardTitle = "") {
+    const cards = this.#notificationContainer.querySelectorAll(".card");
+    return [...cards].find(cardElem =>
+      isSameString(cardElem.getAttribute("value"), cardTitle)
+    );
+  }
+
+  renderInvalidation(invalidatorName, invalidatedCardTitle, isYourTurn) {
+    let invalidationMsg = `${invalidatorName} invalidated`;
+    invalidationMsg += isYourTurn ? invalidatedCardTitle : "";
+
+    const invalidationMsgElem = this.#htmlGenerator(["p", {}, invalidationMsg]);
+
+    const cardElement = this.#findCardWithTitle(invalidatedCardTitle);
+    cardElement?.classList.add("invalidated-card");
+
+    const closeBtn = this.#createButton("Close", "notification-close-btn");
+    closeBtn.onclick = () => this.#notificationContainer.close();
+
+    this.#notificationContainer.append(invalidationMsgElem, closeBtn);
   }
 
   #createGameOverMsg(message) {

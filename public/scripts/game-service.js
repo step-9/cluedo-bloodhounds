@@ -97,4 +97,16 @@ class GameService {
   getLastSuspicionPosition() {
     return fetch("/game/last-suspicion-position").then(res => res.json());
   }
+
+  sendInvalidatedCard(title) {
+    return fetch("/game/suspect/invalidate", {
+      method: "POST",
+      body: JSON.stringify({ title }),
+      headers: { "content-type": "application/json" }
+    });
+  }
+
+  getInvalidatedCard() {
+    return fetch("/game/suspect/invalidate").then(res => res.json());
+  }
 }
