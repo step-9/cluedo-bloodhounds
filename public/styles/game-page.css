@@ -506,3 +506,17 @@ select {
   transform: scale(1.1);
   box-shadow: 0 0 10px rgba(0, 128, 0, 0.577);
 }
+
+.current-player {
+  animation: blink 1.5s ease infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}

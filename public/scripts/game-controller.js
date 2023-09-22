@@ -4,6 +4,7 @@ class GameController {
   #gameService;
   #eventEmitter;
   #playersNames;
+  #playerCharacters;
   #lastGameState;
   #pollingInterval;
 
@@ -50,12 +51,24 @@ class GameController {
     this.#playersNames = players.reduce((playerNames, { id, name }) => {
       return { ...playerNames, [id]: name };
     }, {});
+
+    this.#playerCharacters = players.reduce(
+      (playerCharacters, { id, character }) => {
+        return { ...playerCharacters, [id]: character };
+      },
+      {}
+    );
   }
 
-  #updateBoard() {
+  #updateBoard(currentPlayerId) {
     this.#gameService
       .getUpdatedPositions()
-      .then(positions => this.#view.updateCharacterPositions(positions));
+      .then(positions =>
+        this.#view.updateCharacterPositions(
+          positions,
+          this.#playerCharacters[currentPlayerId]
+        )
+      );
   }
 
   #enableTurn({ isYourTurn, canRollDice, canMovePawn, canAccuse }) {
@@ -68,6 +81,7 @@ class GameController {
   #changeTurn({ currentPlayerId, canRollDice, canMovePawn, canAccuse }) {
     const isYourTurn = this.#playerId === currentPlayerId;
     this.#enableTurn({ isYourTurn, canRollDice, canMovePawn, canAccuse });
+    this.#updateBoard(currentPlayerId);
     this.#view.hideAllMessages();
     this.#view.highlightCurrentPlayer(currentPlayerId);
   }
@@ -110,7 +124,10 @@ class GameController {
           invalidatedBy,
           characterPositions
         }) => {
-          this.#view.updateCharacterPositions(characterPositions);
+          this.#view.updateCharacterPositions(
+            characterPositions,
+            this.#playerCharacters[currentPlayerId]
+          );
           this.#view.hideAllMessages();
           const isYourTurn = this.#playerId === currentPlayerId;
           const suspectorName = isYourTurn
@@ -165,7 +182,11 @@ class GameController {
     });
 
     this.#view.renderDice(initialState.diceRollCombination);
-    this.#view.updateCharacterPositions(initialState.characterPositions);
+    this.#view.updateCharacterPositions(
+      initialState.characterPositions,
+      this.#playerCharacters[currentPlayerId]
+    );
+
     this.#view.disableStrandedPlayers(
       initialState.strandedPlayerIds,
       this.#playerId
@@ -197,16 +218,22 @@ class GameController {
   }
 
   #registerEvents() {
-    this.#eventEmitter.on("updateBoard", () => this.#updateBoard());
+    this.#eventEmitter.on("updateBoard", currentPlayerId =>
+      this.#updateBoard(currentPlayerId)
+    );
+
     this.#eventEmitter.on("turnEnded", currentPlayerId =>
       this.#changeTurn({ currentPlayerId, canRollDice: true, canAccuse: true })
     );
+
     this.#eventEmitter.on("accusing", currentPlayerId =>
       this.#markAccusingPlayer(currentPlayerId)
     );
+
     this.#eventEmitter.on("accused", currentPlayerId =>
       this.#showAccusationResult(currentPlayerId)
     );
+
     this.#eventEmitter.on("diceRolled", currentPlayerId =>
       this.#showLastDiceRollCombination(currentPlayerId)
     );

@@ -61,7 +61,7 @@ class View {
     return pawnMarker;
   }
 
-  updateCharacterPositions(characterPositions) {
+  updateCharacterPositions(characterPositions, currentPlayerCharacter) {
     const boardSvg = document.querySelector("#g13");
 
     Object.entries(characterPositions).forEach(([character, { x, y }]) => {
@@ -72,6 +72,10 @@ class View {
 
       const pawnMarker = this.#createMarker(x, y);
       pawnMarker.id = pawnName;
+
+      if (character === currentPlayerCharacter) {
+        pawnMarker.classList.add("current-player");
+      }
 
       boardSvg.append(pawnMarker);
     });
