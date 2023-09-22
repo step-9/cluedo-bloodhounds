@@ -121,6 +121,7 @@ class GameController {
   }
 
   #displayGameOver({ currentPlayerId }) {
+    this.#showAccusationResult(currentPlayerId);
     this.#view.hideAllMessages();
 
     const isYourTurn = this.#playerId === currentPlayerId;

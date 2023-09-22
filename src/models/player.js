@@ -96,8 +96,10 @@ class Player {
   }
 
   startAccusing() {
-    const permissionsToRevoke = ["accuse", "rollDice", "movePawn", "endTurn"];
+    const permissionsToRevoke = ["accuse", "rollDice", "movePawn"];
     permissionsToRevoke.forEach(permission => this.revoke(permission));
+
+    this.allow("endTurn");
   }
 
   info() {

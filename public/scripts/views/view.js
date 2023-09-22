@@ -197,6 +197,7 @@ class View {
         accuseDialog.showModal();
         startAccusation();
         this.removeAllButtons();
+        this.renderEndTurnButton();
       };
 
       this.#bottomPane.appendChild(accuseBtn);
