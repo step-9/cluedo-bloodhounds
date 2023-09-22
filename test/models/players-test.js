@@ -62,49 +62,6 @@ describe("Players", () => {
     });
   });
 
-  describe("updatePlayerPosition", () => {
-    it("should update the current position of the player mentioned by player id", () => {
-      const gourab = new Player({
-        name: "gourab",
-        id: 1,
-        position: { x: 0, y: 0 },
-        cards: []
-      });
-      const players = new Players([gourab]);
-
-      players.updatePlayerPosition(1, { x: 8, y: 9 });
-      players.updatePlayerPosition(4, { x: 4, y: 9 });
-
-      assert.deepStrictEqual(gourab.getPosition(), { x: 8, y: 9 });
-    });
-  });
-
-  describe("getCharacterPositions", () => {
-    it("should update the current position of the player mentioned by player id", () => {
-      const gourab = new Player({
-        name: "gourab",
-        character: "scarlet",
-        id: 1,
-        position: { x: 0, y: 0 },
-        cards: []
-      });
-      const raj = new Player({
-        name: "raj",
-        character: "mustard",
-        id: 2,
-        cards: [],
-        position: { x: 6, y: 8 }
-      });
-
-      const players = new Players([gourab, raj]);
-
-      assert.deepStrictEqual(players.getCharacterPositions(), {
-        scarlet: { x: 0, y: 0 },
-        mustard: { x: 6, y: 8 }
-      });
-    });
-  });
-
   describe("info", () => {
     it("Should give the info off all the players", () => {
       const [gourab, milan, riya] = createPlayers(["gourab", "milan", "riya"]);
@@ -114,7 +71,6 @@ describe("Players", () => {
         {
           cards: [],
           character: undefined,
-          currentPosition: undefined,
           id: 1,
           isStranded: false,
           lastSuspicionPosition: null,
@@ -123,7 +79,6 @@ describe("Players", () => {
         {
           cards: [],
           character: undefined,
-          currentPosition: undefined,
           id: 2,
           isStranded: false,
           lastSuspicionPosition: null,
@@ -132,7 +87,6 @@ describe("Players", () => {
         {
           cards: [],
           character: undefined,
-          currentPosition: undefined,
           id: 3,
           isStranded: false,
           lastSuspicionPosition: null,
@@ -157,35 +111,11 @@ describe("Players", () => {
           name: "gourab",
           character: undefined,
           isStranded: false,
-          currentPosition: undefined,
           lastSuspicionPosition: null
         }
       ];
 
       assert.deepStrictEqual(players.info(), expectedPlayersInfo);
-    });
-  });
-
-  describe("getPlayerPosition", () => {
-    it("should give the position of the player mapped to player id", () => {
-      const gourab = new Player({
-        name: "gourab",
-        id: 1,
-        position: { x: 0, y: 0 },
-        cards: []
-      });
-
-      const raj = new Player({
-        name: "raj",
-        id: 2,
-        position: { x: 4, y: 4 },
-        cards: []
-      });
-      const players = new Players([gourab, raj]);
-
-      const playerPosition = players.getPlayerPosition(1);
-
-      assert.deepStrictEqual(playerPosition, { x: 0, y: 0 });
     });
   });
 

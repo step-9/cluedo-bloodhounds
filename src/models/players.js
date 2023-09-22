@@ -30,31 +30,12 @@ class Players {
     return this.#players.findIndex(player => player.info().id === playerId);
   }
 
-  getPlayerPosition(playerId) {
-    const player = this.findPlayer(playerId);
-    return player.getPosition();
-  }
-
-  updatePlayerPosition(playerId, newPosition) {
-    const player = this.findPlayer(playerId);
-    if (player) player.updatePosition(newPosition);
-  }
-
   strandPlayer(playerId) {
     const playerToStrand = this.findPlayer(playerId);
 
     if (!playerToStrand) throw new Error("Invalid Player Id");
 
     playerToStrand.strand();
-  }
-
-  getCharacterPositions() {
-    return Object.fromEntries(
-      this.info().map(({ character, currentPosition }) => [
-        character,
-        currentPosition
-      ])
-    );
   }
 
   getLastSuspicionPosition(playerId) {

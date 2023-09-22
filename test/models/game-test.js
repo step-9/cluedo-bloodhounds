@@ -4,6 +4,7 @@ const Game = require("../../src/models/game");
 const Board = require("../../src/models/board");
 const rooms = require("../../resources/rooms.json");
 const validTiles = require("../../resources/valid-tiles.json");
+const initialPositions = require("../../resources/initial-positions.json");
 const Player = require("../../src/models/player");
 const Players = require("../../src/models/players");
 
@@ -197,11 +198,39 @@ describe("Game", () => {
   describe("getCharacterPositions", () => {
     it("Should give the current positions of all characters", context => {
       const players = createPlayers();
-      const game = new Game({ players });
+      const board = new Board({
+        validTiles,
+        rooms,
+        initialPositions
+      });
+      const game = new Game({ players, board });
       game.start();
 
       assert.deepStrictEqual(game.getCharacterPositions(), {
-        mustard: { x: 1, y: 4 }
+        green: {
+          x: 9,
+          y: 24
+        },
+        mustard: {
+          x: 23,
+          y: 7
+        },
+        peacock: {
+          x: 0,
+          y: 18
+        },
+        plum: {
+          x: 0,
+          y: 5
+        },
+        scarlet: {
+          x: 16,
+          y: 0
+        },
+        white: {
+          x: 14,
+          y: 24
+        }
       });
     });
   });
@@ -220,7 +249,12 @@ describe("Game", () => {
   describe("playersInfo", () => {
     it("Should give the players info", context => {
       const players = createPlayers();
-      const game = new Game({ players });
+      const board = new Board({
+        validTiles,
+        rooms,
+        initialPositions
+      });
+      const game = new Game({ players, board });
 
       game.start();
       const expectedPlayerInfo = {
@@ -231,13 +265,19 @@ describe("Game", () => {
             name: "gourab",
             character: "mustard",
             isStranded: false,
-            currentPosition: { x: 1, y: 4 },
             lastSuspicionPosition: null
           }
         ],
         currentPlayerId: 1,
         strandedPlayerIds: [],
-        characterPositions: { mustard: { x: 1, y: 4 } },
+        characterPositions: {
+          scarlet: { x: 16, y: 0 },
+          mustard: { x: 23, y: 7 },
+          white: { x: 14, y: 24 },
+          green: { x: 9, y: 24 },
+          peacock: { x: 0, y: 18 },
+          plum: { x: 0, y: 5 }
+        },
         diceRollCombination: [0, 0],
         isAccusing: false,
         isSuspecting: false,
@@ -253,30 +293,24 @@ describe("Game", () => {
 
   describe("findPossiblePositions", () => {
     it("Should give all the possible possitions based on the step", () => {
-      const sauma = createPlayer(1, "sauma", [], "green", { x: 7, y: 5 });
-      const gourab = createPlayer(2, "gourab", [], "plum", { x: 7, y: 7 });
+      const sauma = createPlayer(1, "sauma", [], "green");
+      const gourab = createPlayer(2, "gourab", [], "plum");
       const players = new Players([sauma, gourab]);
-      const board = new Board({ validTiles, rooms });
+
+      const board = new Board({ validTiles, rooms, initialPositions });
       const game = new Game({ players, board });
 
       game.start();
 
-      const expectedPositions = {
-        "8,6": { x: 8, y: 6 },
-        "6,6": { x: 6, y: 6 },
-        "8,4": { x: 8, y: 4 },
-        "5,5": { x: 5, y: 5 },
-        "6,4": { x: 6, y: 4 },
-        "7,3": { x: 7, y: 3 }
-      };
+      const expectedPositions = { "7,23": { x: 7, y: 23 } };
 
-      assert.deepStrictEqual(game.findPossiblePositions(2), expectedPositions);
+      assert.deepStrictEqual(game.findPossiblePositions(3), expectedPositions);
     });
 
     it("Should give possible positions as empty when when there is no where to move", () => {
-      const sauma = createPlayer(1, "sauma", [], "green", { x: 7, y: 5 });
+      const sauma = createPlayer(1, "sauma", [], "green");
       const players = new Players([sauma]);
-      const board = new Board({ validTiles, rooms });
+      const board = new Board({ validTiles, rooms, initialPositions });
       const game = new Game({ players, board });
 
       game.start();

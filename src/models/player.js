@@ -6,10 +6,9 @@ class Player {
 
   #isStranded;
   #permissions;
-  #currentPosition;
   #lastSuspicionPosition;
 
-  constructor({ name, id, character, cards, position }) {
+  constructor({ name, id, character, cards }) {
     this.#id = id;
     this.#name = name;
     this.#cards = cards;
@@ -17,7 +16,6 @@ class Player {
 
     this.#permissions = {};
     this.#isStranded = false;
-    this.#currentPosition = position;
     this.#lastSuspicionPosition = null;
   }
 
@@ -53,14 +51,6 @@ class Player {
     return this;
   }
 
-  getPosition() {
-    return this.#currentPosition;
-  }
-
-  updatePosition(newPosition) {
-    this.#currentPosition = newPosition;
-  }
-
   updateLastSuspicionPosition(room) {
     this.#lastSuspicionPosition = room;
   }
@@ -87,12 +77,10 @@ class Player {
     return this.#lastSuspicionPosition;
   }
 
-  movePawn(newPosition) {
+  hasMoved() {
     this.#permissions.movePawn = false;
     this.#permissions.endTurn = true;
     this.#permissions.accuse = true;
-
-    this.#currentPosition = newPosition;
   }
 
   startAccusing() {
@@ -110,7 +98,6 @@ class Player {
       name: this.#name,
       character: this.#character,
       isStranded: this.#isStranded,
-      currentPosition: this.#currentPosition,
       lastSuspicionPosition: this.#lastSuspicionPosition
     };
   }

@@ -1,6 +1,11 @@
 const request = require("supertest");
 const { describe, it } = require("node:test");
 const { createApp } = require("../../src/app");
+
+const rooms = require("../../resources/rooms.json");
+const validTiles = require("../../resources/valid-tiles.json");
+const initialPositions = require("../../resources/initial-positions.json");
+
 const Game = require("../../src/models/game");
 const Board = require("../../src/models/board");
 const Players = require("../../src/models/players");
@@ -130,21 +135,14 @@ describe("PATCH /game/move-pawn", () => {
       id: 1,
       name: "gourab",
       cards: [],
-      character: "mustard",
-      position: { x: 1, y: 4 }
+      character: "mustard"
     });
     const players = new Players([gourab]);
 
     const board = new Board({
-      validTiles: {
-        tiles: {
-          "1,4": { x: 1, y: 4 },
-          "1,5": { x: 1, y: 5 },
-          "1,6": { x: 1, y: 6 }
-        },
-        doors: {}
-      },
-      rooms: {}
+      validTiles,
+      rooms,
+      initialPositions
     });
 
     const game = new Game({ players, board });
@@ -157,7 +155,7 @@ describe("PATCH /game/move-pawn", () => {
     request(app)
       .patch("/game/move-pawn")
       .set("Cookie", "playerId=1")
-      .send({ x: 1, y: 6 })
+      .send({ x: 22, y: 6 })
       .expect(200)
       .expect("content-type", /application\/json/)
       .end(done);
@@ -174,15 +172,9 @@ describe("PATCH /game/move-pawn", () => {
     const players = new Players([gourab]);
 
     const board = new Board({
-      validTiles: {
-        tiles: {
-          "1,4": { x: 1, y: 4 },
-          "1,5": { x: 1, y: 5 },
-          "1,6": { x: 1, y: 6 }
-        },
-        doors: {}
-      },
-      rooms: {}
+      validTiles,
+      rooms,
+      initialPositions
     });
 
     const game = new Game({ players, board });
@@ -234,18 +226,19 @@ describe("PATCH /game/move-pawn", () => {
       id: 1,
       name: "gourab",
       cards: [],
-      character: "mustard",
-      position: { x: 1, y: 4 }
+      character: "mustard"
     });
     const players = new Players([gourab]);
 
-    const board = {
-      getPosition: () => ({ room: "lounge", canMove: true })
-    };
+    const board = new Board({
+      validTiles,
+      rooms,
+      initialPositions
+    });
 
     const game = new Game({ players, board });
     game.start();
-    game.updateDiceCombination([]);
+    game.updateDiceCombination([5, 5]);
 
     const app = createApp();
     app.context = { game };
@@ -253,6 +246,7 @@ describe("PATCH /game/move-pawn", () => {
     request(app)
       .patch("/game/move-pawn")
       .set("Cookie", "playerId=1")
+      .send({ x: 19, y: 4 })
       .expect(200)
       .end(done);
   });

@@ -1,10 +1,12 @@
 class Board {
   #rooms;
   #validTiles;
+  #characterPositions;
 
-  constructor({ validTiles, rooms }) {
+  constructor({ validTiles, rooms, initialPositions }) {
     this.#rooms = rooms;
     this.#validTiles = validTiles;
+    this.#characterPositions = initialPositions;
   }
 
   #stringifyTile({ x, y }) {
@@ -53,7 +55,6 @@ class Board {
   }
 
   #getPossiblePositions(startingPos, stepCount, visited) {
-    if (stepCount < 0) return {};
     if (this.#isDoor(startingPos)) {
       const [room] = this.#getRoomDetails(startingPos);
       return { [room]: room };
@@ -88,13 +89,18 @@ class Board {
       .flat();
   }
 
-  getPossibleTiles(stepCount, currentPosition, playersPositions = []) {
+  getPossibleTiles(stepCount, currentPlayerCharacter) {
+    const playersPositions = Object.values(this.#characterPositions);
+
+    const currentPlayerPosition =
+      this.#characterPositions[currentPlayerCharacter];
+
     let possiblePositions = {};
     let stepsLeft = stepCount;
     let visited = playersPositions;
-    let startingPositions = [currentPosition];
+    let startingPositions = [currentPlayerPosition];
 
-    const room = this.#getRoomDetails(currentPosition);
+    const room = this.#getRoomDetails(currentPlayerPosition);
     if (room) {
       const doors = room[1].doors;
       visited = visited.concat(doors);
@@ -115,32 +121,43 @@ class Board {
     return possiblePositions;
   }
 
-  #getNextPos({ floorPositions }, playerPositions) {
+  #getNextPos({ floorPositions }) {
+    const playerPositions = Object.values(this.#characterPositions);
+
     return floorPositions.find(tile => {
       return !playerPositions.some(pos => this.#arePosSame(tile, pos));
     });
   }
 
-  getPosition(stepCount, currentPlayerPos, playersPositions, destination) {
+  getCharacterPositions() {
+    return this.#characterPositions;
+  }
+
+  updatePosition(stepCount, currentPlayerCharacter, destination) {
     let newPos = { ...destination };
+
     const possiblePositions = this.getPossibleTiles(
       stepCount,
-      currentPlayerPos,
-      playersPositions
+      currentPlayerCharacter
     );
 
     const destinationId = this.#stringifyTile(destination);
-    if (possiblePositions[destinationId]) return { canMove: true, newPos };
-
-    const room = this.#getRoomDetails(destination);
-    if (!room) return { canMove: false };
-
-    if (possiblePositions[room[0]]) {
-      newPos = this.#getNextPos(room[1], playersPositions);
-      return { canMove: true, newPos, room: room[0] };
+    if (possiblePositions[destinationId]) {
+      this.#characterPositions[currentPlayerCharacter] = newPos;
+      return { hasMoved: true };
     }
 
-    return { canMove: false };
+    const room = this.#getRoomDetails(destination);
+    if (!room) return { hasMoved: false };
+
+    const [roomName, info] = room;
+    if (possiblePositions[roomName]) {
+      newPos = this.#getNextPos(info);
+      this.#characterPositions[currentPlayerCharacter] = newPos;
+      return { hasMoved: true, room: roomName };
+    }
+
+    return { hasMoved: false };
   }
 }
 

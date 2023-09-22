@@ -21,7 +21,6 @@ describe("Player", () => {
         id: 1,
         character: "Mustard",
         isStranded: false,
-        currentPosition: { x: 5, y: 6 },
         lastSuspicionPosition: null
       };
 
@@ -40,15 +39,6 @@ describe("Player", () => {
     });
   });
 
-  describe("updatePosition", () => {
-    it("should update the current position of the player", () => {
-      const player = new Player({ cards: [], position: { x: 0, y: 0 } });
-      player.updatePosition({ x: 8, y: 9 });
-
-      assert.deepStrictEqual(player.getPosition(), { x: 8, y: 9 });
-    });
-  });
-
   describe("answerSuspicion", () => {
     it("should give the matching cards if any", () => {
       const mustard = { type: "suspect", title: "mustard" };
@@ -63,6 +53,15 @@ describe("Player", () => {
       assert.deepStrictEqual(player.answerSuspicion(suspicionCombination), [
         mustard
       ]);
+    });
+  });
+
+  describe("hasMoved", () => {
+    it("should not allow player to move pawn", () => {
+      const player = new Player({ cards: [] });
+      player.hasMoved();
+
+      assert.ok(!player.permissions.canMovePawn);
     });
   });
 });

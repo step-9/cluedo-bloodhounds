@@ -74,22 +74,16 @@ class Game {
 
     const stepCount = this.#lastDiceCombination.reduce((sum, a) => sum + a, 0);
 
-    const currentPlayerPos = this.#players.getPlayerPosition(
-      this.#currentPlayer.id
-    );
-    const characterPositions = Object.values(
-      this.#players.getCharacterPositions()
-    );
+    const currentPlayerCharacter = this.#currentPlayer.info().character;
 
-    const { canMove, newPos, room } = this.#board.getPosition(
+    const { hasMoved, room } = this.#board.updatePosition(
       stepCount,
-      currentPlayerPos,
-      characterPositions,
+      currentPlayerCharacter,
       tileCoordinates
     );
 
-    if (canMove) {
-      this.#currentPlayer.movePawn(newPos);
+    if (hasMoved) {
+      this.#currentPlayer.hasMoved();
       this.#action = "updateBoard";
       const result = { isMoved: true };
 
@@ -112,7 +106,7 @@ class Game {
       players: this.#players.info(),
       currentPlayerId: this.#currentPlayer.id,
       strandedPlayerIds: this.#strandedPlayerIds,
-      characterPositions: this.#players.getCharacterPositions(),
+      characterPositions: this.#board.getCharacterPositions(),
       diceRollCombination: this.#lastDiceCombination,
       isAccusing: this.#isAccusing,
       isSuspecting: this.#isSuspecting,
@@ -183,7 +177,7 @@ class Game {
   }
 
   getCharacterPositions() {
-    return this.#players.getCharacterPositions();
+    return this.#board.getCharacterPositions();
   }
 
   updateDiceCombination(diceCombination) {
@@ -202,16 +196,11 @@ class Game {
   }
 
   findPossiblePositions(stepCount) {
-    const currentPlayerPos = this.#currentPlayer.getPosition();
-
-    const characterPositions = Object.values(
-      this.#players.getCharacterPositions()
-    );
+    const currentPlayerCharacter = this.#currentPlayer.info().character;
 
     const possiblePositions = this.#board.getPossibleTiles(
       stepCount,
-      currentPlayerPos,
-      characterPositions
+      currentPlayerCharacter
     );
 
     if (Object.keys(possiblePositions).length === 0) {
