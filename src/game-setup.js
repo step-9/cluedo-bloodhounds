@@ -4,6 +4,9 @@ const Cards = require("./models/cards");
 const Game = require("./models/game");
 const Players = require("./models/players");
 const Player = require("./models/player");
+const Board = require("./models/board");
+const validTiles = require("../resources/valid-tiles.json");
+const rooms = require("../resources/rooms.json");
 const cardsData = require("../resources/cards.json");
 const initialPositions = require("../resources/initial-positions.json");
 
@@ -63,7 +66,8 @@ const setupGame = (playersData, cards, shuffler) => {
 };
 
 const startGame = (lobbyDetails, req) => {
-  const { lobby, board } = req.app.context;
+  const { lobby } = req.app.context;
+  const board = new Board({ rooms, validTiles });
   const cards = new Cards(makeCards(cardsData), lodash);
 
   const playersInfo = formatLobbyDetails(lobbyDetails);

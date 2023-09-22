@@ -1,8 +1,5 @@
 const { createApp } = require("./src/app");
 const Lobby = require("./src/models/lobby");
-const validTiles = require("./resources/valid-tiles.json");
-const rooms = require("./resources/rooms.json");
-const Board = require("./src/models/board");
 const { cycler } = require("./src/models/dice-roller");
 
 const getDiceCombinationGenerator = () => {
@@ -24,10 +21,9 @@ const getDiceCombinationGenerator = () => {
 };
 
 const injectDependencies = app => {
-  const board = new Board({ rooms, validTiles });
   const lobby = new Lobby({ maxPlayers: 3 });
   const diceCombinationGenerator = getDiceCombinationGenerator();
-  app.context = { lobby, board, diceCombinationGenerator };
+  app.context = { lobby, diceCombinationGenerator };
 };
 
 const main = () => {
