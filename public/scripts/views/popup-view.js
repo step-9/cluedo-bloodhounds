@@ -280,7 +280,8 @@ class PopupView {
     suspectorName,
     suspicionCombination,
     canInvalidate,
-    matchingCards
+    matchingCards,
+    canAnyoneInvalidate
   }) {
     this.#notificationContainer.oncancel = event => event.preventDefault();
 
@@ -292,6 +293,12 @@ class PopupView {
 
     let confirmBtn = "";
     let invalidationMsg = "";
+
+    if (!canAnyoneInvalidate) {
+      invalidationMsg = this.#htmlGenerator(["p", {}, "None invalidated"]);
+      confirmBtn = this.#createButton("Close", "suspicion-close-btn");
+      confirmBtn.onclick = () => this.#notificationContainer.close();
+    }
 
     if (canInvalidate) {
       confirmBtn = this.#createButton("Confirm", "invalidation-confirm-btn");
@@ -308,7 +315,13 @@ class PopupView {
           cardElement.classList.add("matching-card");
 
           cardElement.onclick = () => {
-            invalidationMsg.innerText = `You are invalidating ${cardTitle}`;
+            invalidationMsg.innerText = `You are invalidating ${cardTitle.toUpperCase()}`;
+            const selectedCardElem = suspectedCards.find(cardElem =>
+              cardElem.classList.contains("card-selected")
+            );
+            selectedCardElem?.classList.remove("card-selected");
+            cardElement.classList.add("card-selected");
+
             confirmBtn.classList.add("selected-btn");
             confirmBtn.onclick = () => {
               this.#listeners.invalidateCard(cardTitle);

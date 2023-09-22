@@ -111,12 +111,14 @@ class GameController {
           : this.#playersNames[currentPlayerId];
 
         const canInvalidate = this.#playerId === invalidatedBy;
+        const canAnyoneInvalidate = invalidatedBy;
 
         this.#view.renderSuspicionCombination({
           suspectorName,
           suspicionCombination,
           canInvalidate,
-          matchingCards
+          matchingCards,
+          canAnyoneInvalidate
         });
       });
   }
@@ -233,7 +235,6 @@ class GameController {
     this.#view.addListener("onEndTurn", () => this.#endTurn());
 
     this.#view.addListener("invalidateCard", invalidatedCardTitle => {
-      // alert(invalidatedCardTitle);
       this.#gameService.sendInvalidatedCard(invalidatedCardTitle);
     });
 

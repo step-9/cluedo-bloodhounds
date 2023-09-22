@@ -489,11 +489,20 @@ select {
   background-color: rgb(0, 155, 198);
 }
 
-#notification-close-btn {
-  background-color: red;
+#notification-close-btn,
+#suspicion-close-btn {
+  border: none;
+  outline: none;
+  border-radius: 0.4em;
+  background-color: rgb(254, 60, 68);
 }
 
 .invalidated-card {
   transform: scale(1.1);
   border: 2px solid green;
+}
+
+.card-selected {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 128, 0, 0.577);
 }
