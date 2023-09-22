@@ -73,7 +73,8 @@ describe("Player", () => {
         canAccuse: true,
         canRollDice: true,
         canMovePawn: false,
-        shouldEndTurn: false
+        shouldEndTurn: false,
+        canSuspect: false
       };
       player.startAccusing();
       player.cancelAccusing();
