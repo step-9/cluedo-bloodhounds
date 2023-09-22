@@ -21,7 +21,7 @@ describe("Player", () => {
         id: 1,
         character: "Mustard",
         isStranded: false,
-        lastSuspicionPosition: null
+        lastSuspicionPosition: ""
       };
 
       const player = new Player(playerDetails);

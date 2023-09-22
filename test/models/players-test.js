@@ -73,7 +73,7 @@ describe("Players", () => {
           character: undefined,
           id: 1,
           isStranded: false,
-          lastSuspicionPosition: null,
+          lastSuspicionPosition: "",
           name: "gourab"
         },
         {
@@ -81,7 +81,7 @@ describe("Players", () => {
           character: undefined,
           id: 2,
           isStranded: false,
-          lastSuspicionPosition: null,
+          lastSuspicionPosition: "",
           name: "milan"
         },
         {
@@ -89,7 +89,7 @@ describe("Players", () => {
           character: undefined,
           id: 3,
           isStranded: false,
-          lastSuspicionPosition: null,
+          lastSuspicionPosition: "",
           name: "riya"
         }
       ];
@@ -111,7 +111,7 @@ describe("Players", () => {
           name: "gourab",
           character: undefined,
           isStranded: false,
-          lastSuspicionPosition: null
+          lastSuspicionPosition: ""
         }
       ];
 

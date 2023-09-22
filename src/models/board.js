@@ -37,7 +37,7 @@ class Board {
     return neighbours.filter(pos => this.#isValidTile(pos, visited));
   }
 
-  #getRoomDetails({ x, y }) {
+  getRoomDetails({ x, y }) {
     const rooms = Object.entries(this.#rooms);
 
     return rooms.find(([_, { tileRows }]) => {
@@ -56,7 +56,7 @@ class Board {
 
   #getPossiblePositions(startingPos, stepCount, visited) {
     if (this.#isDoor(startingPos)) {
-      const [room] = this.#getRoomDetails(startingPos);
+      const [room] = this.getRoomDetails(startingPos);
       return { [room]: room };
     }
     if (stepCount === 0) {
@@ -107,7 +107,7 @@ class Board {
     let visited = playersPositions;
     let startingPositions = [currentPlayerPosition];
 
-    const room = this.#getRoomDetails(currentPlayerPosition);
+    const room = this.getRoomDetails(currentPlayerPosition);
     if (room) {
       const doors = room[1].doors;
       visited = visited.concat(doors);
@@ -154,7 +154,7 @@ class Board {
       return { hasMoved: true };
     }
 
-    const room = this.#getRoomDetails(destination);
+    const room = this.getRoomDetails(destination);
     if (!room) return { hasMoved: false };
 
     const [roomName, info] = room;

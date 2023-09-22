@@ -41,7 +41,7 @@ class Players {
   getLastSuspicionPosition(playerId) {
     const player = this.findPlayer(playerId);
     if (!player) throw new Error("Player not found");
-    return player.lastSuspicionPosition();
+    return player.getLastSuspicionPosition();
   }
 
   updateLastSuspicionPosition(playerId, room) {

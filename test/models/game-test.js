@@ -91,8 +91,30 @@ describe("Game", () => {
   describe("change turn", () => {
     it("should change the current player to the next player", context => {
       const players = createPlayers();
+      const board = new Board({
+        validTiles,
+        rooms,
+        initialPositions: { ...initialPositions }
+      });
 
-      const game = new Game({ players });
+      const game = new Game({ players, board });
+
+      game.start();
+      game.move("mustard", "lounge");
+      game.changeTurn();
+
+      assert.deepStrictEqual(game.playersInfo().canSuspect, true);
+    });
+
+    it("should allow player to suspect if already present in a new room", context => {
+      const players = createPlayers();
+      const board = new Board({
+        validTiles,
+        rooms,
+        initialPositions
+      });
+
+      const game = new Game({ players, board });
 
       game.start();
       game.changeTurn();
@@ -286,7 +308,7 @@ describe("Game", () => {
             name: "gourab",
             character: "mustard",
             isStranded: false,
-            lastSuspicionPosition: null
+            lastSuspicionPosition: ""
           }
         ],
         currentPlayerId: 1,
@@ -305,6 +327,7 @@ describe("Game", () => {
         canAccuse: true,
         canRollDice: true,
         canMovePawn: false,
+        canSuspect: false,
         shouldEndTurn: false
       };
 

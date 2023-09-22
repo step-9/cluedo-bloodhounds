@@ -16,7 +16,7 @@ class Player {
 
     this.#permissions = {};
     this.#isStranded = false;
-    this.#lastSuspicionPosition = null;
+    this.#lastSuspicionPosition = "";
   }
 
   get id() {
@@ -28,7 +28,8 @@ class Player {
       canAccuse: this.#permissions.accuse,
       canRollDice: this.#permissions.rollDice,
       canMovePawn: this.#permissions.movePawn,
-      shouldEndTurn: this.#permissions.endTurn
+      shouldEndTurn: this.#permissions.endTurn,
+      canSuspect: this.#permissions.suspect
     };
   }
 
@@ -45,7 +46,8 @@ class Player {
       accuse: true,
       rollDice: true,
       movePawn: false,
-      endTurn: false
+      endTurn: false,
+      suspect: false
     };
 
     return this;
@@ -73,7 +75,7 @@ class Player {
     return matchingCards;
   }
 
-  lastSuspicionPosition() {
+  getLastSuspicionPosition() {
     return this.#lastSuspicionPosition;
   }
 

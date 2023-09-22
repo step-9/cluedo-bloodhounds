@@ -42,10 +42,27 @@ class Game {
     return player.info().cards;
   }
 
+  #setupPermissions() {
+    this.#currentPlayer.setupInitialPermissions();
+
+    const lastSuspicionPosition =
+      this.#currentPlayer.getLastSuspicionPosition();
+    const currentPlayerCharacter = this.#currentPlayer.info().character;
+    const currentPosition =
+      this.#board.getCharacterPositions()[currentPlayerCharacter];
+
+    const room = this.#board.getRoomDetails(currentPosition);
+    if (!room) return;
+
+    if (room[0] !== lastSuspicionPosition) {
+      this.#currentPlayer.allow("suspect");
+    }
+  }
+
   changeTurn() {
     this.#action = "turnEnded";
     this.#currentPlayer = this.#players.getNextPlayer();
-    this.#currentPlayer.setupInitialPermissions();
+    this.#setupPermissions();
   }
 
   toggleIsAccusing() {
@@ -88,6 +105,7 @@ class Game {
       this.#currentPlayer.hasMoved();
       this.#action = "updateBoard";
       const result = { isMoved: true };
+      this.#currentPlayer.updateLastSuspicionPosition("");
 
       if (room) {
         result.canSuspect = true;
