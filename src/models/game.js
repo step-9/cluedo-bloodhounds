@@ -56,6 +56,7 @@ class Game {
 
     if (room[0] !== lastSuspicionPosition) {
       this.#currentPlayer.allow("suspect");
+      this.#currentPlayer.updateLastSuspicionPosition(room[0]);
     }
   }
 
@@ -75,6 +76,13 @@ class Game {
   toggleIsSuspecting() {
     this.#isSuspecting = true;
     this.#action = "suspecting";
+    this.#currentPlayer.revoke("suspect");
+    this.#currentPlayer.revoke("rollDice");
+    this.#currentPlayer.allow("endTurn");
+  }
+
+  revokeCanSuspect() {
+    this.#currentPlayer.revoke("suspect");
   }
 
   state() {

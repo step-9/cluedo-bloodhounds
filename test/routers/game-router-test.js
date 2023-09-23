@@ -10,7 +10,27 @@ const Game = require("../../src/models/game");
 const Board = require("../../src/models/board");
 const Players = require("../../src/models/players");
 const Player = require("../../src/models/player");
-const { cycler } = require("../../src/models/dice-roller");
+
+const createPlayer = (id, name, cards, character, position) =>
+  new Player({
+    id,
+    name,
+    character,
+    cards,
+    position
+  }).setupInitialPermissions();
+
+const createPlayers = () => {
+  const gourab = new Player({
+    id: 1,
+    name: "gourab",
+    cards: [],
+    character: "mustard",
+    position: { x: 1, y: 4 }
+  }).setupInitialPermissions();
+
+  return new Players([gourab]);
+};
 
 describe("GET /game", () => {
   it("should redirect to homepage when game not started", (context, done) => {
@@ -275,6 +295,24 @@ describe("GET /game/character-positions", () => {
       .get("/game/character-positions")
       .expect(200)
       .expect("content-type", /application\/json/)
+      .end(done);
+  });
+});
+
+describe("GET /game/deny-suspicion", () => {
+  it("should revoke suspect permission from current player", (context, done) => {
+    const players = createPlayers();
+    const game = new Game({ players });
+
+    game.start();
+
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .patch("/game/deny-suspicion")
+      .send({ canSuspect: false })
+      .expect(200)
       .end(done);
   });
 });

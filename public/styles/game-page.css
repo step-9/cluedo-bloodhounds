@@ -498,6 +498,19 @@ select {
   background-color: rgb(254, 60, 68);
 }
 
+#suspicion-prompt-btns {
+  display: flex;
+  gap: 2em;
+}
+
+#suspicion-prompt-btns > :first-child {
+  background-color: green;
+}
+
+#suspicion-prompt-btns > :last-child {
+  background-color: red;
+}
+
 .invalidated-card {
   transform: scale(1.1);
   border: 2px solid green;

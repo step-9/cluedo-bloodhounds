@@ -184,6 +184,12 @@ const handleInvalidation = (req, res) => {
   res.end();
 };
 
+const handleDenySuspicionRequest = (req, res) => {
+  const { game } = req.app.context;
+  game.revokeCanSuspect();
+  res.end();
+};
+
 const sendInvalidatedCard = (req, res) => {
   const { game } = req.app.context;
   const { playerId } = req.cookies;
@@ -228,5 +234,6 @@ module.exports = {
   sendLastSuspicionPosition,
   handleInvalidation,
   sendInvalidatedCard,
-  cancelAccusation
+  cancelAccusation,
+  handleDenySuspicionRequest
 };

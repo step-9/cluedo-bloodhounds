@@ -86,6 +86,18 @@ class GameController {
     this.#updateBoard(currentPlayerId);
     this.#view.hideAllMessages();
     this.#view.highlightCurrentPlayer(currentPlayerId);
+
+    if (isYourTurn) {
+      this.#gameService.getInitialData().then(({ roomName, canSuspect }) =>
+        this.#gameService.getCardsInfo().then(cardsInfo => {
+          this.#view.renderSuspicionPrompt({
+            room: roomName,
+            canSuspect,
+            cardsInfo
+          });
+        })
+      );
+    }
   }
 
   #markAccusingPlayer(currentPlayerId) {
@@ -148,6 +160,22 @@ class GameController {
           });
         }
       );
+  }
+
+  #renderSuspicionDialog(currentPlayerId) {
+    if (this.#playerId !== currentPlayerId) return;
+
+    if (this.#view.isSuspicionDialogPresent()) return;
+
+    this.#gameService.getLastSuspicionPosition().then(({ room }) => {
+      this.#gameService.getCardsInfo().then(cardsInfo => {
+        this.#view.renderSuspicionDialog({
+          room,
+          canSuspect: true,
+          cardsInfo
+        });
+      });
+    });
   }
 
   #displayGameOver({ currentPlayerId }) {
@@ -230,6 +258,10 @@ class GameController {
       });
   }
 
+  #denySuspicion() {
+    this.#gameService.sendDenySuspicionReq();
+  }
+
   #registerEvents() {
     this.#eventEmitter.on("updateBoard", currentPlayerId =>
       this.#updateBoard(currentPlayerId)
@@ -253,20 +285,7 @@ class GameController {
 
     this.#eventEmitter.on("suspecting", currentPlayerId => {
       this.#markSuspectingPlayer(currentPlayerId);
-
-      if (this.#playerId !== currentPlayerId) return;
-
-      if (this.#view.isSuspicionDialogPresent()) return;
-
-      this.#gameService.getLastSuspicionPosition().then(({ room }) => {
-        this.#gameService.getCardsInfo().then(cardsInfo => {
-          this.#view.renderSuspicionDialog({
-            room,
-            canSuspect: true,
-            cardsInfo
-          });
-        });
-      });
+      this.#renderSuspicionDialog(currentPlayerId);
     });
 
     this.#eventEmitter.on("suspected", currentPlayerId =>
@@ -333,6 +352,7 @@ class GameController {
         .then(({ room, canSuspect }) => {
           this.#gameService.getCardsInfo().then(cardsInfo => {
             this.#view.renderSuspicionDialog({ room, canSuspect, cardsInfo });
+
             setTimeout(() => {
               if (room && canSuspect) this.#gameService.startSuspicion();
             }, 1000);
@@ -344,6 +364,8 @@ class GameController {
       this.#gameService.startAccusation();
       this.#view.disableTileHighlighting();
     });
+
+    this.#view.addListener("denySuspicion", () => this.#denySuspicion());
 
     this.#view.addListener("playAgain", () => {
       this.#gameService.sendPlayAgainRequest();
@@ -381,6 +403,10 @@ class GameController {
           });
       });
     });
+
+    this.#view.addListener("startSuspicion", () =>
+      this.#gameService.startSuspicion()
+    );
 
     this.#fetchAndRenderInitialState();
     this.#view.setup();

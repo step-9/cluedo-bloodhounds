@@ -284,6 +284,40 @@ class PopupView {
     return dialog;
   }
 
+  #createSuspicionPromptFrame() {
+    return this.#htmlGenerator([
+      "dialog",
+      { id: "suspicion-prompt", class: "popup result-container" },
+      [
+        ["h3", { class: "popup-header" }, "Do you want to Suspect?"],
+        [
+          "div",
+          { id: "suspicion-prompt-btns" },
+          [
+            [
+              "button",
+              {
+                value: "default",
+                id: "suspicion-prompt-yes-btn",
+                class: "button"
+              },
+              "Yes"
+            ],
+            [
+              "button",
+              {
+                value: "default",
+                id: "suspicion-prompt-no-btn",
+                class: "button"
+              },
+              "No"
+            ]
+          ]
+        ]
+      ]
+    ]);
+  }
+
   renderSuspicionDialog({ room, canSuspect, cardsInfo }) {
     if (room && canSuspect) {
       const suspicionDialog = this.#createSuspicionDialog(room, cardsInfo);
@@ -292,6 +326,46 @@ class PopupView {
       roomSelector.setAttribute("disabled", true);
       this.#middlePane.append(suspicionDialog);
       suspicionDialog.showModal();
+    }
+  }
+
+  #createSuspicionPromptDialog(suspicionPromptDetails) {
+    const dialog = this.#createSuspicionPromptFrame();
+    const yesBtn = dialog.querySelector("#suspicion-prompt-yes-btn");
+    const noBtn = dialog.querySelector("#suspicion-prompt-no-btn");
+
+    yesBtn.onclick = () => {
+      dialog.close();
+      this.#listeners.startSuspicion();
+      this.#listeners.removeRollDiceButton();
+      this.#listeners.renderEndTurnButton();
+      this.renderSuspicionDialog(suspicionPromptDetails);
+    };
+
+    noBtn.onclick = () => {
+      this.#listeners.denySuspicion();
+      dialog.close();
+    };
+
+    dialog.oncancel = event => {
+      event.preventDefault();
+    };
+
+    return dialog;
+  }
+
+  renderSuspicionPrompt({ room, canSuspect, cardsInfo }) {
+    const isSuspicionPromptPresent =
+      this.#middlePane.querySelector("#suspicion-prompt");
+
+    if (room && canSuspect && !isSuspicionPromptPresent) {
+      const dialog = this.#createSuspicionPromptDialog({
+        room,
+        canSuspect,
+        cardsInfo
+      });
+      this.#middlePane.append(dialog);
+      dialog.showModal();
     }
   }
 

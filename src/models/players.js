@@ -19,6 +19,7 @@ class Players {
     const nextPlayer = this.#players[this.#currentPlayerIndex];
 
     if (nextPlayer.info().isStranded) return this.getNextPlayer();
+
     return nextPlayer;
   }
 
@@ -26,7 +27,7 @@ class Players {
     return this.#players.find(player => player.info().id === playerId);
   }
 
-  findPlayerIndex(playerId) {
+  findPlayerWithId(playerId) {
     return this.#players.findIndex(player => player.info().id === playerId);
   }
 
@@ -55,7 +56,7 @@ class Players {
   }
 
   ruleOutSuspicion(suspectingPlayerId, suspicionCombination) {
-    const suspectingPlayerIndex = this.findPlayerIndex(suspectingPlayerId);
+    const suspectingPlayerIndex = this.findPlayerWithId(suspectingPlayerId);
     const totalPlayers = this.#players.length;
 
     let playerIndex = (suspectingPlayerIndex + 1) % totalPlayers;

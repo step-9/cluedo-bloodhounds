@@ -339,6 +339,10 @@ class View {
     dice2Element.innerText = dice2Count;
   }
 
+  renderSuspicionPrompt(suspicionPromptDetails) {
+    this.#popupView.renderSuspicionPrompt(suspicionPromptDetails);
+  }
+
   renderSuspicionDialog(suspicionDetails) {
     this.#popupView.renderSuspicionDialog(suspicionDetails);
   }
@@ -356,17 +360,31 @@ class View {
   }
 
   setup() {
-    const { playAgain, accuse, suspect, invalidateCard, cancelAccusation } =
-      this.#listeners;
+    const {
+      playAgain,
+      accuse,
+      suspect,
+      invalidateCard,
+      cancelAccusation,
+      startSuspicion,
+      denySuspicion
+    } = this.#listeners;
 
     this.#popupView.addListener("renderEndTurnButton", () =>
       this.renderEndTurnButton()
     );
+
+    this.#popupView.addListener("removeRollDiceButton", () =>
+      this.#removeRollDiceButton()
+    );
+
     this.#popupView.addListener("suspect", suspect);
     this.#popupView.addListener("accuse", accuse);
     this.#popupView.addListener("playAgain", playAgain);
     this.#popupView.addListener("invalidateCard", invalidateCard);
     this.#popupView.addListener("cancelAccusation", cancelAccusation);
+    this.#popupView.addListener("startSuspicion", startSuspicion);
+    this.#popupView.addListener("denySuspicion", denySuspicion);
 
     this.#popupView.setup();
   }

@@ -33,6 +33,13 @@ class GameService {
     });
   }
 
+  sendDenySuspicionReq() {
+    return fetch("/game/deny-suspicion", {
+      method: "PATCH",
+      body: JSON.stringify({ canSuspect: false })
+    });
+  }
+
   accuse(accusationCombination) {
     return fetch("/game/accuse", {
       method: "POST",
