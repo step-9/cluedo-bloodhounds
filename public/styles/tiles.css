@@ -1,5 +1,5 @@
 .tile {
-  fill: #e6ccb2;
+  fill: url(#tile-img);
   border-radius: 50%;
 }
 
@@ -8,7 +8,6 @@
 }
 
 .highlight-tile {
-  fill: hsl(30 52% 60%);
   animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   cursor: pointer;
 }
@@ -16,49 +15,45 @@
 @keyframes pulse {
   0%,
   100% {
-    opacity: 1;
+    filter: brightness(1.1);
   }
   50% {
-    opacity: 0.7;
+    filter: brightness(1.3);
   }
-}
-
-.start-tile {
-  ry: 15;
 }
 
 #mustard-pawn {
-  fill: yellow;
-  stroke: hsl(0, 0%, 30%);
+  fill: rgb(253, 211, 43);
+  stroke: rgb(220, 175, 26);
   stroke-width: 20px;
 }
 
 #scarlet-pawn {
-  fill: red;
-  stroke: hsl(0, 0%, 30%);
+  fill: rgb(218, 89, 80);
+  stroke: rgb(176, 50, 41);
   stroke-width: 20px;
 }
 
 #white-pawn {
   fill: white;
-  stroke: hsl(0, 0%, 30%);
+  stroke: rgb(116, 116, 123);
   stroke-width: 20px;
 }
 
 #green-pawn {
-  fill: green;
-  stroke: hsl(0, 0%, 30%);
+  fill: rgb(40, 150, 40);
+  stroke: hsl(128, 62%, 20%);
   stroke-width: 20px;
 }
 
 #peacock-pawn {
-  fill: #0000ff;
-  stroke: hsl(0, 0%, 30%);
+  fill: rgb(2, 111, 254);
+  stroke: rgb(0, 74, 148);
   stroke-width: 20px;
 }
 
 #plum-pawn {
-  fill: #800080;
-  stroke: hsl(0, 0%, 30%);
+  fill: #850385;
+  stroke: hsl(285, 95%, 35%);
   stroke-width: 20px;
 }

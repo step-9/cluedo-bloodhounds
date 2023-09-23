@@ -13,6 +13,11 @@
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
      id="defs1">
+  
+  <pattern id="tile-img" x="0" y="0" width="100%" height="100%">
+    <image x="0" y="0" height="30" width="30" xlink:href="/images/tile.png"></image>
+  </pattern>
+
     <rect
        x="289.59276"
        y="321.26697"

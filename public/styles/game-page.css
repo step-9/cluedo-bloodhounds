@@ -515,9 +515,10 @@ select {
 @keyframes blink {
   0%,
   100% {
-    opacity: 1;
+    filter: brightness(1);
+    stroke-width: 20px;
   }
   50% {
-    opacity: 0.6;
+    stroke-width: 80px;
   }
 }
