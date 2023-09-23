@@ -28,7 +28,7 @@
 
 #mustard-pawn {
   fill: rgb(253, 211, 43);
-  stroke: rgb(220, 175, 26);
+  stroke: rgb(207, 141, 28);
   stroke-width: 20px;
 }
 
@@ -57,7 +57,7 @@
 }
 
 #plum-pawn {
-  fill: #850385;
-  stroke: hsl(285, 95%, 35%);
+  fill: #870cb0;
+  stroke: hsl(285, 72%, 29%);
   stroke-width: 20px;
 }
