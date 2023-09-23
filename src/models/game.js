@@ -205,6 +205,8 @@ class Game {
     if (!this.#isGameWon) {
       this.#strandedPlayerIds.push(playerId);
       this.#currentPlayer.strand();
+      const strandedCharacter = this.#currentPlayer.info().character;
+      this.#board.moveToStaircase(strandedCharacter);
       this.#isGameOver = this.#areAllPlayersStranded();
     }
 

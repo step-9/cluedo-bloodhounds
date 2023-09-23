@@ -1,10 +1,12 @@
 class Board {
   #rooms;
+  #staircase;
   #validTiles;
   #characterPositions;
 
-  constructor({ validTiles, rooms, initialPositions }) {
+  constructor({ validTiles, rooms, staircase, initialPositions }) {
     this.#rooms = rooms;
+    this.#staircase = staircase;
     this.#validTiles = validTiles;
     this.#characterPositions = initialPositions;
   }
@@ -94,6 +96,11 @@ class Board {
 
     const newPos = this.#getNextPos(roomInfo);
     this.#characterPositions[suspect] = newPos;
+  }
+
+  moveToStaircase(strandedCharacter) {
+    const newPos = this.#getNextPos(this.#staircase);
+    this.#characterPositions[strandedCharacter] = newPos;
   }
 
   getPossibleTiles(stepCount, currentPlayerCharacter) {

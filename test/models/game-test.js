@@ -5,6 +5,7 @@ const Board = require("../../src/models/board");
 const rooms = require("../../resources/rooms.json");
 const validTiles = require("../../resources/valid-tiles.json");
 const initialPositions = require("../../resources/initial-positions.json");
+const staircase = require("../../resources/staircase.json");
 const Player = require("../../src/models/player");
 const Players = require("../../src/models/players");
 
@@ -171,8 +172,14 @@ describe("Game", () => {
         room: "lounge",
         suspect: "plum"
       };
+      const board = new Board({
+        validTiles,
+        rooms,
+        initialPositions: { ...initialPositions },
+        staircase
+      });
       const players = createPlayers();
-      const game = new Game({ players, killingCombination });
+      const game = new Game({ players, killingCombination, board });
       game.start();
 
       const playerId = 1;

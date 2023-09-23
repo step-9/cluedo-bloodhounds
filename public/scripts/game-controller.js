@@ -117,6 +117,7 @@ class GameController {
     this.#gameService
       .getAccusationResult()
       .then(({ accusationCombination }) => {
+        this.#updateBoard(currentPlayerId);
         this.#view.hideAllMessages();
         this.#view.disableStrandedPlayers([currentPlayerId]);
         const isYourTurn = this.#playerId === currentPlayerId;
