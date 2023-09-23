@@ -185,7 +185,12 @@ const handleInvalidation = (req, res) => {
 };
 
 const handleDenySuspicionRequest = (req, res) => {
+  const { playerId } = req.cookies;
   const { game } = req.app.context;
+  const { currentPlayerId } = game.state();
+
+  if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
+
   game.revokeCanSuspect();
   res.end();
 };

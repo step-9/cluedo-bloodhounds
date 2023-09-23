@@ -312,7 +312,26 @@ describe("GET /game/deny-suspicion", () => {
     request(app)
       .patch("/game/deny-suspicion")
       .send({ canSuspect: false })
+      .set("Cookie", "playerId=1")
       .expect(200)
+      .end(done);
+  });
+
+  it("should respond with error if it is not current player's turn", (context, done) => {
+    const players = createPlayers();
+    const game = new Game({ players });
+
+    game.start();
+
+    const app = createApp();
+    app.context = { game };
+
+    request(app)
+      .patch("/game/deny-suspicion")
+      .set("Cookie", "playerId=2")
+      .expect(401)
+      .expect("content-type", /application\/json/)
+      .expect({ error: "not your turn" })
       .end(done);
   });
 });
