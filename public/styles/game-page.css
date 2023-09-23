@@ -517,12 +517,12 @@ select {
   gap: 2em;
 }
 
-#suspicion-prompt-btns > :first-child {
-  background-color: green;
+#suspicion-prompt-yes-btn {
+  background-color: rgb(0, 186, 96);
 }
 
-#suspicion-prompt-btns > :last-child {
-  background-color: red;
+#suspicion-prompt-no-btn {
+  background-color: rgb(254, 60, 68);
 }
 
 .invalidated-card {
