@@ -34,34 +34,6 @@ describe("Players", () => {
     });
   });
 
-  describe("strandPlayer", () => {
-    it("should strand the player with the given player id", () => {
-      const [gourab, milan, riya] = createPlayers(["gourab", "milan", "riya"]);
-
-      const players = new Players([gourab, milan, riya]);
-      players.strandPlayer(1);
-      const nextPlayer = players.getNextPlayer();
-
-      assert.deepStrictEqual(nextPlayer.info(), milan.info());
-    });
-
-    it("should throw an error when tried to strand player with invalid player id", () => {
-      const [gourab, milan, riya] = createPlayers(["gourab", "milan", "riya"]);
-
-      const players = new Players([gourab, milan, riya]);
-
-      assert.throws(
-        () => {
-          players.strandPlayer(4);
-        },
-        {
-          name: "Error",
-          message: "Invalid Player Id"
-        }
-      );
-    });
-  });
-
   describe("info", () => {
     it("Should give the info off all the players", () => {
       const [gourab, milan, riya] = createPlayers(["gourab", "milan", "riya"]);

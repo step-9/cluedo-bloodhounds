@@ -204,7 +204,7 @@ class Game {
 
     if (!this.#isGameWon) {
       this.#strandedPlayerIds.push(playerId);
-      this.#players.strandPlayer(playerId);
+      this.#currentPlayer.strand();
       this.#isGameOver = this.#areAllPlayersStranded();
     }
 

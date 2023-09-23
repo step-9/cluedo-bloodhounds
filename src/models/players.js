@@ -31,14 +31,6 @@ class Players {
     return this.#players.findIndex(player => player.info().id === playerId);
   }
 
-  strandPlayer(playerId) {
-    const playerToStrand = this.findPlayer(playerId);
-
-    if (!playerToStrand) throw new Error("Invalid Player Id");
-
-    playerToStrand.strand();
-  }
-
   getLastSuspicionPosition(playerId) {
     const player = this.findPlayer(playerId);
     if (!player) throw new Error("Player not found");
