@@ -69,7 +69,12 @@ const setupGame = (playersData, cards, shuffler) => {
 
 const startGame = (lobbyDetails, req) => {
   const { lobby } = req.app.context;
-  const board = new Board({ rooms, validTiles, initialPositions, staircase });
+  const board = new Board({
+    rooms,
+    validTiles,
+    initialPositions: { ...initialPositions },
+    staircase
+  });
   const cards = new Cards(makeCards(cardsData), lodash);
 
   const playersInfo = formatLobbyDetails(lobbyDetails);

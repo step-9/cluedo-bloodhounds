@@ -11,7 +11,10 @@ class GameService {
   }
 
   getInitialData() {
-    return fetch("/game/initial-state").then(res => res.json());
+    return fetch("/game/initial-state").then(res => {
+      if (res.redirected) return window.location.replace(res.url);
+      return res.json();
+    });
   }
 
   endTurn() {

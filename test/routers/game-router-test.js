@@ -36,9 +36,7 @@ describe("GET /game", () => {
   it("should redirect to homepage when game not started", (context, done) => {
     const app = createApp();
     const lobby = {
-      status: context.mock.fn(() => ({
-        isGameStarted: false
-      }))
+      status: context.mock.fn(() => ({ isGameStarted: false }))
     };
     app.context = { lobby };
 
@@ -66,15 +64,35 @@ describe("GET /game/initial-state", () => {
   it("should give the initial state of the game", (context, done) => {
     const playersInfo = context.mock.fn(() => ({ players: [{ cards: {} }] }));
     const getCardsOfPlayer = context.mock.fn();
-    const game = { playersInfo, getCardsOfPlayer };
+    const status = context.mock.fn(() => ({ isGameStarted: true }));
 
+    const game = { playersInfo, getCardsOfPlayer };
+    const lobby = { status };
     const app = createApp();
-    app.context = { game };
+    app.context = { game, lobby };
 
     request(app)
       .get("/game/initial-state")
       .expect(200)
       .expect("content-type", /application\/json/)
+      .end(done);
+  });
+
+  it("should redirect to home page if game not started", (context, done) => {
+    const playersInfo = context.mock.fn(() => ({ players: [{ cards: {} }] }));
+    const getCardsOfPlayer = context.mock.fn();
+    const status = context.mock.fn(() => ({ isGameStarted: false }));
+
+    const game = { playersInfo, getCardsOfPlayer };
+    const lobby = { status };
+
+    const app = createApp();
+    app.context = { game, lobby };
+
+    request(app)
+      .get("/game/initial-state")
+      .expect(302)
+      .expect("location", "/")
       .end(done);
   });
 });
@@ -102,8 +120,10 @@ describe("GET /game/state", () => {
       isGameOver: true,
       currentPlayerId: 1
     }));
+    const status = context.mock.fn(() => ({ isGameStarted: true }));
     const clear = context.mock.fn();
-    const lobby = { clear };
+
+    const lobby = { clear, status };
     const game = { state };
     const app = createApp();
     app.context = { game, lobby };

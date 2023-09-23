@@ -12,8 +12,11 @@ const removeCardsFrom = players =>
   players.forEach(player => delete player.cards);
 
 const serveInitialGameState = (req, res) => {
-  const { game } = req.app.context;
+  const { game, lobby } = req.app.context;
   const { playerId } = req.cookies;
+
+  if (!lobby.status().isGameStarted) return redirectToHomePage(req, res);
+
   const playersInfo = game.playersInfo();
   const { players } = playersInfo;
   removeCardsFrom(players);
@@ -25,6 +28,7 @@ const serveInitialGameState = (req, res) => {
 const serveGameState = (req, res) => {
   const { game, lobby } = req.app.context;
   const { playerId } = req.cookies;
+
   const gameState = game.state();
   const isYourTurn = +playerId === gameState.currentPlayerId;
 
