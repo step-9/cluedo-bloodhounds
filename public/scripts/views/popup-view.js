@@ -33,7 +33,13 @@ class PopupView {
   }
 
   #createCardElement(title) {
-    return this.#htmlGenerator(["div", { class: "card", value: title }, title]);
+    const cardTitle = `${title}-card`.toLowerCase().replaceAll(" ", "-");
+
+    return this.#htmlGenerator([
+      "div",
+      { class: `card ${cardTitle}`, value: title },
+      ""
+    ]);
   }
 
   #createMessageElement(message) {
@@ -422,9 +428,11 @@ class PopupView {
 
       suspectedCards.forEach(cardElement => {
         const cardTitle = cardElement.getAttribute("value");
+        cardElement.classList.add("not-matching-card");
 
         if (cardTitles.includes(cardTitle)) {
           cardElement.classList.add("matching-card");
+          cardElement.classList.remove("not-matching-card");
 
           cardElement.onclick = () => {
             invalidationMsg.innerText = `You are invalidating ${cardTitle.toUpperCase()}`;

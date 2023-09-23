@@ -155,11 +155,12 @@ body {
   font-size: 0.9em;
   text-transform: capitalize;
   text-align: center;
-  padding-top: 1em;
   border-radius: 5px;
   color: black;
   background-color: #ddd;
   border: 2px solid black;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #cards-container .card {
@@ -194,7 +195,7 @@ body {
 }
 
 #cards > .card {
-  box-shadow: 1px -8px 8px #404040;
+  box-shadow: 1px -8px 8px #cdfff0ae;
 }
 
 #cards > div:nth-child(1) {
@@ -471,7 +472,12 @@ select {
 
 .matching-card {
   cursor: pointer;
-  border: 2px solid green;
+  box-shadow: 0 0 10px 5px rgba(25, 202, 25, 0.371);
+}
+
+.not-matching-card {
+  filter: grayscale(1);
+  cursor: not-allowed;
 }
 
 .matching-card:hover {
@@ -487,7 +493,8 @@ select {
 }
 
 #invalidation-confirm-btn.selected-btn {
-  background-color: rgb(0, 155, 198);
+  background-color: rgb(0, 186, 96);
+  border: 2px solid rgb(4, 126, 67);
 }
 
 #notification-close-btn,
@@ -514,6 +521,7 @@ select {
 
 .invalidated-card {
   transform: scale(1.1);
+  box-shadow: 0 0 10px 5px rgba(25, 202, 25, 0.371);
   border: 2px solid green;
 }
 
@@ -544,4 +552,68 @@ select {
   color: linen;
   opacity: 1;
   cursor: not-allowed;
+}
+
+.ball-room-card {
+  background-image: url(/images/cards/ball-room-card.png);
+}
+.billiard-room-card {
+  background-image: url(/images/cards/billiard-room-card.png);
+}
+.candlestick-card {
+  background-image: url(/images/cards/candlestick-card.png);
+}
+.conservatory-card {
+  background-image: url(/images/cards/conservatory-card.png);
+}
+.dagger-card {
+  background-image: url(/images/cards/dagger-card.png);
+}
+.dining-room-card {
+  background-image: url(/images/cards/dining-room-card.png);
+}
+.green-card {
+  background-image: url(/images/cards/green-card.png);
+}
+.hall-card {
+  background-image: url(/images/cards/hall-card.png);
+}
+.kitchen-card {
+  background-image: url(/images/cards/kitchen-card.png);
+}
+.lead-pipe-card {
+  background-image: url(/images/cards/lead-pipe-card.png);
+}
+.library-card {
+  background-image: url(/images/cards/library-card.png);
+}
+.lounge-card {
+  background-image: url(/images/cards/lounge-card.png);
+}
+.mustard-card {
+  background-image: url(/images/cards/mustard-card.png);
+}
+.peacock-card {
+  background-image: url(/images/cards/peacock-card.png);
+}
+.plum-card {
+  background-image: url(/images/cards/plum-card.png);
+}
+.revolver-card {
+  background-image: url(/images/cards/revolver-card.png);
+}
+.rope-card {
+  background-image: url(/images/cards/rope-card.png);
+}
+.scarlet-card {
+  background-image: url(/images/cards/scarlet-card.png);
+}
+.spanner-card {
+  background-image: url(/images/cards/spanner-card.png);
+}
+.study-card {
+  background-image: url(/images/cards/study-card.png);
+}
+.white-card {
+  background-image: url(/images/cards/white-card.png);
 }

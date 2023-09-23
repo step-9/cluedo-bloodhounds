@@ -125,8 +125,8 @@ class View {
 
   #renderCard({ title }) {
     const cardElement = document.createElement("div");
-    cardElement.classList.add("card");
-    cardElement.innerText = title;
+    const cardTitle = `${title}-card`.toLowerCase().replaceAll(" ", "-");
+    cardElement.classList.add("card", cardTitle);
 
     this.#cardsContainer.appendChild(cardElement);
   }
