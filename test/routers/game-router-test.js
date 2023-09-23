@@ -442,11 +442,13 @@ describe("POST /roll-dice", () => {
     const findPossiblePositions = () => {};
     const updateDiceCombination = () => {};
     const updatePossiblePositions = () => {};
+    const state = () => ({ currentPlayerId: 2 });
 
     const game = {
       updateDiceCombination,
       findPossiblePositions,
-      updatePossiblePositions
+      updatePossiblePositions,
+      state
     };
     const app = createApp();
     app.context = { game, diceCombinationGenerator };
@@ -457,6 +459,31 @@ describe("POST /roll-dice", () => {
       .expect(200)
       .expect("content-type", /application\/json/)
       .expect({ diceRollCombination: [4, 4] })
+      .end(done);
+  });
+
+  it("should handle roll dice if the player is not the current player", (_, done) => {
+    const diceCombinationGenerator = { next: () => ({ value: [4, 4] }) };
+    const findPossiblePositions = () => {};
+    const updateDiceCombination = () => {};
+    const updatePossiblePositions = () => {};
+    const state = () => ({ currentPlayerId: 1 });
+
+    const game = {
+      updateDiceCombination,
+      findPossiblePositions,
+      updatePossiblePositions,
+      state
+    };
+    const app = createApp();
+    app.context = { game, diceCombinationGenerator };
+
+    request(app)
+      .post("/game/roll-dice")
+      .set("Cookie", "playerId=2")
+      .expect(401)
+      .expect("content-type", /application\/json/)
+      .expect({ error: "not your turn" })
       .end(done);
   });
 });

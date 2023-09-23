@@ -114,7 +114,12 @@ const sendGameOverInfo = (req, res) => {
 };
 
 const handleRollDice = (req, res) => {
+  const { playerId } = req.cookies;
   const { game, diceCombinationGenerator } = req.app.context;
+  const { currentPlayerId } = game.state();
+
+  if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
+
   const diceRollCombination = rollDice(diceCombinationGenerator);
 
   const stepCount = diceRollCombination.reduce((sum, a) => sum + a, 0);
