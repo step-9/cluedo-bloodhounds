@@ -21,7 +21,8 @@ const getDiceCombinationGenerator = () => {
 };
 
 const injectDependencies = app => {
-  const lobby = new Lobby({ maxPlayers: 3 });
+  const maxPlayers = +process.env.MAX_PLAYERS || 3;
+  const lobby = new Lobby({ maxPlayers });
   const diceCombinationGenerator = getDiceCombinationGenerator();
   app.context = { lobby, diceCombinationGenerator };
 };
