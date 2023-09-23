@@ -444,6 +444,7 @@ select {
 #suspect-confirm-btn {
   color: white;
   background-color: rgb(0, 186, 96);
+  border: 2px solid rgb(4, 126, 67);
 }
 
 .disable-click {
@@ -534,4 +535,13 @@ select {
   50% {
     stroke-width: 80px;
   }
+}
+
+#accuse-confirm-btn:disabled,
+#suspect-confirm-btn:disabled {
+  background-color: dimgrey;
+  border: 2px solid rgb(91, 91, 91);
+  color: linen;
+  opacity: 1;
+  cursor: not-allowed;
 }

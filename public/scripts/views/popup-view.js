@@ -151,7 +151,8 @@ class PopupView {
                   {
                     value: "default",
                     id: "accuse-confirm-btn",
-                    class: "button"
+                    class: "button",
+                    disabled: true
                   },
                   "Confirm"
                 ]
@@ -163,7 +164,12 @@ class PopupView {
     ]);
   }
 
-  #setupAccusationForm(accusationForm, cancelBtn, dialog) {
+  #enableConfirmBtn(requiredFields, confirmBtn) {
+    const isValid = [...requiredFields].every(field => field.value !== "");
+    confirmBtn.disabled = !isValid;
+  }
+
+  #setupAccusationForm(accusationForm, cancelBtn, dialog, confirmBtn) {
     accusationForm.onsubmit = event => {
       event.preventDefault();
       const accusationCombination = this.#readFormData(accusationForm);
@@ -176,9 +182,16 @@ class PopupView {
     cancelBtn.onclick = event => {
       event.preventDefault();
       const { cancelAccusation } = this.#listeners;
+      accusationForm.reset();
+      confirmBtn.disabled = true;
       cancelAccusation();
       dialog.close();
     };
+
+    const requiredFields = accusationForm.getElementsByTagName("select");
+    [...requiredFields].forEach(field => {
+      field.onchange = () => this.#enableConfirmBtn(requiredFields, confirmBtn);
+    });
   }
 
   #createAccuseDialog(cardsInfo) {
@@ -186,9 +199,10 @@ class PopupView {
     const selections = dialog.querySelector(".selections");
     const accusationForm = dialog.querySelector("#accuse-form");
     const cancelBtn = dialog.querySelector("#accuse-cancel-btn");
+    const confirmBtn = dialog.querySelector("#accuse-confirm-btn");
 
     this.#createAndAddSelections(selections, cardsInfo);
-    this.#setupAccusationForm(accusationForm, cancelBtn, dialog);
+    this.#setupAccusationForm(accusationForm, cancelBtn, dialog, confirmBtn);
 
     return dialog;
   }
@@ -247,7 +261,8 @@ class PopupView {
                   {
                     value: "default",
                     id: "suspect-confirm-btn",
-                    class: "button"
+                    class: "button",
+                    disabled: true
                   },
                   "Confirm"
                 ]
@@ -259,13 +274,18 @@ class PopupView {
     ]);
   }
 
-  #setupSuspicionForm(suspicionForm, dialog) {
+  #setupSuspicionForm(suspicionForm, dialog, confirmBtn) {
     suspicionForm.onsubmit = event => {
       event.preventDefault();
       const suspicionCombination = this.#readFormData(suspicionForm);
       this.#listeners.suspect(suspicionCombination);
       dialog.close();
     };
+
+    const requiredFields = suspicionForm.getElementsByTagName("select");
+    [...requiredFields].forEach(field => {
+      field.onchange = () => this.#enableConfirmBtn(requiredFields, confirmBtn);
+    });
   }
 
   #createSuspicionDialog(room, cardsInfo) {
@@ -275,11 +295,10 @@ class PopupView {
     const weapon = cardsInfo.weapon;
     const suspect = cardsInfo.suspect;
     this.#createAndAddSelections(selections, { weapon, suspect, room: [room] });
-    this.#setupSuspicionForm(suspicionForm, dialog);
+    const confirmBtn = suspicionForm.querySelector("#suspect-confirm-btn");
+    this.#setupSuspicionForm(suspicionForm, dialog, confirmBtn);
 
-    dialog.oncancel = event => {
-      event.preventDefault();
-    };
+    dialog.oncancel = event => event.preventDefault();
 
     return dialog;
   }
