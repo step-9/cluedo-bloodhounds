@@ -505,6 +505,11 @@ class PopupView {
     this.#displayWinner(playerNames[currentPlayerId], killingCombination);
   }
 
+  closeNotificationDialog() {
+    this.#notificationContainer.replaceChildren();
+    this.#notificationContainer.close();
+  }
+
   setup() {
     this.#resultContainer = this.#middlePane.querySelector("#result-container");
     this.#notificationContainer = this.#middlePane.querySelector(

@@ -236,6 +236,7 @@ class GameController {
 
   #showAccusationCancelMsg(currentPlayerId) {
     this.#view.hideAllMessages();
+    this.#view.closeNotificationDialog();
 
     const isYourTurn = this.#playerId === currentPlayerId;
     if (isYourTurn) return;
@@ -244,6 +245,8 @@ class GameController {
   }
 
   #showInvalidation(currentPlayerId) {
+    this.#view.hideAllMessages();
+
     this.#gameService
       .getInvalidatedCard()
       .then(({ invalidatedCard, invalidatorId }) => {

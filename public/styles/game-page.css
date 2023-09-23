@@ -101,7 +101,7 @@ body {
   top: 15px;
   right: 15px;
   grid-area: message;
-  padding: 2px;
+  padding: 10px;
   font-size: 0.7em;
   display: flex;
   justify-content: center;

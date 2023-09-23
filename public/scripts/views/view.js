@@ -258,7 +258,7 @@ class View {
     const msgId = `#message-${currentPlayerId}`;
     const accusingPlayer = document.querySelector(msgId);
     accusingPlayer.classList.remove("hide");
-    accusingPlayer.innerText = "I have cancelled accusation";
+    accusingPlayer.innerText = "I cancelled Accusation";
   }
 
   renderSuspicionMessage(currentPlayerId) {
@@ -357,6 +357,10 @@ class View {
 
   isSuspicionDialogPresent() {
     return document.querySelector("#suspicion-popup");
+  }
+
+  closeNotificationDialog() {
+    this.#popupView.closeNotificationDialog();
   }
 
   setup() {

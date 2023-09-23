@@ -7,6 +7,10 @@
   fill: #ddb892;
 }
 
+.start-tile {
+  opacity: 0;
+}
+
 .highlight-tile {
   animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   cursor: pointer;
@@ -15,10 +19,10 @@
 @keyframes pulse {
   0%,
   100% {
-    filter: brightness(1.1);
+    filter: brightness(1.3);
   }
   50% {
-    filter: brightness(1.3);
+    filter: brightness(1.5);
   }
 }
 
