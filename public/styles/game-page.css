@@ -213,20 +213,22 @@ body {
   rotate: -90deg;
   align-self: center;
   border-radius: 10px 10px 0 0;
-  border: 2px solid rgb(255, 255, 255);
-  color: #ddd;
+  border: 1px solid hsl(30, 45%, 80%);
+  color: hsl(30, 45%, 80%);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  background-color: #444;
+  letter-spacing: 1.5px;
+  background-color: #752525;
   outline: none;
+  font-weight: 600;
+  text-shadow: 0 0 5px black;
 }
 
-/* TODO: To make clue chart container collapsible */
 .clue-chart-container {
   position: fixed;
+  border-radius: 5px;
   right: 100px;
-  background-color: beige;
-  color: #444;
+  background-color: hsl(30, 45%, 69%);
+  color: #1b1b1b;
   opacity: 1;
   transition: all 500ms ease;
   align-self: center;
@@ -235,37 +237,6 @@ body {
 .collapse {
   transform: translateX(200%);
   opacity: 0;
-}
-
-.clue-chart-container > h3 {
-  text-align: center;
-  padding: 0.25em 0;
-  border-bottom: 1px solid white;
-}
-
-.clue-section-heading {
-  padding: 0.25em 0;
-  text-align: center;
-  border: 1px solid white;
-}
-
-.clue-table {
-  color: black;
-  border-collapse: collapse;
-}
-
-.clue-table > thead :first-child {
-  text-align: left;
-}
-
-.clue-table th:first-child {
-  width: 30%;
-}
-
-.clue-table td,
-th {
-  padding: 0.2em 0.5em;
-  border: 1px solid white;
 }
 
 .highlight {

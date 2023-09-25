@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="/styles/game-page.css" />
     <link rel="stylesheet" href="/styles/avatar.css" />
     <link rel="stylesheet" href="/styles/tiles.css" />
+    <link rel="stylesheet" href="/styles/clue-sheet.css" />
     <script src="/scripts/views/popup-view.js"></script>
     <script src="/scripts/views/view.js"></script>
     <script src="/scripts/common.js"></script>
@@ -11,6 +12,7 @@
     <script src="/scripts/game-service.js"></script>
     <script src="/scripts/game-controller.js"></script>
     <script src="/scripts/html-generator.js"></script>
+    <script src="/scripts/clue-sheet.js"></script>
     <script src="/scripts/game-page.js"></script>
   </head>
 
@@ -43,244 +45,14 @@
 
           <div class="clue-chart-container collapse">
             <h3>Clue Sheet</h3>
-            <div id="clue-sheet">
-              <section id="suspects">
-                <h4 class="clue-section-heading">Suspects</h4>
-                <table class="clue-table">
-                  <thead>
-                    <th>Suspect</th>
-                    <th>M.S</th>
-                    <th>C.M</th>
-                    <th>M.W</th>
-                    <th>R.G</th>
-                    <th>M.P</th>
-                    <th>P.P</th>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Scarlet</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Mustard</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>White</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Green</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Peacock</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Plum</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </section>
-              <section id="weapons">
-                <h4 class="clue-section-heading">Weapons</h4>
-                <table class="clue-table">
-                  <thead>
-                    <th>Weapon</th>
-                    <th>M.S</th>
-                    <th>C.M</th>
-                    <th>M.W</th>
-                    <th>R.G</th>
-                    <th>M.P</th>
-                    <th>P.P</th>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Rope</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Dagger</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Revolver</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Spanner</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Lead Pipe</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Candle stick</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </section>
-              <section id="rooms">
-                <h4 class="clue-section-heading">Rooms</h4>
-                <table class="clue-table">
-                  <thead>
-                    <th>Room</th>
-                    <th>M.S</th>
-                    <th>C.M</th>
-                    <th>M.W</th>
-                    <th>R.G</th>
-                    <th>M.P</th>
-                    <th>P.P</th>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Library</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Study</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Hall</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Lounge</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Kitchen</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Ball Room</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Dining Room</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Conservatory</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Billiard Room</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </section>
+            <div class="character-identifier">
+              <div></div>
+              <div class="scarlet-identifier"></div>
+              <div class="mustard-identifier"></div>
+              <div class="white-identifier"></div>
+              <div class="green-identifier"></div>
+              <div class="peacock-identifier"></div>
+              <div class="plum-identifier"></div>
             </div>
           </div>
         </div>

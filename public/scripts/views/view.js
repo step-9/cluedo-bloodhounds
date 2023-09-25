@@ -170,7 +170,6 @@ class View {
   }
 
   #setupClueSheetBtn() {
-    console.log(this.#clueChartContainer, this.#clueSheetBtn);
     this.#clueSheetBtn.onclick = () => {
       this.#clueChartContainer.classList.toggle("collapse");
     };

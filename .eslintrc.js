@@ -54,7 +54,8 @@ module.exports = {
         "public/scripts/game-page.js",
         "public/scripts/game-controller.js",
         "public/scripts/game-service.js",
-        "public/scripts/event-emitter.js"
+        "public/scripts/event-emitter.js",
+        "public/scripts/clue-sheet.js"
       ],
       rules: {
         "no-undef": "off",
