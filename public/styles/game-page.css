@@ -131,9 +131,8 @@ body {
 }
 
 #right-pane {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template-rows: 5% auto 10%;
 }
 
 #help {
@@ -141,12 +140,6 @@ body {
   align-items: center;
   justify-content: right;
   padding-right: 1em;
-}
-
-#inference-container {
-  display: grid;
-  grid-template-columns: 25% 70%;
-  gap: 5%;
 }
 
 .card {
@@ -175,9 +168,10 @@ body {
 }
 
 #cards-container {
-  height: 100%;
+  height: 80%;
   display: grid;
-  grid-template-rows: 5% auto;
+  grid-template-rows: 5% 80%;
+  gap: 3em;
 }
 
 #cards-container > h3 {
@@ -185,70 +179,66 @@ body {
   justify-content: center;
   align-items: center;
   border-bottom: 1px solid white;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 1em;
 }
 
 #cards {
-  height: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2em;
   align-items: center;
-  position: relative;
+  justify-content: center;
+  align-content: center;
 }
 
 #cards > .card {
-  box-shadow: 1px -8px 8px #cdfff0ae;
+  box-shadow: 1px -8px 8px #222222ae;
+  border: 2px solid white;
 }
 
-#cards > div:nth-child(1) {
-  position: absolute;
-  top: 10%;
+#inference-container {
+  display: flex;
 }
 
-#cards > div:nth-child(2) {
-  position: absolute;
-  top: 20%;
-}
-
-#cards > div:nth-child(3) {
-  position: absolute;
-  top: 30%;
-}
-
-#cards > div:nth-child(4) {
-  position: absolute;
-  top: 40%;
-}
-
-#cards > div:nth-child(5) {
-  position: absolute;
-  top: 50%;
-}
-
-#cards > div:nth-child(6) {
-  position: absolute;
-  top: 60%;
-}
-
-#clue-chart-container {
+#clue-chart-btn {
+  z-index: 2;
+  cursor: pointer;
+  width: 250px;
+  height: 30px;
+  rotate: -90deg;
   align-self: center;
-  border: 1px solid white;
-  color: black;
-  background-color: hsl(60, 56%, 91%, 65%);
+  border-radius: 10px 10px 0 0;
+  border: 2px solid rgb(255, 255, 255);
+  color: #ddd;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background-color: #444;
+  outline: none;
 }
 
-#clue-chart-container > h3 {
+/* TODO: To make clue chart container collapsible */
+.clue-chart-container {
+  position: fixed;
+  right: 100px;
+  background-color: beige;
+  color: #444;
+  opacity: 1;
+  transition: all 500ms ease;
+  align-self: center;
+}
+
+.collapse {
+  transform: translateX(200%);
+  opacity: 0;
+}
+
+.clue-chart-container > h3 {
   text-align: center;
   padding: 0.25em 0;
   border-bottom: 1px solid white;
-}
-
-#clue-sheet {
-  display: flex;
-  flex-direction: column;
-}
-
-#clue-sheet td {
-  font-size: 15px;
 }
 
 .clue-section-heading {
@@ -258,7 +248,6 @@ body {
 }
 
 .clue-table {
-  width: 100%;
   color: black;
   border-collapse: collapse;
 }
@@ -273,7 +262,7 @@ body {
 
 .clue-table td,
 th {
-  padding: 0.25em 0.5em;
+  padding: 0.2em 0.5em;
   border: 1px solid white;
 }
 
@@ -283,17 +272,15 @@ th {
 
 #bottom-pane {
   display: flex;
-  height: 2.6em;
   gap: 1em;
   align-items: center;
-  padding-left: 30%;
+  padding-left: 10%;
 }
 
 #dices {
   gap: 0.5em;
   display: flex;
   align-items: center;
-  padding-left: 2em;
 }
 
 .dice {

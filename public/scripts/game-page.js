@@ -3,6 +3,8 @@ const main = () => {
   const playersContainer = document.querySelector("#players");
   const bottomPane = document.querySelector("#bottom-pane");
   const middlePane = document.querySelector("#middle-pane");
+  const clueSheetBtn = document.querySelector("#clue-chart-btn");
+  const clueChartContainer = document.querySelector(".clue-chart-container");
 
   const gameService = new GameService();
   const popupView = new PopupView({ middlePane, generateElement });
@@ -11,7 +13,9 @@ const main = () => {
     cardsContainer,
     bottomPane,
     popupView,
-    generateElement
+    clueSheetBtn,
+    generateElement,
+    clueChartContainer
   });
 
   const eventEmitter = new EventEmitter();

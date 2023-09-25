@@ -5,13 +5,17 @@ class View {
   #htmlGenerator;
   #cardsContainer;
   #playersContainer;
+  #clueSheetBtn;
+  #clueChartContainer;
 
   constructor({
     popupView,
     bottomPane,
     cardsContainer,
     generateElement,
-    playersContainer
+    playersContainer,
+    clueSheetBtn,
+    clueChartContainer
   }) {
     this.#listeners = {};
     this.#popupView = popupView;
@@ -19,6 +23,8 @@ class View {
     this.#cardsContainer = cardsContainer;
     this.#htmlGenerator = generateElement;
     this.#playersContainer = playersContainer;
+    this.#clueSheetBtn = clueSheetBtn;
+    this.#clueChartContainer = clueChartContainer;
   }
 
   addListener(eventName, callback) {
@@ -161,6 +167,13 @@ class View {
 
   #isButtonPresent(buttonId) {
     return document.querySelector(`#${buttonId}`);
+  }
+
+  #setupClueSheetBtn() {
+    console.log(this.#clueChartContainer, this.#clueSheetBtn);
+    this.#clueSheetBtn.onclick = () => {
+      this.#clueChartContainer.classList.toggle("collapse");
+    };
   }
 
   removeAccuseBtn() {
@@ -389,6 +402,8 @@ class View {
     this.#popupView.addListener("cancelAccusation", cancelAccusation);
     this.#popupView.addListener("startSuspicion", startSuspicion);
     this.#popupView.addListener("denySuspicion", denySuspicion);
+
+    this.#setupClueSheetBtn();
 
     this.#popupView.setup();
   }
