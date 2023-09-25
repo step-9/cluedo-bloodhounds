@@ -1,20 +1,22 @@
 .clue-chart-container {
-  width: 26%;
+  width: 24%;
   text-transform: capitalize;
   padding: 0.5em;
 
   & h3 {
     padding-left: 0.5em;
+    padding-bottom: 1em;
     color: #571717;
     text-transform: capitalize;
     letter-spacing: 1px;
+    text-align: center;
   }
 }
 
 .character-identifier,
 .item {
   display: grid;
-  grid-template-columns: 50% repeat(6, 1fr);
+  grid-template-columns: 45% repeat(6, 1fr);
 }
 
 .character-identifier * {
