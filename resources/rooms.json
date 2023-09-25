@@ -133,7 +133,10 @@
     ]
   },
   "kitchen": {
-    "passage": "study",
+    "passage": {
+      "name": "study",
+      "coordinate": { "x": 18, "y": 22 }
+    },
     "doors": [{ "x": 19, "y": 18 }],
     "tileRows": [
       [
@@ -153,7 +156,7 @@
         { "x": 23, "y": 21 }
       ],
       [
-        { "x": 18, "y": 22 },
+        { "x": 19, "y": 22 },
         { "x": 23, "y": 22 }
       ],
       [
@@ -218,11 +221,18 @@
     ]
   },
   "conservatory": {
-    "passage": "lounge",
+    "passage": {
+      "name": "lounge",
+      "coordinate": { "x": 1, "y": 19 }
+    },
     "doors": [{ "x": 3, "y": 19 }],
     "tileRows": [
       [
         { "x": 0, "y": 19 },
+        { "x": 0, "y": 19 }
+      ],
+      [
+        { "x": 2, "y": 19 },
         { "x": 4, "y": 19 }
       ],
       [
@@ -323,7 +333,10 @@
     ]
   },
   "study": {
-    "passage": "kitchen",
+    "passage": {
+      "name": "kitchen",
+      "coordinate": { "x": 1, "y": 3 }
+    },
     "doors": [{ "x": 5, "y": 3 }],
     "tileRows": [
       [
@@ -340,6 +353,10 @@
       ],
       [
         { "x": 0, "y": 3 },
+        { "x": 0, "y": 3 }
+      ],
+      [
+        { "x": 2, "y": 3 },
         { "x": 6, "y": 3 }
       ]
     ],

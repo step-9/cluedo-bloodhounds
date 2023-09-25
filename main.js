@@ -4,14 +4,7 @@ const { cycler } = require("./src/models/dice-roller");
 
 const getDiceCombinationGenerator = () => {
   const rolls = [
-    [4, 4],
-    [4, 3],
-    [6, 6],
-    [1, 1],
-    [1, 1],
-    [1, 2],
-    [2, 3],
-    [2, 2],
+    [5, 6],
     [6, 6]
   ];
 
