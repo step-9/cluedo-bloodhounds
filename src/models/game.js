@@ -57,6 +57,11 @@ class Game {
     if (room[0] !== lastSuspicionPosition) {
       this.#currentPlayer.allow("suspect");
       this.#currentPlayer.updateLastSuspicionPosition(room[0]);
+      return;
+    }
+
+    if (room[1].passage) {
+      this.#currentPlayer.allow("movePawn");
     }
   }
 
@@ -81,8 +86,9 @@ class Game {
     this.#currentPlayer.allow("endTurn");
   }
 
-  revokeCanSuspect() {
-    this.#currentPlayer.revoke("suspect");
+  resetPermissions() {
+    this.#currentPlayer.setupInitialPermissions();
+    this.#currentPlayer.allow("movePawn");
   }
 
   state() {
@@ -127,17 +133,20 @@ class Game {
     return { isMoved: false };
   }
 
-  #getRoomName() {
+  #getRoomDetails() {
     const characterPositions = this.#board.getCharacterPositions();
     const currentCharacter = this.#currentPlayer.info().character;
-    return (this.#board.getRoomDetails(
+    const roomDetails = this.#board.getRoomDetails(
       characterPositions[currentCharacter]
-    ) || [""])[0];
+    );
+
+    const [name, { passage }] = roomDetails || ["", { passage: null }];
+    return { name, passage };
   }
 
   playersInfo() {
     const permissions = this.#currentPlayer.permissions;
-    const roomName = this.#getRoomName();
+    const { name, passage } = this.#getRoomDetails();
 
     return {
       players: this.#players.info(),
@@ -147,7 +156,7 @@ class Game {
       diceRollCombination: this.#lastDiceCombination,
       isAccusing: this.#isAccusing,
       isSuspecting: this.#isSuspecting,
-      roomName,
+      room: { name, passage },
       ...permissions
     };
   }

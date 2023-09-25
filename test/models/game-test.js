@@ -104,15 +104,15 @@ describe("Game", () => {
       game.move("mustard", "lounge");
       game.changeTurn();
 
-      assert.deepStrictEqual(game.playersInfo().canSuspect, true);
+      assert.ok(game.playersInfo().canSuspect);
     });
 
-    it("should allow player to suspect if already present in a new room", context => {
+    it("should not allow player to suspect if the player is in a tile", context => {
       const players = createPlayers();
       const board = new Board({
         validTiles,
         rooms,
-        initialPositions
+        initialPositions: { ...initialPositions }
       });
 
       const game = new Game({ players, board });
@@ -120,7 +120,43 @@ describe("Game", () => {
       game.start();
       game.changeTurn();
 
-      assert.deepStrictEqual(game.state().currentPlayerId, 1);
+      assert.ok(!game.playersInfo().canSuspect);
+    });
+
+    it("should allow player to move through passage if it is in a room having a passage", context => {
+      const players = createPlayers();
+      const board = new Board({
+        validTiles,
+        rooms,
+        initialPositions: { ...initialPositions }
+      });
+
+      players.updateLastSuspicionPosition(1, "lounge");
+      const game = new Game({ players, board });
+
+      game.start();
+      game.move("mustard", "lounge");
+      game.changeTurn();
+
+      assert.ok(game.playersInfo().canMovePawn);
+    });
+
+    it("should not allow player to move through passage if it is in a room not having a passage", context => {
+      const players = createPlayers();
+      const board = new Board({
+        validTiles,
+        rooms,
+        initialPositions: { ...initialPositions }
+      });
+
+      players.updateLastSuspicionPosition(1, "hall");
+      const game = new Game({ players, board });
+
+      game.start();
+      game.move("mustard", "hall");
+      game.changeTurn();
+
+      assert.ok(!game.playersInfo().canMovePawn);
     });
   });
 
@@ -336,7 +372,7 @@ describe("Game", () => {
         canMovePawn: false,
         canSuspect: false,
         shouldEndTurn: false,
-        roomName: ""
+        room: { name: "", passage: null }
       };
 
       assert.deepStrictEqual(game.playersInfo(), expectedPlayerInfo);

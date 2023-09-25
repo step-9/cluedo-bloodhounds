@@ -43,7 +43,10 @@
     ]
   },
   "lounge": {
-    "passage": "conservatory",
+    "passage": {
+      "name": "conservatory",
+      "coordinate": { "x": 22, "y": 5 }
+    },
     "doors": [{ "x": 18, "y": 5 }],
     "tileRows": [
       [
@@ -68,6 +71,10 @@
       ],
       [
         { "x": 17, "y": 5 },
+        { "x": 21, "y": 5 }
+      ],
+      [
+        { "x": 23, "y": 5 },
         { "x": 23, "y": 5 }
       ]
     ],

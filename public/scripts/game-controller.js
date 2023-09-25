@@ -80,6 +80,16 @@ class GameController {
     }
   }
 
+  #highlightPassage(room, canSuspect) {
+    if (canSuspect || !room.passage) return;
+
+    const positions = {};
+    const { x, y } = room.passage.coordinate;
+    positions[`${x},${y}`] = { x, y };
+
+    this.#view.highlightPositions(positions);
+  }
+
   #changeTurn({ currentPlayerId, canRollDice, canMovePawn, canAccuse }) {
     const isYourTurn = this.#playerId === currentPlayerId;
     this.#enableTurn({ isYourTurn, canRollDice, canMovePawn, canAccuse });
@@ -88,15 +98,16 @@ class GameController {
     this.#view.highlightCurrentPlayer(currentPlayerId);
 
     if (isYourTurn) {
-      this.#gameService.getInitialData().then(({ roomName, canSuspect }) =>
+      this.#gameService.getInitialData().then(({ room, canSuspect }) => {
+        this.#highlightPassage(room, canSuspect);
         this.#gameService.getCardsInfo().then(cardsInfo => {
           this.#view.renderSuspicionPrompt({
-            room: roomName,
+            room: room.name,
             canSuspect,
             cardsInfo
           });
-        })
-      );
+        });
+      });
     }
   }
 
@@ -263,7 +274,11 @@ class GameController {
   }
 
   #denySuspicion() {
-    this.#gameService.sendDenySuspicionReq();
+    this.#gameService.sendDenySuspicionReq().then(() =>
+      this.#gameService.getInitialData().then(({ room, canSuspect }) => {
+        this.#highlightPassage(room, canSuspect);
+      })
+    );
   }
 
   #registerEvents() {

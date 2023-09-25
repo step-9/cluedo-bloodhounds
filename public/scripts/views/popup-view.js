@@ -349,6 +349,7 @@ class PopupView {
       const roomSelector = suspicionDialog.querySelector("#select-room");
       roomSelector.value = room;
       roomSelector.setAttribute("disabled", true);
+      this.#listeners.removeRollDiceButton();
       this.#middlePane.append(suspicionDialog);
       suspicionDialog.showModal();
     }

@@ -147,6 +147,28 @@ class Board {
     return this.#characterPositions;
   }
 
+  #getConnectedRoomDetails({ x, y }, currentPlayerCharacter) {
+    const rooms = Object.entries(this.#rooms);
+
+    const room = rooms.find(
+      ([_, { passage }]) =>
+        passage?.coordinate?.x === x && passage?.coordinate?.y === y
+    );
+
+    const characterPosition = this.#characterPositions[currentPlayerCharacter];
+
+    const isPlayerInsideRoom =
+      this.getRoomDetails(characterPosition)?.at(0) === room?.at(0);
+
+    if (room && isPlayerInsideRoom) {
+      const connectedRoomName = room[1].passage.name;
+      const connectedRoom = this.#rooms[connectedRoomName];
+      return [connectedRoomName, connectedRoom];
+    }
+
+    return null;
+  }
+
   updatePosition(stepCount, currentPlayerCharacter, destination) {
     let newPos = { ...destination };
 
@@ -156,9 +178,22 @@ class Board {
     );
 
     const destinationId = this.#stringifyTile(destination);
+
     if (possiblePositions[destinationId]) {
       this.#characterPositions[currentPlayerCharacter] = newPos;
       return { hasMoved: true };
+    }
+
+    const connectedRoomDetails = this.#getConnectedRoomDetails(
+      destination,
+      currentPlayerCharacter
+    );
+
+    if (connectedRoomDetails) {
+      const [roomName, info] = connectedRoomDetails;
+      newPos = this.#getNextPos(info);
+      this.#characterPositions[currentPlayerCharacter] = newPos;
+      return { hasMoved: true, room: roomName };
     }
 
     const room = this.getRoomDetails(destination);

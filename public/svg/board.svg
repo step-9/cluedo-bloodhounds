@@ -2871,13 +2871,13 @@ y=&quot;230.85973&quot; width=&quot;30&quot; height=&quot;30&quot; style=&quot;f
      height="30"
      style="stroke:none;stroke-width:1;fill-opacity:1"
      id="22,4" />
-  <rect
+  <!-- <rect
      x="800"
      y="260.85974"
      width="30"
      height="30"
      style="stroke:none;stroke-width:1;fill-opacity:1"
-     id="22,5" />
+     id="22,5" /> -->
   <rect
      x="830"
      y="110.85973"
@@ -4578,6 +4578,15 @@ y=&quot;230.85973&quot; width=&quot;30&quot; height=&quot;30&quot; style=&quot;f
    height="30"
    style="fill:none;stroke:none;stroke-width:1"
    id="23,24" />
+   <g>
+   <rect
+     x="800"
+     y="260.85974"
+     width="30"
+     height="30"
+     style="stroke:none;stroke-width:1;fill-opacity:1"
+     id="22,5" class="passage"/>
+   </g>
 <text
    xml:space="preserve"
    transform="translate(243.57239,317.3733)"

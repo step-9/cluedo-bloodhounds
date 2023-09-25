@@ -171,5 +171,22 @@ describe("Board", () => {
         y: 1
       });
     });
+
+    it("Should update the position to the connected room when player moves through secret passage", () => {
+      const board = new Board({
+        validTiles,
+        rooms,
+        initialPositions: { mustard: { x: 17, y: 1 } }
+      });
+
+      assert.deepStrictEqual(
+        board.updatePosition(7, "mustard", { x: 22, y: 5 }),
+        { hasMoved: true, room: "conservatory" }
+      );
+      assert.deepStrictEqual(board.getCharacterPositions().mustard, {
+        x: 1,
+        y: 20
+      });
+    });
   });
 });

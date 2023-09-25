@@ -200,7 +200,7 @@ const handleDenySuspicionRequest = (req, res) => {
 
   if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
 
-  game.revokeCanSuspect();
+  game.resetPermissions();
   res.end();
 };
 
