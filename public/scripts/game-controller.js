@@ -101,7 +101,6 @@ class GameController {
       this.#gameService
         .getInitialData()
         .then(({ room, canSuspect, canMovePawn }) => {
-          this.#highlightPassage(room, canSuspect, canMovePawn);
           this.#gameService.getCardsInfo().then(cardsInfo => {
             this.#view.renderSuspicionPrompt({
               room: room.name,
@@ -109,6 +108,7 @@ class GameController {
               cardsInfo
             });
           });
+          this.#highlightPassage(room, canSuspect, canMovePawn);
         });
     }
   }

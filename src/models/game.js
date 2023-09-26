@@ -62,8 +62,6 @@ class Game {
   }
 
   getCardsOfPlayer(playerId) {
-    console.log(playerId);
-    console.log(this.#players.info());
     const player = this.#players.findPlayer(+playerId);
     return player.info().cards;
   }
