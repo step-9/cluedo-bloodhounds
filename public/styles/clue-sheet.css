@@ -75,12 +75,15 @@
 
 .item-status {
   cursor: pointer;
-  background-color: rgba(255, 255, 255);
   margin: 0.2em;
-  height: 1.2em;
+  height: 20px;
   aspect-ratio: 1/1;
+  display: grid;
+  place-content: center;
+  font-size: 0.9em;
   border: 1px solid rgba(0, 0, 0, 0.465);
   border-radius: 50%;
+  background-color: rgba(255, 255, 255);
 }
 
 .clue-category {
