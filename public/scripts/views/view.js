@@ -358,8 +358,18 @@ class View {
     const dice1Element = document.querySelector("#dice1");
     const dice2Element = document.querySelector("#dice2");
 
-    dice1Element.innerText = dice1Count;
-    dice2Element.innerText = dice2Count;
+    for (let i = 1; i <= 6; i++) {
+      dice1Element.classList.remove("show-" + i);
+      
+      if (dice1Count === i) dice1Element.classList.add("show-" + i);
+    }
+
+    for (let j = 1; j <= 6; j++) {
+      dice2Element.classList.remove("show-" + j);
+      if (dice2Count === j) {
+        dice2Element.classList.add("show-" + j);
+      }
+    }
   }
 
   renderSuspicionPrompt(suspicionPromptDetails) {

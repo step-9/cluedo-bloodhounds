@@ -256,31 +256,6 @@ body {
   padding-left: 10%;
 }
 
-#dices {
-  gap: 0.5em;
-  display: flex;
-  align-items: center;
-}
-
-.dice {
-  width: 60px;
-  height: 60px;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: whitesmoke;
-  border: 1px solid white;
-  color: black;
-}
-
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: black;
-}
-
 .button {
   width: 100px;
   height: 40px;
