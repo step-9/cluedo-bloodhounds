@@ -13,7 +13,7 @@ const toPlayerCardHtml = ({ name }) => {
     "div",
     { class: "card" },
     [
-      ["img", { class: "avatar", src: "/images/waiting-person-avatar.png" }],
+      ["img", { class: "avatar", src: "/svg/lobby-avatar.svg" }],
       ["div", { class: "title" }, name]
     ]
   ];
