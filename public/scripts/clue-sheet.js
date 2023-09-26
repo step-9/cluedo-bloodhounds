@@ -262,4 +262,17 @@ class ClueChart {
     this.#clueChartContainer.append(clueChartElement);
     this.#setupListeners();
   }
+
+  disable() {
+    this.#clueChartContainer.style.cursor = "not-allowed";
+    const children = this.#clueChartContainer.querySelectorAll("*");
+    children.forEach(child => {
+      child.onclick = () => {};
+      child.style.cursor = "not-allowed";
+    });
+  }
+
+  clear() {
+    localStorage.removeItem("clue-chart-data");
+  }
 }
