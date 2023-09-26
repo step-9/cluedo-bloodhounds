@@ -169,9 +169,20 @@ class View {
     return document.querySelector(`#${buttonId}`);
   }
 
+  #toggleBgColor(btn) {
+    const isSelected = btn.classList.contains("selected");
+    const [bgColor, innerText] = isSelected
+      ? ["rgb(40, 40, 40)", "Hide Clue Sheet"]
+      : ["#752525", "Show Clue Sheet"];
+    btn.style.backgroundColor = bgColor;
+    btn.innerText = innerText;
+  }
+
   #setupClueSheetBtn() {
     this.#clueSheetBtn.onclick = () => {
       this.#clueChartContainer.classList.toggle("collapse");
+      this.#clueSheetBtn.classList.toggle("selected");
+      this.#toggleBgColor(this.#clueSheetBtn);
     };
   }
 

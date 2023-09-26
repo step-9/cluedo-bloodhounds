@@ -76,8 +76,6 @@ const renderClueChart = () => {
     generateClueChartTemplate()
   ];
 
-  console.log(clueChartTemplate);
-
   const clueChartElement = generateElement(clueChartTemplate);
   const clueChartContainer = document.querySelector(".clue-chart-container");
   clueChartContainer.append(clueChartElement);
