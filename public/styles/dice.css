@@ -19,7 +19,6 @@
   height: 60px;
   transform-style: preserve-3d;
   transition: transform 1s;
-  z-index: 20;
 }
 
 .dot {
@@ -35,33 +34,33 @@
   position: absolute;
   background-color: #ffffff;
   border-radius: 5px;
-  width: 70px;
-  height: 70px;
+  width: 100%;
+  height: 100%;
   border: 1px solid black;
 }
 
 .side:nth-child(1) {
-  transform: translateZ(35px);
+  transform: translateZ(30px);
 }
 
 .side:nth-child(6) {
-  transform: rotateY(90deg) translateZ(35px);
+  transform: rotateY(90deg) translateZ(30px);
 }
 
 .side:nth-child(3) {
-  transform: rotateY(-90deg) translateZ(35px);
+  transform: rotateY(-90deg) translateZ(30px);
 }
 
 .side:nth-child(4) {
-  transform: rotateX(90deg) translateZ(35px);
+  transform: rotateX(90deg) translateZ(30px);
 }
 
 .side:nth-child(5) {
-  transform: rotateX(-90deg) translateZ(35px);
+  transform: rotateX(-90deg) translateZ(30px);
 }
 
 .side:nth-child(2) {
-  transform: rotateY(-180deg) translateZ(35px);
+  transform: rotateY(-180deg) translateZ(30px);
 }
 
 .show-1 {
@@ -91,8 +90,8 @@
 .one-1,
 .three-2,
 .five-4 {
-  left: 42%;
-  top: 42%;
+  left: 41%;
+  top: 40%;
 }
 
 .six-1,
@@ -105,7 +104,7 @@
 }
 
 .six-2 {
-  top: 42%;
+  top: 40%;
   left: 13%;
 }
 
@@ -124,7 +123,7 @@
 }
 
 .six-5 {
-  top: 42%;
+  top: 40%;
   right: 13%;
 }
 
