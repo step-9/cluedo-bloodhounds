@@ -34,9 +34,9 @@
 }
 
 .waiting-area {
-  width: 60em;
+  width: 72em;
   height: 30em;
-  background-color: hsl(60, 56%, 91%, 50%);
+  background-color: hsl(60, 56%, 91%, 30%);
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -47,18 +47,20 @@
 
 .card {
   width: 12%;
-  height: 38%;
+  height: 45%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  border: 3px solid black;
-  font-weight: 600;
-  font-size: 1.1em;
+  border: 3px solid rgba(0, 0, 0, 0.721);
   word-break: break-all;
   border-radius: 8px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.511);
-  background: linear-gradient(#eedb6169, #45bf5f5d);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.511);
+  background: linear-gradient(hsl(350, 60%, 50%), #240b36);
+  background: linear-gradient(#ffcd70c1, #d83f31bc);
+  box-shadow:
+    4px 4px 10px #ffffff51,
+    -4px -4px 10px #5c3a3a46;
 }
 
 .avatar {
@@ -66,8 +68,32 @@
   opacity: 0.8;
 }
 
+.title {
+  background-color: rgba(255, 168, 168, 0.373);
+  color: rgb(255, 214, 221);
+  text-shadow: 0 2px 3px black;
+  font-weight: 400;
+  font-size: 1.2em;
+  letter-spacing: 1px;
+  padding: 0.2em 0.8em 0.4em 0.8em;
+  border-radius: 8px;
+}
+
 .loader {
-  font-size: 3em;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background:
+    radial-gradient(farthest-side, #d83f31bc 94%, #0000) top/8px 8px no-repeat,
+    conic-gradient(#0000 30%, #d83f31bc);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+  animation: s3 1s infinite linear;
+}
+
+@keyframes s3 {
+  100% {
+    transform: rotate(1turn);
+  }
 }
 
 .lobby-details {

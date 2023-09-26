@@ -45,8 +45,6 @@ const isNewData = (prevLobbyDetails, currentLobbyDetails) =>
   prevLobbyDetails.length !== currentLobbyDetails.length;
 
 const main = () => {
-  showLoader();
-
   let currentLobbyDetails = [];
 
   const storeAndRenderLobbyDetails = ({ players, noOfPlayers, lobbyId }) => {
