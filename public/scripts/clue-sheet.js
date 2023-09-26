@@ -185,7 +185,7 @@ class ClueChart {
   #addTickOption(itemStatusElement, popUp) {
     const tickBtn = document.createElement("button");
     tickBtn.innerText = MARKINGS.tick;
-    tickBtn.classList.add("tick");
+    tickBtn.classList.add("tick-btn");
     popUp.append(tickBtn);
 
     tickBtn.onclick = () => {
@@ -200,7 +200,7 @@ class ClueChart {
   #addCrossOption(itemStatusElement, popUp) {
     const crossBtn = document.createElement("button");
     crossBtn.innerText = MARKINGS.cross;
-    crossBtn.classList.add("cross");
+    crossBtn.classList.add("cross-btn");
     popUp.append(crossBtn);
 
     crossBtn.onclick = () => {
