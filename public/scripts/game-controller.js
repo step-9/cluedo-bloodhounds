@@ -80,8 +80,8 @@ class GameController {
     }
   }
 
-  #highlightPassage(room, canSuspect) {
-    if (canSuspect || !room.passage) return;
+  #highlightPassage(room, canSuspect, canMovePawn) {
+    if (canSuspect || !canMovePawn || !room.passage) return;
 
     const positions = {};
     const { x, y } = room.passage.coordinate;
@@ -98,16 +98,18 @@ class GameController {
     this.#view.highlightCurrentPlayer(currentPlayerId);
 
     if (isYourTurn) {
-      this.#gameService.getInitialData().then(({ room, canSuspect }) => {
-        this.#highlightPassage(room, canSuspect);
-        this.#gameService.getCardsInfo().then(cardsInfo => {
-          this.#view.renderSuspicionPrompt({
-            room: room.name,
-            canSuspect,
-            cardsInfo
+      this.#gameService
+        .getInitialData()
+        .then(({ room, canSuspect, canMovePawn }) => {
+          this.#highlightPassage(room, canSuspect, canMovePawn);
+          this.#gameService.getCardsInfo().then(cardsInfo => {
+            this.#view.renderSuspicionPrompt({
+              room: room.name,
+              canSuspect,
+              cardsInfo
+            });
           });
         });
-      });
     }
   }
 

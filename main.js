@@ -1,6 +1,7 @@
 const { createApp } = require("./src/app");
 const Lobby = require("./src/models/lobby");
 const { cycler } = require("./src/models/dice-roller");
+const { createTestRouter } = require("./src/routers/testing-router");
 
 const getDiceCombinationGenerator = () => {
   const rolls = [
@@ -20,8 +21,15 @@ const injectDependencies = app => {
   app.context = { lobby, diceCombinationGenerator };
 };
 
+const setupTestEnv = app => {
+  if (process.env.TEST) {
+    app.use("/test", createTestRouter());
+  }
+};
+
 const main = () => {
   const app = createApp();
+  setupTestEnv(app);
   injectDependencies(app);
   const PORT = process.env.PORT || 8000;
   app.listen(PORT, () => console.log("listening on port", PORT));

@@ -8,14 +8,14 @@ class Player {
   #lastPermissions;
   #lastSuspicionPosition;
 
-  constructor({ name, id, character, cards }) {
+  constructor({ name, id, character, cards, permissions, isStranded }) {
     this.#id = id;
     this.#name = name;
     this.#cards = cards;
     this.#character = character;
 
-    this.#permissions = {};
-    this.#isStranded = false;
+    this.#permissions = permissions || {};
+    this.#isStranded = isStranded || false;
     this.#lastSuspicionPosition = "";
   }
 

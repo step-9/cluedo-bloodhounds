@@ -193,8 +193,7 @@ describe("Game", () => {
         isGameWon: true
       };
 
-      const playerId = 1;
-      game.validateAccuse(playerId, {
+      game.validateAccuse({
         weapon: "dagger",
         room: "lounge",
         suspect: "mustard"
@@ -218,9 +217,8 @@ describe("Game", () => {
       const game = new Game({ players, killingCombination, board });
       game.start();
 
-      const playerId = 1;
       const playerAccusation = { ...killingCombination, suspect: "mustard" };
-      const accusationResult = game.validateAccuse(playerId, playerAccusation);
+      const accusationResult = game.validateAccuse(playerAccusation);
 
       const expectedAccusationResult = {
         isWon: false,
@@ -252,7 +250,7 @@ describe("Game", () => {
         suspect: "plum"
       };
 
-      game.validateAccuse(1, accusingCombination);
+      game.validateAccuse(accusingCombination);
 
       assert.deepStrictEqual(
         game.getLastAccusationCombination(),

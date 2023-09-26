@@ -11,15 +11,6 @@ const Board = require("../../src/models/board");
 const Players = require("../../src/models/players");
 const Player = require("../../src/models/player");
 
-const createPlayer = (id, name, cards, character, position) =>
-  new Player({
-    id,
-    name,
-    character,
-    cards,
-    position
-  }).setupInitialPermissions();
-
 const createPlayers = () => {
   const gourab = new Player({
     id: 1,

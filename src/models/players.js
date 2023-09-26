@@ -69,6 +69,12 @@ class Players {
 
     return {};
   }
+
+  getStrandedPlayerIds() {
+    return this.#players
+      .filter(player => player.info().isStranded)
+      .map(player => player.id);
+  }
 }
 
 module.exports = Players;

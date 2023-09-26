@@ -94,7 +94,7 @@ const handleAccusation = (req, res) => {
   if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
 
   const combinationCards = req.body;
-  const result = game.validateAccuse(+playerId, combinationCards);
+  const result = game.validateAccuse(combinationCards);
 
   res.json(result);
 };

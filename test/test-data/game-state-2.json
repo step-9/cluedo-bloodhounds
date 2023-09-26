@@ -1,0 +1,67 @@
+{
+  "playersInfo": [
+    {
+      "name": "milan",
+      "character": "scarlet",
+      "id": 1,
+      "cards": [
+        { "title": "dagger", "type": "weapon" },
+        { "title": "dagger", "type": "weapon" },
+        { "title": "dagger", "type": "weapon" },
+        { "title": "dagger", "type": "weapon" },
+        { "title": "dagger", "type": "weapon" },
+        { "title": "dagger", "type": "weapon" }
+      ],
+      " permissions": {
+        "accuse": true,
+        "rollDice": true,
+        "movePawn": false,
+        "endTurn": false,
+        "suspect": false
+      }
+    },
+    {
+      "name": "riya",
+      "character": "mustard",
+      "id": 2,
+      "cards": [
+        { "title": "dagger", "type": "weapon" },
+        { "title": "dagger", "type": "weapon" },
+        { "title": "dagger", "type": "weapon" },
+        { "title": "dagger", "type": "weapon" },
+        { "title": "dagger", "type": "weapon" },
+        { "title": "dagger", "type": "weapon" }
+      ]
+    },
+    {
+      "name": "sauma",
+      "id": 3,
+      "character": "white",
+      "cards": [
+        { "title": "dagger", "type": "weapon" },
+        { "title": "dagger", "type": "weapon" },
+        { "title": "dagger", "type": "weapon" },
+        { "title": "dagger", "type": "weapon" },
+        { "title": "dagger", "type": "weapon" },
+        { "title": "dagger", "type": "weapon" }
+      ]
+    }
+  ],
+  "initialPositions": {
+    "scarlet": { "x": 16, "y": 0 },
+    "mustard": { "x": 23, "y": 7 },
+    "white": { "x": 14, "y": 24 },
+    "green": { "x": 9, "y": 24 },
+    "peacock": { "x": 0, "y": 18 },
+    "plum": { "x": 0, "y": 5 }
+  },
+  "killingCombination": {
+    "weapon": "dagger",
+    "suspect": "mustard",
+    "room": "lounge"
+  },
+  "action": "turnEnded",
+  "lastDiceCombination": [6, 6],
+  "isAccusing": false,
+  "isSuspecting": false
+}

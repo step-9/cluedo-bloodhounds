@@ -179,4 +179,25 @@ describe("Players", () => {
       assert.deepStrictEqual(players.ruleOutSuspicion(1, [MUSTARD]), {});
     });
   });
+
+  describe("getStrandedPlayerIds", () => {
+    it("should give ids of stranded players ", () => {
+      const gourab = new Player({
+        name: "gourab",
+        id: 1,
+        isStranded: true
+      });
+
+      const raj = new Player({
+        name: "raj",
+        id: 2,
+        isStranded: false
+      });
+      const players = new Players([gourab, raj]);
+
+      const strandedPlayersIds = players.getStrandedPlayerIds();
+
+      assert.deepStrictEqual(strandedPlayersIds, [1]);
+    });
+  });
 });

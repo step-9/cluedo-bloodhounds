@@ -15,14 +15,11 @@ class Game {
   #isAccusing;
   #isSuspecting;
 
-  #strandedPlayerIds;
-
   constructor({ players, board, killingCombination }) {
     this.#board = board;
     this.#players = players;
-    this.#currentPlayer = null;
-    this.#strandedPlayerIds = [];
     this.#killingCombination = killingCombination;
+    this.#currentPlayer = null;
     this.#possiblePositions = {};
     this.#action = "turnEnded";
     this.#lastDiceCombination = [0, 0];
@@ -31,13 +28,42 @@ class Game {
     this.#lastSuspicion = {};
   }
 
+  static load(gameState) {
+    const {
+      players,
+      board,
+      killingCombination,
+      possiblePositions = {},
+      action = "turnEnded",
+      lastDiceCombination = [0, 0],
+      isAccusing = false,
+      isSuspecting = false,
+      lastSuspicion = {}
+    } = gameState;
+
+    const game = new Game({ players, board, killingCombination });
+
+    game.#possiblePositions = possiblePositions;
+    game.#action = action;
+    game.#lastDiceCombination = lastDiceCombination;
+    game.#isAccusing = isAccusing;
+    game.#isSuspecting = isSuspecting;
+    game.#lastSuspicion = lastSuspicion;
+
+    game.start();
+
+    return game;
+  }
+
   #areAllPlayersStranded() {
     const totalPlayers = this.#players.info().length;
-    const totalStrandedPlayers = this.#strandedPlayerIds.length;
+    const totalStrandedPlayers = this.#players.getStrandedPlayerIds().length;
     return totalPlayers === totalStrandedPlayers;
   }
 
   getCardsOfPlayer(playerId) {
+    console.log(playerId);
+    console.log(this.#players.info());
     const player = this.#players.findPlayer(+playerId);
     return player.info().cards;
   }
@@ -151,7 +177,7 @@ class Game {
     return {
       players: this.#players.info(),
       currentPlayerId: this.#currentPlayer.id,
-      strandedPlayerIds: this.#strandedPlayerIds,
+      strandedPlayerIds: this.#players.getStrandedPlayerIds(),
       characterPositions: this.#board.getCharacterPositions(),
       diceRollCombination: this.#lastDiceCombination,
       isAccusing: this.#isAccusing,
@@ -201,7 +227,7 @@ class Game {
     this.#board.move(suspect, room);
   }
 
-  validateAccuse(playerId, combination) {
+  validateAccuse(combination) {
     this.#lastAccusationCombination = combination;
     const killingCombinationCards = Object.entries(this.#killingCombination);
 
@@ -212,7 +238,6 @@ class Game {
     this.#isGameOver = this.#isGameWon;
 
     if (!this.#isGameWon) {
-      this.#strandedPlayerIds.push(playerId);
       this.#currentPlayer.strand();
       const strandedCharacter = this.#currentPlayer.info().character;
       this.#board.moveToStaircase(strandedCharacter);
