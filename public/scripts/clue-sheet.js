@@ -1,82 +1,133 @@
 const playerOrder = ["scarlet", "mustard", "white", "green", "peacock", "plum"];
 
-const cluesheet = {
-  room: {
-    hall: [],
-    lounge: [],
-    library: [],
-    kitchen: [],
-    "ball-room": [],
-    "dining-room": [],
-    "billiard-room": [],
-    conservatory: [],
-    study: []
-  },
+const MARKINGS = {
+  tick: "✓",
+  cross: "✕",
+  none: " "
+};
 
-  suspect: {
-    scarlet: [],
-    mustard: [],
-    white: [],
-    green: [],
-    peacock: [],
-    plum: []
-  },
+const getInitialMarkings = () => new Array(6).fill(MARKINGS.none);
 
-  weapon: {
-    spanner: [],
-    dagger: [],
-    revolver: [],
-    rope: [],
-    "lead-pipe": [],
-    "candle-stick": []
+const getClueSheet = () => {
+  const clueSheet = {
+    room: [
+      "hall",
+      "lounge",
+      "library",
+      "kitchen",
+      "ball-room",
+      "dining-room",
+      "billiard-room",
+      "conservatory",
+      "study"
+    ],
+    suspect: ["scarlet", "mustard", "white", "green", "peacock", "plum"],
+    weapon: [
+      "spanner",
+      "dagger",
+      "revolver",
+      "rope",
+      "lead-pipe",
+      "candle-stick"
+    ]
+  };
+
+  return Object.fromEntries(
+    Object.entries(clueSheet).map(([categoryName, cardNames]) => {
+      cardWithInitialMarkings = Object.fromEntries(
+        cardNames.map(cardName => [cardName, getInitialMarkings()])
+      );
+
+      return [categoryName, cardWithInitialMarkings];
+    })
+  );
+};
+
+const CLUE_SHEET = getClueSheet();
+
+class ClueChart {
+  #clueChartData;
+  #clueChartContainer;
+
+  constructor({ clueChartData, clueChartContainer }) {
+    this.#clueChartContainer = clueChartContainer;
+    this.#clueChartData = clueChartData || CLUE_SHEET;
   }
-};
 
-const getItemStatusMarkers = itemName => {
-  const noOfCheckBoxes = 6;
+  #getItemStatusMarkers(itemName, itemMarkStatuses) {
+    return itemMarkStatuses.map((value, index) => {
+      const id = `${itemName}-${index + 1}`;
+      const itemMarkStatusTemplate = [
+        "div",
+        { class: "item-status", id },
+        value
+      ];
 
-  return new Array(noOfCheckBoxes).fill("").map((_, index) => {
-    const id = `${itemName}-${index + 1}`;
-    return ["div", { class: "item-status", id }, ""];
-  });
-};
+      return generateElement(itemMarkStatusTemplate);
+    });
+  }
 
-const getCategoryTemplates = categoryName => {
-  const items = Object.keys(cluesheet[categoryName]);
+  #generateCategoryItemElement(itemName, itemMarkStatuses) {
+    const categoryItemElement = document.createElement("div");
+    categoryItemElement.classList.add("item", `item-${itemName}`);
 
-  return items.map(itemName => {
-    return [
+    const categoryItemTitleTemplate = [
       "div",
-      { class: `item-${itemName} item` },
-      [
-        ["div", { class: "item-header" }, itemName.replace("-", " ")],
-        ...getItemStatusMarkers(itemName)
-      ]
+      { class: "item-header" },
+      itemName.replace("-", " ")
     ];
-  });
-};
+    const categoryItemTitle = generateElement(categoryItemTitleTemplate);
 
-const generateClueChartTemplate = () => {
-  return Object.keys(cluesheet).map(categoryName => {
-    return [
-      "div",
-      { class: `${categoryName} clue-category` },
-      [
-        ["h4", { class: "category-header" }, categoryName],
-        ...getCategoryTemplates(categoryName)
-      ]
-    ];
-  });
-};
+    const itemStatusMarkers = this.#getItemStatusMarkers(
+      itemName,
+      itemMarkStatuses
+    );
 
-const renderClueChart = () => {
-  const clueChartTemplate = [
-    "div",
-    { class: "clue-chart" },
-    generateClueChartTemplate()
-  ];
+    categoryItemElement.append(categoryItemTitle, ...itemStatusMarkers);
 
-  const clueChartElement = generateElement(clueChartTemplate);
-  const clueChartContainer = document.querySelector(".clue-chart-container");
-  clueChartContainer.append(clueChartElement);
-};
+    return categoryItemElement;
+  }
+
+  #generateCategoryItemElems(categoryName) {
+    const categoryItemNames = this.#clueChartData[categoryName];
+
+    return Object.entries(categoryItemNames).map(
+      ([itemName, itemMarkStatuses]) =>
+        this.#generateCategoryItemElement(itemName, itemMarkStatuses)
+    );
+  }
+
+  #generateCategorySection(categoryName) {
+    const categorySection = document.createElement("div");
+    categorySection.classList.add(categoryName, "clue-category");
+
+    const headerTemplate = ["h4", { class: "category-header" }, categoryName];
+    const categorySectionHeader = generateElement(headerTemplate);
+
+    const categoryItemElems = this.#generateCategoryItemElems(categoryName);
+
+    categorySection.append(categorySectionHeader, ...categoryItemElems);
+
+    return categorySection;
+  }
+
+  #generateClueChartSections() {
+    return Object.keys(this.#clueChartData).map(categoryName =>
+      this.#generateCategorySection(categoryName)
+    );
+  }
+
+  #createClueChartElement() {
+    const clueChartElement = document.createElement("div");
+    clueChartElement.classList.add("clue-chart");
+    const clueChartSections = this.#generateClueChartSections();
+    clueChartElement.append(...clueChartSections);
+
+    return clueChartElement;
+  }
+
+  render() {
+    const clueChartElement = this.#createClueChartElement();
+    this.#clueChartContainer.append(clueChartElement);
+  }
+}
