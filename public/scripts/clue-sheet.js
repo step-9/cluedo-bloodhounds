@@ -129,10 +129,13 @@ class ClueChart {
   #addTickOption(itemStatusElement, popUp) {
     const tickBtn = document.createElement("button");
     tickBtn.innerText = MARKINGS.tick;
+    tickBtn.classList.add("tick");
     popUp.append(tickBtn);
 
     tickBtn.onclick = () => {
       itemStatusElement.innerText = MARKINGS.tick;
+      itemStatusElement.classList.add("tick");
+      itemStatusElement.classList.remove("cross");
       popUp.remove();
     };
   }
@@ -140,21 +143,25 @@ class ClueChart {
   #addCrossOption(itemStatusElement, popUp) {
     const crossBtn = document.createElement("button");
     crossBtn.innerText = MARKINGS.cross;
+    crossBtn.classList.add("cross");
     popUp.append(crossBtn);
 
     crossBtn.onclick = () => {
       itemStatusElement.innerText = MARKINGS.cross;
+      itemStatusElement.classList.add("cross");
+      itemStatusElement.classList.remove("tick");
       popUp.remove();
     };
   }
 
   #addClearOption(itemStatusElement, popUp) {
     const clearBtn = document.createElement("button");
-    clearBtn.innerText = "C";
+    clearBtn.innerText = "⌫";
     popUp.append(clearBtn);
 
     clearBtn.onclick = () => {
       itemStatusElement.innerText = MARKINGS.none;
+      itemStatusElement.classList.remove("tick", "cross");
       popUp.remove();
     };
   }
