@@ -67,8 +67,9 @@ const setupGame = (playersData, cards, shuffler) => {
   return { players, killingCombination };
 };
 
-const startGame = (lobbyDetails, req) => {
-  const { lobby } = req.app.context;
+const startGame = (lobbyDetails, lobbyId, req) => {
+  const { lobbies } = req.app.context;
+  const lobby = lobbies.find(lobbyId);
   const board = new Board({
     rooms,
     validTiles,
@@ -81,8 +82,9 @@ const startGame = (lobbyDetails, req) => {
   const { players, killingCombination } = setupGame(playersInfo, cards, lodash);
 
   const game = new Game({ players, cards, killingCombination, board });
-  req.app.context.game = game;
+  req.app.context.games[lobbyId] = game;
 
+  console.log(req.app.context.games);
   lobby.startGame(game);
 };
 

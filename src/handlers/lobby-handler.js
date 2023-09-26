@@ -4,6 +4,9 @@ const Lobby = require("../models/lobby");
 const sendRoomFullError = (_, res) =>
   res.status(406).send({ error: "Room is Full" });
 
+const sendWrongLobbyIdError = (_, res) =>
+  res.status(406).send({ error: "Wrong Lobby Id" });
+
 const handleJoinRequest = (req, res) => {
   const { lobbies } = req.app.context;
   const { name, lobbyId } = req.body;
@@ -18,24 +21,11 @@ const handleJoinRequest = (req, res) => {
     res.cookie("playerId", playerId);
     res.cookie("gameId", lobbyId);
     res.json({ playerId, isFull, redirectUri: `/lobby/${lobbyId}` });
-  }
-};
 
-const serveLobbyPage = (req, res) => {
-  res.sendFile("lobby.html", { root: "private/pages" });
-};
-
-const serveLobbyDetails = (req, res) => {
-  const { lobby } = req.app.context;
-  const lobbyDetails = lobby.getAllPlayers();
-
-  const isFull = lobby.isFull();
-
-  if (isFull && !lobby.status().isGameStarted) {
-    startGame(lobbyDetails, req);
+    return;
   }
 
-  res.json({ isFull, lobbyDetails });
+  sendWrongLobbyIdError(req, res);
 };
 
 const handleHostRequest = (req, res) => {
@@ -64,8 +54,10 @@ const serveSpecificLobbyDetails = (req, res) => {
   const lobby = lobbies.find(lobbyId);
   const { players, isGameStarted, isFull, noOfPlayers } = lobby.status();
 
+  console.log("hello", lobbyId);
   if (isFull && !isGameStarted) {
-    startGame(players, req);
+    console.log("hi");
+    startGame(players, lobbyId, req);
   }
 
   res.json({ isFull, players, noOfPlayers, lobbyId });
@@ -73,8 +65,6 @@ const serveSpecificLobbyDetails = (req, res) => {
 
 module.exports = {
   handleJoinRequest,
-  serveLobbyPage,
-  serveLobbyDetails,
   handleHostRequest,
   serveSpecificLobbyPage,
   serveSpecificLobbyDetails

@@ -2,7 +2,7 @@ const resolveUrl = url => `${window.location.href}/${url}`;
 
 const getLobbyDetails = () =>
   fetch(resolveUrl("details")).then(res => res.json());
-  
+
 const getWaitingAreaContainer = () => document.querySelector(".waiting-area");
 const removeAllChilds = container => container.replaceChildren();
 const getLobbyDetailsContainer = () => document.querySelector("#no-of-players");
@@ -21,9 +21,9 @@ const toPlayerCardHtml = ({ name }) => {
   return generateElement(playerCardTemplate);
 };
 
-const sendGamePageRequest = () => {
+const sendGamePageRequest = lobbyId => {
   setTimeout(() => {
-    window.location.href = "/game";
+    window.location.href = `/game/${lobbyId}`;
   }, 500);
 };
 
@@ -64,7 +64,7 @@ const main = () => {
 
       if (isFull) {
         clearInterval(pollingInterval);
-        sendGamePageRequest();
+        sendGamePageRequest(lobbyId);
       }
     });
   }, 500);

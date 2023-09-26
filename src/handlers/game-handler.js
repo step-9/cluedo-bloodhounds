@@ -3,7 +3,10 @@ const { rollDice } = require("../models/dice-roller");
 const redirectToHomePage = (_, res) => res.status(302).redirect("/");
 
 const serveGamePage = (req, res) => {
-  const { lobby } = req.app.context;
+  const { lobbies } = req.app.context;
+  const { gameId } = req.params;
+
+  const lobby = lobbies.find(+gameId);
   if (!lobby.status().isGameStarted) return redirectToHomePage(req, res);
   res.sendFile("game-page.html", { root: "private/pages" });
 };
@@ -12,7 +15,11 @@ const removeCardsFrom = players =>
   players.forEach(player => delete player.cards);
 
 const serveInitialGameState = (req, res) => {
-  const { game, lobby } = req.app.context;
+  const { lobbies, games } = req.app.context;
+  const { gameId } = req.params;
+
+  const lobby = lobbies.find(+gameId);
+  const game = games[gameId];
   const { playerId } = req.cookies;
 
   if (!lobby.status().isGameStarted) return redirectToHomePage(req, res);
@@ -26,7 +33,11 @@ const serveInitialGameState = (req, res) => {
 };
 
 const serveGameState = (req, res) => {
-  const { game, lobby } = req.app.context;
+  const { lobbies, games } = req.app.context;
+  const { gameId } = req.params;
+
+  const lobby = lobbies.find(+gameId);
+  const game = games[gameId];
   const { playerId } = req.cookies;
 
   const gameState = game.state();
@@ -41,7 +52,10 @@ const respondNotYourTurn = (_, res) =>
   res.status(401).json({ error: "not your turn" });
 
 const handleEndTurnRequest = (req, res) => {
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const { playerId } = req.cookies;
   const { currentPlayerId } = game.state();
   if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
@@ -51,7 +65,10 @@ const handleEndTurnRequest = (req, res) => {
 };
 
 const handleMovePawnRequest = (req, res) => {
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const { playerId } = req.cookies;
   const tileCoordinates = req.body;
   const { isMoved, canSuspect, room } = game.movePawn(
@@ -68,7 +85,10 @@ const serveCardsInfo = (_, res) => {
 };
 
 const handleStartAccusationRequest = (req, res) => {
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const { playerId } = req.cookies;
   const { currentPlayerId } = game.state();
   if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
@@ -78,7 +98,10 @@ const handleStartAccusationRequest = (req, res) => {
 };
 
 const handleStartSuspicionRequest = (req, res) => {
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const { playerId } = req.cookies;
   const { currentPlayerId } = game.state();
   if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
@@ -88,7 +111,10 @@ const handleStartSuspicionRequest = (req, res) => {
 };
 
 const handleAccusation = (req, res) => {
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const { playerId } = req.cookies;
   const { currentPlayerId } = game.state();
   if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
@@ -100,26 +126,39 @@ const handleAccusation = (req, res) => {
 };
 
 const sendCharacterPositions = (req, res) => {
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const characterPositions = game.getCharacterPositions();
   res.json(characterPositions);
 };
 
 const sendAccusationResult = (req, res) => {
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const accusationCombination = game.getLastAccusationCombination();
   res.json({ accusationCombination });
 };
 
 const sendGameOverInfo = (req, res) => {
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const gameOverInfo = game.getGameOverInfo();
   res.json(gameOverInfo);
 };
 
 const handleRollDice = (req, res) => {
   const { playerId } = req.cookies;
-  const { game, diceCombinationGenerator } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+  const game = games[gameId];
+
+  const { diceCombinationGenerator } = req.app.context;
   const { currentPlayerId } = game.state();
 
   if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
@@ -136,7 +175,10 @@ const handleRollDice = (req, res) => {
 };
 
 const sendDiceCombination = (req, res) => {
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const { playerId } = req.cookies;
   const { currentPlayerId } = game.state();
   const diceRollCombination = game.getLastDiceCombination();
@@ -148,7 +190,10 @@ const sendDiceCombination = (req, res) => {
 };
 
 const handleSuspicion = (req, res) => {
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const { playerId } = req.cookies;
   const { currentPlayerId } = game.state();
   if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
@@ -162,7 +207,10 @@ const handleSuspicion = (req, res) => {
 };
 
 const sendLastSuspicionCombination = (req, res) => {
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const { playerId } = req.cookies;
   const result = {};
   result.suspicionCombination = game.getLastSuspicionCombination();
@@ -177,14 +225,20 @@ const sendLastSuspicionCombination = (req, res) => {
 };
 
 const sendLastSuspicionPosition = (req, res) => {
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const { playerId } = req.cookies;
   const room = game.getLastSuspicionPosition(+playerId);
   res.json({ room });
 };
 
 const handleInvalidation = (req, res) => {
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const { title } = req.body;
   const { playerId } = req.cookies;
 
@@ -195,7 +249,10 @@ const handleInvalidation = (req, res) => {
 
 const handleDenySuspicionRequest = (req, res) => {
   const { playerId } = req.cookies;
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const { currentPlayerId } = game.state();
 
   if (+playerId !== currentPlayerId) return respondNotYourTurn(req, res);
@@ -205,7 +262,10 @@ const handleDenySuspicionRequest = (req, res) => {
 };
 
 const sendInvalidatedCard = (req, res) => {
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const { playerId } = req.cookies;
 
   const { currentPlayerId } = game.state();
@@ -217,7 +277,10 @@ const sendInvalidatedCard = (req, res) => {
 };
 
 const cancelAccusation = (req, res) => {
-  const { game } = req.app.context;
+  const { games } = req.app.context;
+  const { gameId } = req.params;
+
+  const game = games[gameId];
   const { playerId } = req.cookies;
 
   const { currentPlayerId } = game.state();

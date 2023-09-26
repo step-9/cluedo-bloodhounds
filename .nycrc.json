@@ -5,7 +5,6 @@
   "check-coverage": "true",
   "exclude": [
     "main.js",
-    "src/game-setup.js",
     "coverage/**",
     ".eslintrc.js",
     "public/scripts/**",

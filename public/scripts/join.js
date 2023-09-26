@@ -58,7 +58,7 @@ const setupJoinInputBox = () => {
     sendJoinLobbyRequest({ name, lobbyId })
       .then(res => res.json())
       .then(({ error, redirectUri }) => {
-        if (error) return alert("Lobby is Full");
+        if (error) return alert(error);
         window.location.href = redirectUri;
       });
   };

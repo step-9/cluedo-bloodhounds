@@ -23,15 +23,16 @@ const createPlayers = () => {
   return new Players([gourab]);
 };
 
-describe("GET /game", () => {
+describe("GET /game/1", () => {
   it("should redirect to homepage when game not started", (context, done) => {
     const app = createApp();
     const lobby = {
       status: context.mock.fn(() => ({ isGameStarted: false }))
     };
-    app.context = { lobby };
+    const lobbies = { find: context.mock.fn(() => lobby) };
+    app.context = { lobbies };
 
-    request(app).get("/game").expect(302).expect("location", "/").end(done);
+    request(app).get("/game/1").expect(302).expect("location", "/").end(done);
   });
 
   it("should serve the game page when the game has started", (context, done) => {
@@ -41,17 +42,18 @@ describe("GET /game", () => {
         isGameStarted: true
       }))
     };
-    app.context = { lobby };
+    const lobbies = { find: context.mock.fn(() => lobby) };
+    app.context = { lobbies };
 
     request(app)
-      .get("/game")
+      .get("/game/1")
       .expect(200)
       .expect("content-type", /text\/html/)
       .end(done);
   });
 });
 
-describe("GET /game/initial-state", () => {
+describe("GET /game/1/initial-state", () => {
   it("should give the initial state of the game", (context, done) => {
     const playersInfo = context.mock.fn(() => ({ players: [{ cards: {} }] }));
     const getCardsOfPlayer = context.mock.fn();
@@ -60,10 +62,13 @@ describe("GET /game/initial-state", () => {
     const game = { playersInfo, getCardsOfPlayer };
     const lobby = { status };
     const app = createApp();
-    app.context = { game, lobby };
+    const games = { 1: game };
+
+    const lobbies = { find: context.mock.fn(() => lobby) };
+    app.context = { games, lobbies };
 
     request(app)
-      .get("/game/initial-state")
+      .get("/game/1/initial-state")
       .expect(200)
       .expect("content-type", /application\/json/)
       .end(done);
@@ -76,29 +81,36 @@ describe("GET /game/initial-state", () => {
 
     const game = { playersInfo, getCardsOfPlayer };
     const lobby = { status };
-
     const app = createApp();
-    app.context = { game, lobby };
+
+    const games = { 1: game };
+
+    const lobbies = { find: context.mock.fn(() => lobby) };
+    app.context = { games, lobbies };
 
     request(app)
-      .get("/game/initial-state")
+      .get("/game/1/initial-state")
       .expect(302)
       .expect("location", "/")
       .end(done);
   });
 });
 
-describe("GET /game/state", () => {
+describe("GET /game/1/state", () => {
   it("Should give the game state if the game is already started", (context, done) => {
     const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
     const status = context.mock.fn(() => ({ isGameStarted: true }));
     const lobby = { status };
     const game = { state };
     const app = createApp();
-    app.context = { game, lobby };
+
+    const games = { 1: game };
+
+    const lobbies = { find: context.mock.fn(() => lobby) };
+    app.context = { games, lobbies };
 
     request(app)
-      .get("/game/state")
+      .get("/game/1/state")
       .expect(200)
       .set("Cookie", "playerId=3")
       .expect("content-type", /application\/json/)
@@ -117,10 +129,13 @@ describe("GET /game/state", () => {
     const lobby = { clear, status };
     const game = { state };
     const app = createApp();
-    app.context = { game, lobby };
+    const games = { 1: game };
+
+    const lobbies = { find: context.mock.fn(() => lobby) };
+    app.context = { games, lobbies };
 
     request(app)
-      .get("/game/state")
+      .get("/game/1/state")
       .expect(200)
       .set("Cookie", "playerId=3")
       .expect("content-type", /application\/json/)
@@ -129,15 +144,17 @@ describe("GET /game/state", () => {
   });
 });
 
-describe("GET /game/end-turn", () => {
+describe("GET /game/1/end-turn", () => {
   it("Should give error if its not player turn", (context, done) => {
     const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
     const game = { state };
     const app = createApp();
-    app.context = { game };
+
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .post("/game/end-turn")
+      .post("/game/1/end-turn")
       .set("Cookie", "playerId=2")
       .expect(401)
       .expect("content-type", /application\/json/)
@@ -150,17 +167,19 @@ describe("GET /game/end-turn", () => {
     const changeTurn = context.mock.fn();
     const game = { state, changeTurn };
     const app = createApp();
-    app.context = { game };
+
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .post("/game/end-turn")
+      .post("/game/1/end-turn")
       .set("Cookie", "playerId=1")
       .expect(200)
       .end(done);
   });
 });
 
-describe("PATCH /game/move-pawn", () => {
+describe("PATCH /game/1/move-pawn", () => {
   it("should move the pawn if the given tile is valid", (context, done) => {
     const gourab = new Player({
       id: 1,
@@ -181,10 +200,12 @@ describe("PATCH /game/move-pawn", () => {
     game.updateDiceCombination([1, 1]);
 
     const app = createApp();
-    app.context = { game };
+
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .patch("/game/move-pawn")
+      .patch("/game/1/move-pawn")
       .set("Cookie", "playerId=1")
       .send({ x: 22, y: 6 })
       .expect(200)
@@ -213,10 +234,12 @@ describe("PATCH /game/move-pawn", () => {
     game.updateDiceCombination([1, 1]);
 
     const app = createApp();
-    app.context = { game };
+
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .patch("/game/move-pawn")
+      .patch("/game/1/move-pawn")
       .set("Cookie", "playerId=1")
       .send({ x: 1, y: 2 })
       .expect(400)
@@ -241,12 +264,14 @@ describe("PATCH /game/move-pawn", () => {
 
     const game = new Game({ players, board });
     const app = createApp();
-    app.context = { game };
+
+    const games = { 1: game };
+    app.context = { games };
 
     game.start();
 
     request(app)
-      .patch("/game/move-pawn")
+      .patch("/game/1/move-pawn")
       .set("Cookie", "playerId=2")
       .expect(400)
       .end(done);
@@ -272,10 +297,12 @@ describe("PATCH /game/move-pawn", () => {
     game.updateDiceCombination([5, 5]);
 
     const app = createApp();
-    app.context = { game };
+
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .patch("/game/move-pawn")
+      .patch("/game/1/move-pawn")
       .set("Cookie", "playerId=1")
       .send({ x: 19, y: 4 })
       .expect(200)
@@ -283,34 +310,36 @@ describe("PATCH /game/move-pawn", () => {
   });
 });
 
-describe("GET /game/cards", () => {
+describe("GET /game/1/cards", () => {
   it("should give cards info", (context, done) => {
     const app = createApp();
 
     request(app)
-      .get("/game/cards")
+      .get("/game/1/cards")
       .expect(200)
       .expect("content-type", /application\/json/)
       .end(done);
   });
 });
 
-describe("GET /game/character-positions", () => {
+describe("GET /game/1/character-positions", () => {
   it("should give positions of all characters", (context, done) => {
     const getCharacterPositions = context.mock.fn();
     const game = { getCharacterPositions };
     const app = createApp();
-    app.context = { game };
+
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .get("/game/character-positions")
+      .get("/game/1/character-positions")
       .expect(200)
       .expect("content-type", /application\/json/)
       .end(done);
   });
 });
 
-describe("GET /game/deny-suspicion", () => {
+describe("GET /game/1/deny-suspicion", () => {
   it("should revoke suspect permission from current player", (context, done) => {
     const players = createPlayers();
     const game = new Game({ players });
@@ -318,10 +347,12 @@ describe("GET /game/deny-suspicion", () => {
     game.start();
 
     const app = createApp();
-    app.context = { game };
+
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .patch("/game/deny-suspicion")
+      .patch("/game/1/deny-suspicion")
       .send({ canSuspect: false })
       .set("Cookie", "playerId=1")
       .expect(200)
@@ -335,10 +366,12 @@ describe("GET /game/deny-suspicion", () => {
     game.start();
 
     const app = createApp();
-    app.context = { game };
+
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .patch("/game/deny-suspicion")
+      .patch("/game/1/deny-suspicion")
       .set("Cookie", "playerId=2")
       .expect(401)
       .expect("content-type", /application\/json/)
@@ -347,45 +380,51 @@ describe("GET /game/deny-suspicion", () => {
   });
 });
 
-describe("GET /game/accusation-result", () => {
+describe("GET /game/1/accusation-result", () => {
   it("should give result of last accusation", (context, done) => {
     const getLastAccusationCombination = context.mock.fn();
     const game = { getLastAccusationCombination };
     const app = createApp();
-    app.context = { game };
+
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .get("/game/accusation-result")
+      .get("/game/1/accusation-result")
       .expect(200)
       .expect("content-type", /application\/json/)
       .end(done);
   });
 });
 
-describe("GET /game/game-over-info", () => {
+describe("GET /game/1/game-over-info", () => {
   it("should give game over info", (context, done) => {
     const getGameOverInfo = context.mock.fn();
     const game = { getGameOverInfo };
     const app = createApp();
-    app.context = { game };
+
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .get("/game/game-over-info")
+      .get("/game/1/game-over-info")
       .expect(200)
       .expect("content-type", /application\/json/)
       .end(done);
   });
 });
 
-describe("GET /game/start-accusation", () => {
+describe("GET /game/1/start-accusation", () => {
   it("Should give error if its not player turn", (context, done) => {
     const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
     const game = { state };
     const app = createApp();
-    app.context = { game };
+
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .patch("/game/accusation-state")
+      .patch("/game/1/accusation-state")
       .set("Cookie", "playerId=2")
       .expect(401)
       .expect("content-type", /application\/json/)
@@ -398,17 +437,19 @@ describe("GET /game/start-accusation", () => {
     const toggleIsAccusing = context.mock.fn();
     const game = { state, toggleIsAccusing };
     const app = createApp();
-    app.context = { game };
+
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .patch("/game/accusation-state")
+      .patch("/game/1/accusation-state")
       .set("Cookie", "playerId=1")
       .expect(200)
       .end(done);
   });
 });
 
-describe("POST /game/accuse", () => {
+describe("POST /game/1/accuse", () => {
   it("Should end the game as the combination is correct", (context, done) => {
     const killingCombination = {
       weapon: "dagger",
@@ -419,10 +460,12 @@ describe("POST /game/accuse", () => {
     const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
     const game = { validateAccuse, state };
     const app = createApp({});
-    app.context = { game };
+
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .post("/game/accuse")
+      .post("/game/1/accuse")
       .send({ weapon: "dagger", suspect: "mustard", room: "lounge" })
       .set("Cookie", "playerId=1")
       .expect(200)
@@ -435,10 +478,12 @@ describe("POST /game/accuse", () => {
     const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
     const game = { state };
     const app = createApp();
-    app.context = { game };
+
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .post("/game/accuse")
+      .post("/game/1/accuse")
       .set("Cookie", "playerId=2")
       .expect(401)
       .expect("content-type", /application\/json/)
@@ -462,10 +507,13 @@ describe("POST /roll-dice", () => {
       state
     };
     const app = createApp();
-    app.context = { game, diceCombinationGenerator };
+
+    const games = { 1: game };
+
+    app.context = { games, diceCombinationGenerator };
 
     request(app)
-      .post("/game/roll-dice")
+      .post("/game/1/roll-dice")
       .set("Cookie", "playerId=2")
       .expect(200)
       .expect("content-type", /application\/json/)
@@ -487,10 +535,12 @@ describe("POST /roll-dice", () => {
       state
     };
     const app = createApp();
-    app.context = { game, diceCombinationGenerator };
+    const games = { 1: game };
+
+    app.context = { games, diceCombinationGenerator };
 
     request(app)
-      .post("/game/roll-dice")
+      .post("/game/1/roll-dice")
       .set("Cookie", "playerId=2")
       .expect(401)
       .expect("content-type", /application\/json/)
@@ -507,10 +557,11 @@ describe("GET /dice-combination", () => {
 
     const game = { getLastDiceCombination, getPossiblePositions, state };
     const app = createApp();
-    app.context = { game };
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .get("/game/dice-combination")
+      .get("/game/1/dice-combination")
       .set("Cookie", "playerId=2")
       .expect(200)
       .expect("content-type", /application\/json/)
@@ -525,10 +576,11 @@ describe("GET /dice-combination", () => {
 
     const game = { getLastDiceCombination, getPossiblePositions, state };
     const app = createApp();
-    app.context = { game };
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .get("/game/dice-combination")
+      .get("/game/1/dice-combination")
       .set("Cookie", "playerId=1")
       .expect(200)
       .expect("content-type", /application\/json/)
@@ -537,15 +589,16 @@ describe("GET /dice-combination", () => {
   });
 });
 
-describe("PATCH /game/suspicion-state", () => {
+describe("PATCH /game/1/suspicion-state", () => {
   it("Should give error if its not player turn", (context, done) => {
     const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
     const game = { state };
     const app = createApp();
-    app.context = { game };
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .patch("/game/suspicion-state")
+      .patch("/game/1/suspicion-state")
       .set("Cookie", "playerId=2")
       .expect(401)
       .expect("content-type", /application\/json/)
@@ -558,17 +611,18 @@ describe("PATCH /game/suspicion-state", () => {
     const toggleIsSuspecting = context.mock.fn();
     const game = { state, toggleIsSuspecting };
     const app = createApp();
-    app.context = { game };
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .patch("/game/suspicion-state")
+      .patch("/game/1/suspicion-state")
       .set("Cookie", "playerId=1")
       .expect(200)
       .end(done);
   });
 });
 
-describe("GET /game/suspicion-combination", () => {
+describe("GET /game/1/suspicion-combination", () => {
   it("should give result of last suspicion", (context, done) => {
     const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
     const getLastSuspicionCombination = context.mock.fn();
@@ -584,10 +638,11 @@ describe("GET /game/suspicion-combination", () => {
       getCharacterPositions
     };
     const app = createApp();
-    app.context = { game };
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .get("/game/suspicion-combination")
+      .get("/game/1/suspicion-combination")
       .set("Cookie", "playerId=1")
       .expect(200)
       .expect("content-type", /application\/json/)
@@ -609,10 +664,11 @@ describe("GET /game/suspicion-combination", () => {
       getCharacterPositions
     };
     const app = createApp();
-    app.context = { game };
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .get("/game/suspicion-combination")
+      .get("/game/1/suspicion-combination")
       .set("Cookie", "playerId=2")
       .expect(200)
       .expect("content-type", /application\/json/)
@@ -620,7 +676,7 @@ describe("GET /game/suspicion-combination", () => {
   });
 });
 
-describe("POST /game/suspect", () => {
+describe("POST /game/1/suspect", () => {
   it("Should start suspicion if its current player turn", (context, done) => {
     const suspicionCombination = {
       weapon: "dagger",
@@ -635,10 +691,11 @@ describe("POST /game/suspect", () => {
     const move = context.mock.fn();
     const game = { validateSuspicion, state, move };
     const app = createApp({});
-    app.context = { game };
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .post("/game/suspect")
+      .post("/game/1/suspect")
       .set("Cookie", "playerId=1")
       .expect(200)
       .expect("content-type", /application\/json/)
@@ -649,10 +706,11 @@ describe("POST /game/suspect", () => {
     const state = context.mock.fn(() => ({ currentPlayerId: 1 }));
     const game = { state };
     const app = createApp();
-    app.context = { game };
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .post("/game/suspect")
+      .post("/game/1/suspect")
       .set("Cookie", "playerId=2")
       .expect(401)
       .expect("content-type", /application\/json/)
@@ -661,15 +719,16 @@ describe("POST /game/suspect", () => {
   });
 });
 
-describe("GET /game/last-suspicion-position", () => {
+describe("GET /game/1/last-suspicion-position", () => {
   it("should give the last suspicion position of the current player", (context, done) => {
     const getLastSuspicionPosition = context.mock.fn(() => "lounge");
     const game = { getLastSuspicionPosition };
     const app = createApp();
-    app.context = { game };
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .get("/game/last-suspicion-position")
+      .get("/game/1/last-suspicion-position")
       .expect(200)
       .expect("content-type", /application\/json/)
       .expect({ room: "lounge" })
@@ -677,31 +736,33 @@ describe("GET /game/last-suspicion-position", () => {
   });
 });
 
-describe("POST /game/suspect/invalidate", () => {
+describe("POST /game/1/suspect/invalidate", () => {
   it("should post the invalidated card", (_, done) => {
     const game = { invalidateSuspicion: () => {} };
     const app = createApp();
-    app.context = { game };
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .post("/game/suspect/invalidate")
+      .post("/game/1/suspect/invalidate")
       .send({ title: "mustard" })
       .expect(200)
       .end(done);
   });
 });
 
-describe("GET /game/suspect/invalidate", () => {
+describe("GET /game/1/suspect/invalidate", () => {
   it("Should send the invalidator only id when current player is not asking", (_, done) => {
     const game = {
       getLastSuspicion: () => ({ invalidatorId: 2 }),
       state: () => ({ currentPlayerId: 1 })
     };
     const app = createApp();
-    app.context = { game };
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .get("/game/suspect/invalidate")
+      .get("/game/1/suspect/invalidate")
       .set("Cookie", "playerId=2")
       .expect(200)
       .expect("content-type", /application\/json/)
@@ -715,10 +776,11 @@ describe("GET /game/suspect/invalidate", () => {
       state: () => ({ currentPlayerId: 1 })
     };
     const app = createApp();
-    app.context = { game };
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .get("/game/suspect/invalidate")
+      .get("/game/1/suspect/invalidate")
       .set("Cookie", "playerId=1")
       .expect(200)
       .expect("content-type", /application\/json/)
@@ -727,17 +789,18 @@ describe("GET /game/suspect/invalidate", () => {
   });
 });
 
-describe("PATCH /game/accuse", () => {
+describe("PATCH /game/1/accuse", () => {
   it("Should cancel the accusation", (_, done) => {
     const game = {
       cancelAccusation: () => ({}),
       state: () => ({ currentPlayerId: 1 })
     };
     const app = createApp();
-    app.context = { game };
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .patch("/game/accuse")
+      .patch("/game/1/accuse")
       .set("Cookie", "playerId=1")
       .send({ isAccusing: false })
       .expect(200)
@@ -749,10 +812,11 @@ describe("PATCH /game/accuse", () => {
       state: () => ({ currentPlayerId: 1 })
     };
     const app = createApp();
-    app.context = { game };
+    const games = { 1: game };
+    app.context = { games };
 
     request(app)
-      .patch("/game/accuse")
+      .patch("/game/1/accuse")
       .set("Cookie", "playerId=2")
       .send({ isAccusing: false })
       .expect(401)

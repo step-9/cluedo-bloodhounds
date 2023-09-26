@@ -26,30 +26,33 @@ const {
 const createGameRouter = () => {
   const gameRouter = express.Router();
 
-  gameRouter.get("/", serveGamePage);
-  gameRouter.get("/initial-state", serveInitialGameState);
-  gameRouter.get("/state", serveGameState);
-  gameRouter.get("/cards", serveCardsInfo);
-  gameRouter.get("/character-positions", sendCharacterPositions);
+  gameRouter.get("/:gameId", serveGamePage);
+  gameRouter.get("/:gameId/initial-state", serveInitialGameState);
+  gameRouter.get("/:gameId/state", serveGameState);
+  gameRouter.get("/:gameId/cards", serveCardsInfo);
+  gameRouter.get("/:gameId/character-positions", sendCharacterPositions);
 
-  gameRouter.post("/roll-dice", handleRollDice);
-  gameRouter.patch("/move-pawn", handleMovePawnRequest);
-  gameRouter.get("/dice-combination", sendDiceCombination);
-  gameRouter.post("/end-turn", handleEndTurnRequest);
-  gameRouter.get("/game-over-info", sendGameOverInfo);
+  gameRouter.post("/:gameId/roll-dice", handleRollDice);
+  gameRouter.patch("/:gameId/move-pawn", handleMovePawnRequest);
+  gameRouter.get("/:gameId/dice-combination", sendDiceCombination);
+  gameRouter.post("/:gameId/end-turn", handleEndTurnRequest);
+  gameRouter.get("/:gameId/game-over-info", sendGameOverInfo);
 
-  gameRouter.patch("/suspicion-state", handleStartSuspicionRequest);
-  gameRouter.post("/suspect", handleSuspicion);
-  gameRouter.get("/suspicion-combination", sendLastSuspicionCombination);
-  gameRouter.get("/last-suspicion-position", sendLastSuspicionPosition);
-  gameRouter.get("/suspect/invalidate", sendInvalidatedCard);
-  gameRouter.post("/suspect/invalidate", handleInvalidation);
-  gameRouter.patch("/deny-suspicion", handleDenySuspicionRequest);
+  gameRouter.patch("/:gameId/suspicion-state", handleStartSuspicionRequest);
+  gameRouter.post("/:gameId/suspect", handleSuspicion);
+  gameRouter.get(
+    "/:gameId/suspicion-combination",
+    sendLastSuspicionCombination
+  );
+  gameRouter.get("/:gameId/last-suspicion-position", sendLastSuspicionPosition);
+  gameRouter.get("/:gameId/suspect/invalidate", sendInvalidatedCard);
+  gameRouter.post("/:gameId/suspect/invalidate", handleInvalidation);
+  gameRouter.patch("/:gameId/deny-suspicion", handleDenySuspicionRequest);
 
-  gameRouter.patch("/accusation-state", handleStartAccusationRequest);
-  gameRouter.post("/accuse", handleAccusation);
-  gameRouter.patch("/accuse", cancelAccusation);
-  gameRouter.get("/accusation-result", sendAccusationResult);
+  gameRouter.patch("/:gameId/accusation-state", handleStartAccusationRequest);
+  gameRouter.post("/:gameId/accuse", handleAccusation);
+  gameRouter.patch("/:gameId/accuse", cancelAccusation);
+  gameRouter.get("/:gameId/accusation-result", sendAccusationResult);
 
   return gameRouter;
 };

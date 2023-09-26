@@ -35,6 +35,19 @@ describe("POST /join", () => {
       .expect("content-type", /application\/json/)
       .end(done);
   });
+
+  it("Should give an error when lobby id is wrong", (_, done) => {
+    lobby.registerPlayer({ name: "milan" });
+    lobby.registerPlayer({ name: "riya" });
+    lobby.registerPlayer({ name: "sumo" });
+
+    request(app)
+      .post("/lobby/join")
+      .send({ name: "Gourab", lobbyId: 3 })
+      .expect(406)
+      .expect("content-type", /application\/json/)
+      .end(done);
+  });
 });
 
 describe("GET /lobby", () => {
@@ -49,7 +62,7 @@ describe("GET /lobby", () => {
   });
 });
 
-describe("GET /lobby/details", () => {
+describe("GET /lobby/:lobbyId/details", () => {
   it("should give a list of players with player name and id", (_, done) => {
     const app = createApp();
     const lobby = new Lobby({ maxPlayers: 3 });
@@ -71,29 +84,29 @@ describe("GET /lobby/details", () => {
       .end(done);
   });
 
-  it.skip("Should start game when lobby is full and the game is not started", (context, done) => {
+  it("Should start game when lobby is full and the game is not started", (context, done) => {
     const app = createApp();
 
-    const status = context.mock.fn(() => ({ isGameStarted: false }));
-    const isFull = context.mock.fn(() => true);
-    const getAllPlayers = context.mock.fn(() => [
-      { name: "gourab", playerId: 1 }
-    ]);
+    const players = [{ name: "gourab", playerId: 1 }];
+    const status = context.mock.fn(() => ({
+      isGameStarted: false,
+      isFull: true,
+      players
+    }));
     const startGame = context.mock.fn();
 
-    const lobby = { status, startGame, isFull, getAllPlayers };
+    const lobby = { status, startGame, players };
 
     const lobbies = new Lobbies({ 1: lobby });
 
-    app.context = { lobbies };
+    app.context = { games: {}, lobbies };
 
     request(app)
-      .get("/lobby/details")
+      .get("/lobby/1/details")
       .expect(200)
       .expect({
         isFull: true,
-        lobbyDetails: [{ name: "gourab", playerId: 1 }],
-        noOfPlayers: 3,
+        players: [{ name: "gourab", playerId: 1 }],
         lobbyId: "1"
       })
       .end(done);

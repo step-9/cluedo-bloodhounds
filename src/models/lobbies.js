@@ -20,10 +20,6 @@ class Lobbies {
     this.#lobbies[id] = lobby;
     return id;
   }
-
-  getNoOfPlayers(lobbyId) {
-    return this.find(lobbyId).status().noOfPlayers;
-  }
 }
 
 module.exports = Lobbies;
