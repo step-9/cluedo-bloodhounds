@@ -1,36 +1,40 @@
 const playerOrder = ["scarlet", "mustard", "white", "green", "peacock", "plum"];
+const MARKINGS = { tick: "✓", cross: "✕", none: " " };
+const ROOMS = [
+  "hall",
+  "lounge",
+  "library",
+  "kitchen",
+  "ball-room",
+  "dining-room",
+  "billiard-room",
+  "conservatory",
+  "study"
+];
+const SUSPECTS = ["scarlet", "mustard", "white", "green", "peacock", "plum"];
+const WEAPONS = [
+  "spanner",
+  "dagger",
+  "revolver",
+  "rope",
+  "lead-pipe",
+  "candle-stick"
+];
 
-const MARKINGS = {
-  tick: "✓",
-  cross: "✕",
-  none: " "
-};
-
+const isRoom = name => ROOMS.includes(name);
+const isSuspect = name => SUSPECTS.includes(name);
+const isWeapon = name => WEAPONS.includes(name);
 const getInitialMarkings = () => new Array(6).fill(MARKINGS.none);
 
+const getItemMarkingClassName = value => {
+  const markings = Object.entries(MARKINGS);
+  for (const [markingName, markingValue] of markings) {
+    if (markingValue === value) return markingName;
+  }
+};
+
 const getClueSheet = () => {
-  const clueSheet = {
-    room: [
-      "hall",
-      "lounge",
-      "library",
-      "kitchen",
-      "ball-room",
-      "dining-room",
-      "billiard-room",
-      "conservatory",
-      "study"
-    ],
-    suspect: ["scarlet", "mustard", "white", "green", "peacock", "plum"],
-    weapon: [
-      "spanner",
-      "dagger",
-      "revolver",
-      "rope",
-      "lead-pipe",
-      "candle-stick"
-    ]
-  };
+  const clueSheet = { room: ROOMS, suspect: SUSPECTS, weapon: WEAPONS };
 
   return Object.fromEntries(
     Object.entries(clueSheet).map(([categoryName, cardNames]) => {
@@ -45,6 +49,10 @@ const getClueSheet = () => {
 
 const CLUE_SHEET = getClueSheet();
 
+const getClueChartData = () => {
+  return JSON.parse(localStorage.getItem("clue-chart-data"));
+};
+
 class ClueChart {
   #clueChartData;
   #clueChartContainer;
@@ -54,16 +62,27 @@ class ClueChart {
     this.#clueChartData = clueChartData || CLUE_SHEET;
   }
 
+  #updateStorage() {
+    localStorage.setItem(
+      "clue-chart-data",
+      JSON.stringify(this.#clueChartData)
+    );
+  }
+
   #getItemStatusMarkers(itemName, itemMarkStatuses) {
     return itemMarkStatuses.map((value, index) => {
       const id = `${itemName}-${index + 1}`;
       const itemMarkStatusTemplate = [
         "div",
         { class: "item-status", id },
-        value
+        value || " "
       ];
 
-      return generateElement(itemMarkStatusTemplate);
+      const itemStatusElement = generateElement(itemMarkStatusTemplate);
+      const itemStatusClass = getItemMarkingClassName(value);
+      if (itemStatusClass) itemStatusElement.classList.add(itemStatusClass);
+
+      return itemStatusElement;
     });
   }
 
@@ -126,6 +145,43 @@ class ClueChart {
     return clueChartElement;
   }
 
+  #determineItemDetails(itemStatusId) {
+    const itemStatusChunks = itemStatusId.split("-");
+    const itemStatusIndex = itemStatusChunks.pop() - 1;
+    const itemTitle = itemStatusChunks.join("-");
+
+    return { itemStatusIndex, itemTitle };
+  }
+
+  #determineCategory(itemTitle) {
+    if (isRoom(itemTitle)) return "room";
+    if (isSuspect(itemTitle)) return "suspect";
+    if (isWeapon(itemTitle)) return "weapon";
+  }
+
+  #getClueItem(itemStatusId) {
+    const { itemTitle, itemStatusIndex } =
+      this.#determineItemDetails(itemStatusId);
+    const category = this.#determineCategory(itemTitle);
+
+    const clueCategory = this.#clueChartData[category];
+    if (!clueCategory) throw new Error(`${category} category not found`);
+
+    const clueItem = clueCategory[itemTitle];
+    if (!clueItem) throw new Error(`${clueItem} item not found`);
+
+    if (!clueItem[itemStatusIndex])
+      throw new Error(`${itemStatusIndex + 1} Invalid status id`);
+
+    return { itemStatusIndex, clueItem };
+  }
+
+  #updateItemStatus(itemStatusId, markingName) {
+    const { clueItem, itemStatusIndex } = this.#getClueItem(itemStatusId);
+    clueItem[itemStatusIndex] = MARKINGS[markingName];
+    this.#updateStorage();
+  }
+
   #addTickOption(itemStatusElement, popUp) {
     const tickBtn = document.createElement("button");
     tickBtn.innerText = MARKINGS.tick;
@@ -136,6 +192,7 @@ class ClueChart {
       itemStatusElement.innerText = MARKINGS.tick;
       itemStatusElement.classList.add("tick");
       itemStatusElement.classList.remove("cross");
+      this.#updateItemStatus(itemStatusElement.id, "tick");
       popUp.remove();
     };
   }
@@ -150,6 +207,7 @@ class ClueChart {
       itemStatusElement.innerText = MARKINGS.cross;
       itemStatusElement.classList.add("cross");
       itemStatusElement.classList.remove("tick");
+      this.#updateItemStatus(itemStatusElement.id, "cross");
       popUp.remove();
     };
   }
@@ -162,6 +220,7 @@ class ClueChart {
     clearBtn.onclick = () => {
       itemStatusElement.innerText = MARKINGS.none;
       itemStatusElement.classList.remove("tick", "cross");
+      this.#updateItemStatus(itemStatusElement.id, "none");
       popUp.remove();
     };
   }
@@ -190,9 +249,8 @@ class ClueChart {
 
     itemStatusElements.forEach(itemStatusElement => {
       itemStatusElement.onclick = () => {
-        const markPopup = document.querySelector(".mark-popup");
-
-        markPopup?.remove();
+        const existingMarkPopup = document.querySelector(".mark-popup");
+        existingMarkPopup?.remove();
 
         this.#addMarkingPopup(itemStatusElement);
       };
