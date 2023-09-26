@@ -5,8 +5,11 @@ const Lobbies = require("./src/models/lobbies");
 
 const getDiceCombinationGenerator = () => {
   const rolls = [
-    [5, 6],
-    [6, 6]
+    [6, 6],
+    [5, 4],
+    [3, 6],
+    [5, 5],
+    [6, 4]
   ];
 
   const diceCombinationGenerator = cycler(rolls);
