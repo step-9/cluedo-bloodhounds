@@ -1,6 +1,7 @@
 class GameController {
   #view;
   #playerId;
+  #clueChart;
   #gameService;
   #eventEmitter;
   #playersNames;
@@ -8,9 +9,10 @@ class GameController {
   #lastGameState;
   #pollingInterval;
 
-  constructor(gameService, view, eventEmitter) {
+  constructor(gameService, view, eventEmitter, clueChart) {
     this.#view = view;
     this.#lastGameState = {};
+    this.#clueChart = clueChart;
     this.#gameService = gameService;
     this.#eventEmitter = eventEmitter;
   }
@@ -126,6 +128,10 @@ class GameController {
     this.#view.renderSuspicionMessage(currentPlayerId);
   }
 
+  #disableClueSheet() {
+    this.#clueChart.disable();
+  }
+
   #showAccusationResult(currentPlayerId) {
     this.#gameService
       .getAccusationResult()
@@ -134,7 +140,7 @@ class GameController {
         this.#view.hideAllMessages();
         this.#view.disableStrandedPlayers([currentPlayerId]);
         const isYourTurn = this.#playerId === currentPlayerId;
-        if (isYourTurn) return;
+        if (isYourTurn) return this.#disableClueSheet();
         this.#view.notifyPlayerStranded(
           this.#playersNames[currentPlayerId],
           accusationCombination
@@ -193,6 +199,7 @@ class GameController {
   }
 
   #displayGameOver({ currentPlayerId }) {
+    this.#clueChart.clear();
     this.#showAccusationResult(currentPlayerId);
     this.#view.hideAllMessages();
 

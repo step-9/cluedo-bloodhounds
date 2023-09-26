@@ -23,7 +23,12 @@ const main = () => {
   });
 
   const eventEmitter = new EventEmitter();
-  const gameController = new GameController(gameService, view, eventEmitter);
+  const gameController = new GameController(
+    gameService,
+    view,
+    eventEmitter,
+    clueChart
+  );
 
   gameController.start();
 };
