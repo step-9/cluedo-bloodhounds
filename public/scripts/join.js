@@ -21,6 +21,9 @@ const getHostGameConfirmBtn = () =>
 const getJoinGameNameInputBox = () =>
   document.querySelector("#join-game-input-name");
 
+const getJoinGameLobbyIdInputBox = () =>
+  document.querySelector("#join-game-input-lobby-id");
+
 const getHostGameNameInputBox = () =>
   document.querySelector("#host-game-input-name");
 
@@ -44,13 +47,15 @@ const sendJoinLobbyRequest = requestInfo => {
 const setupJoinInputBox = () => {
   const confirmBtn = getJoinGameConfirmBtn();
   const nameInputBox = getJoinGameNameInputBox();
+  const lobbyIdInputBox = getJoinGameLobbyIdInputBox();
 
   confirmBtn.onclick = () => {
     const name = read(nameInputBox);
+    const lobbyId = read(lobbyIdInputBox);
 
-    if (!name) return;
+    if (!name || !lobbyId) return;
 
-    sendJoinLobbyRequest({ name })
+    sendJoinLobbyRequest({ name, lobbyId })
       .then(res => res.json())
       .then(({ error, redirectUri }) => {
         if (error) return alert("Lobby is Full");

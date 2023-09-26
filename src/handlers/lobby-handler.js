@@ -5,17 +5,20 @@ const sendRoomFullError = (_, res) =>
   res.status(406).send({ error: "Room is Full" });
 
 const handleJoinRequest = (req, res) => {
-  const { lobby } = req.app.context;
-  const { name } = req.body;
+  const { lobbies } = req.app.context;
+  const { name, lobbyId } = req.body;
+  const lobby = lobbies.find(lobbyId);
+  if (lobby) {
+    const { isFull, playerId } = lobby.registerPlayer({ name });
 
-  const { isFull, playerId } = lobby.registerPlayer({ name });
+    if (isFull) return sendRoomFullError(req, res);
 
-  if (isFull) return sendRoomFullError(req, res);
-
-  res.status(201);
-  res.cookie("name", name);
-  res.cookie("playerId", playerId);
-  res.json({ playerId, isFull, redirectUri: "/lobby" });
+    res.status(201);
+    res.cookie("name", name);
+    res.cookie("playerId", playerId);
+    res.cookie("gameId", lobbyId);
+    res.json({ playerId, isFull, redirectUri: `/lobby/${lobbyId}` });
+  }
 };
 
 const serveLobbyPage = (req, res) => {
@@ -46,6 +49,7 @@ const handleHostRequest = (req, res) => {
   res.status(201);
   res.cookie("name", name);
   res.cookie("playerId", playerId);
+  res.cookie("gameId", lobbyId);
   res.json({ playerId, lobbyId, redirectUri: `/lobby/${lobbyId}` });
 };
 
