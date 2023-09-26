@@ -127,12 +127,22 @@
   }
 }
 
-.tick {
+.tick,
+.tick-btn {
   color: green;
   border-color: green;
 }
 
-.cross {
+.tick {
+  box-shadow: 0 0 5px green;
+}
+
+.cross,
+.cross-btn {
   color: red;
   border-color: red;
+}
+
+.cross {
+  box-shadow: 0 0 5px red;
 }
