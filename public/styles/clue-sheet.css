@@ -80,7 +80,7 @@
   aspect-ratio: 1/1;
   display: grid;
   place-content: center;
-  font-size: 0.9em;
+  font-size: 1em;
   border: 1px solid rgba(0, 0, 0, 0.465);
   border-radius: 50%;
   background-color: rgba(255, 255, 255);
@@ -107,4 +107,32 @@
 
 .selected {
   background-color: gray;
+}
+
+.mark-popup {
+  transform: translate(-25%, -25%);
+  display: flex;
+  gap: 0.2em;
+  background-color: bisque;
+  box-shadow: 0 0 3px black;
+  padding: 0.2em;
+  border-radius: 5px;
+
+  & * {
+    font-size: 1.1em;
+    border: none;
+    padding: 0.2em;
+    cursor: pointer;
+    background-color: bisque;
+  }
+}
+
+.tick {
+  color: green;
+  border-color: green;
+}
+
+.cross {
+  color: red;
+  border-color: red;
 }
