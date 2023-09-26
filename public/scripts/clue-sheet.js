@@ -126,8 +126,75 @@ class ClueChart {
     return clueChartElement;
   }
 
+  #addTickOption(itemStatusElement, popUp) {
+    const tickBtn = document.createElement("button");
+    tickBtn.innerText = MARKINGS.tick;
+    popUp.append(tickBtn);
+
+    tickBtn.onclick = () => {
+      itemStatusElement.innerText = MARKINGS.tick;
+      popUp.remove();
+    };
+  }
+
+  #addCrossOption(itemStatusElement, popUp) {
+    const crossBtn = document.createElement("button");
+    crossBtn.innerText = MARKINGS.cross;
+    popUp.append(crossBtn);
+
+    crossBtn.onclick = () => {
+      itemStatusElement.innerText = MARKINGS.cross;
+      popUp.remove();
+    };
+  }
+
+  #addClearOption(itemStatusElement, popUp) {
+    const clearBtn = document.createElement("button");
+    clearBtn.innerText = "C";
+    popUp.append(clearBtn);
+
+    clearBtn.onclick = () => {
+      itemStatusElement.innerText = MARKINGS.none;
+      popUp.remove();
+    };
+  }
+
+  #addMarkingOptions(itemStatusElement, popUp) {
+    this.#addTickOption(itemStatusElement, popUp);
+    this.#addCrossOption(itemStatusElement, popUp);
+    this.#addClearOption(itemStatusElement, popUp);
+  }
+
+  #addMarkingPopup(itemStatusElement) {
+    const popUp = document.createElement("div");
+    popUp.classList.add("mark-popup");
+
+    this.#addMarkingOptions(itemStatusElement, popUp);
+
+    popUp.style.position = "absolute";
+    this.#clueChartContainer.append(popUp);
+
+    popUp.style.left = itemStatusElement.offsetLeft;
+    popUp.style.top = itemStatusElement.offsetTop;
+  }
+
+  #setupListeners() {
+    const itemStatusElements = document.querySelectorAll(".item-status");
+
+    itemStatusElements.forEach(itemStatusElement => {
+      itemStatusElement.onclick = () => {
+        const markPopup = document.querySelector(".mark-popup");
+
+        markPopup?.remove();
+
+        this.#addMarkingPopup(itemStatusElement);
+      };
+    });
+  }
+
   render() {
     const clueChartElement = this.#createClueChartElement();
     this.#clueChartContainer.append(clueChartElement);
+    this.#setupListeners();
   }
 }
