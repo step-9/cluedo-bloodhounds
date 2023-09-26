@@ -7,23 +7,76 @@
 
   <body>
     <main id="page-wrapper">
-      <dialog id="join-game-dialog">
+      <dialog id="host-game-dialog" class="home-page-dialog">
+        <label for="host-game-input-name" class="name-label">Enter Name:</label>
+        <input
+          type="text"
+          name="name"
+          id="host-game-input-name"
+          class="input-box"
+        />
+
+        <label for="host-game-input-players" class="name-label"
+          >Number of players:</label
+        >
+        <input
+          type="number"
+          max="6"
+          min="3"
+          name="players"
+          id="host-game-input-players"
+          class="input-box"
+        />
+
+        <div class="dialog-btn-container">
+          <button
+            value="cancel"
+            formmethod="dialog"
+            id="close-host-game-dialog"
+            class="home-page-cancel-btn"
+          >
+            Cancel
+          </button>
+          <button
+            id="host-game-confirm-btn"
+            value="default"
+            class="home-page-confirm-btn"
+          >
+            Host
+          </button>
+        </div>
+      </dialog>
+
+      <dialog id="join-game-dialog" class="home-page-dialog">
         <label for="join-game-input-name" class="name-label">Enter Name:</label>
-        <input type="text" name="name" id="join-game-input-name" />
+        <input
+          type="text"
+          name="name"
+          id="join-game-input-name"
+          class="input-box"
+        />
 
         <div class="dialog-btn-container">
           <button
             value="cancel"
             formmethod="dialog"
             id="close-join-game-dialog"
+            class="home-page-cancel-btn"
           >
             Cancel
           </button>
-          <button id="join-game-confirm-btn" value="default">Join</button>
+          <button
+            id="join-game-confirm-btn"
+            value="default"
+            class="home-page-confirm-btn"
+          >
+            Join
+          </button>
         </div>
       </dialog>
 
-      <button id="join-game-btn">Join Game</button>
+      <button id="host-game-btn" class="home-page-btn">Host Game</button>
+      <button id="join-game-btn" class="home-page-btn">Join Game</button>
     </main>
   </body>
 </html>

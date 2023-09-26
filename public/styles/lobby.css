@@ -62,3 +62,15 @@
 .loader {
   font-size: 3em;
 }
+
+.lobby-details {
+  display: flex;
+  gap: 15em;
+  justify-content: center;
+  align-items: center;
+}
+
+.lobby-details > * {
+  color: white;
+  font-size: 1.2em;
+}

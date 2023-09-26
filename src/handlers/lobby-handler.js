@@ -1,4 +1,6 @@
+const fs = require("fs");
 const { startGame } = require("../game-setup");
+const Lobby = require("../models/lobby");
 
 const sendRoomFullError = (_, res) =>
   res.status(406).send({ error: "Room is Full" });
@@ -24,6 +26,7 @@ const serveLobbyPage = (req, res) => {
 const serveLobbyDetails = (req, res) => {
   const { lobby } = req.app.context;
   const lobbyDetails = lobby.getAllPlayers();
+
   const isFull = lobby.isFull();
 
   if (isFull && !lobby.status().isGameStarted) {
@@ -33,4 +36,43 @@ const serveLobbyDetails = (req, res) => {
   res.json({ isFull, lobbyDetails });
 };
 
-module.exports = { handleJoinRequest, serveLobbyPage, serveLobbyDetails };
+const handleHostRequest = (req, res) => {
+  const { lobbies } = req.app.context;
+  const { name, noOfPlayers } = req.body;
+
+  const lobby = new Lobby({ maxPlayers: noOfPlayers });
+  const { playerId } = lobby.registerPlayer({ name });
+  const lobbyId = lobbies.add(lobby);
+
+  res.status(201);
+  res.cookie("name", name);
+  res.cookie("playerId", playerId);
+  res.json({ playerId, lobbyId, redirectUri: `/lobby/${lobbyId}` });
+};
+
+const serveSpecificLobbyPage = (req, res) => {
+  res.sendFile("lobby-template.html", { root: "private/pages" });
+};
+
+const serveSpecificLobbyDetails = (req, res) => {
+  const { lobbies } = req.app.context;
+  const { lobbyId } = req.params;
+
+  const lobby = lobbies.find(lobbyId);
+  const { players, isGameStarted, isFull, noOfPlayers } = lobby.status();
+
+  if (isFull && !isGameStarted) {
+    startGame(players, req);
+  }
+
+  res.json({ isFull, players, noOfPlayers, lobbyId });
+};
+
+module.exports = {
+  handleJoinRequest,
+  serveLobbyPage,
+  serveLobbyDetails,
+  handleHostRequest,
+  serveSpecificLobbyPage,
+  serveSpecificLobbyDetails
+};

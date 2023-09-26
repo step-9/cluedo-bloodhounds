@@ -44,7 +44,8 @@ class Lobby {
     return {
       players: this.getAllPlayers(),
       isFull: this.isFull(),
-      isGameStarted: this.#isGameStarted
+      isGameStarted: this.#isGameStarted,
+      noOfPlayers: this.#maxPlayers
     };
   }
 }

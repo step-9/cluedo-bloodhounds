@@ -1,0 +1,108 @@
+<html>
+  <head>
+    <title>Lobby</title>
+    <script>
+      const resolveUrl = url => `${window.location.href}/${url}`;
+
+      const getLobbyDetails = () =>
+        fetch(resolveUrl("details")).then(res => res.json());
+      const getWaitingAreaContainer = () =>
+        document.querySelector(".waiting-area");
+      const removeAllChilds = container => container.replaceChildren();
+      const getLobbyDetailsContainer = () =>
+        document.querySelector("#no-of-players");
+      const getNoOfPlayersContainer = () => document.querySelector("#lobby-id");
+
+      const toPlayerCardHtml = ({ name }) => {
+        const playerCardTemplate = [
+          "div",
+          { class: "card" },
+          [
+            [
+              "img",
+              { class: "avatar", src: "/images/waiting-person-avatar.png" }
+            ],
+            ["div", { class: "title" }, name]
+          ]
+        ];
+
+        return generateElement(playerCardTemplate);
+      };
+
+      const sendGamePageRequest = () => {
+        setTimeout(() => {
+          window.location.href = "/game";
+        }, 500);
+      };
+
+      const renderLobbyPlayers = playerDetails => {
+        const waitingAreaContainer = getWaitingAreaContainer();
+        removeAllChilds(waitingAreaContainer);
+        const playerDetailsHtml = playerDetails.map(toPlayerCardHtml);
+        waitingAreaContainer.append(...playerDetailsHtml);
+      };
+
+      const renderLobbyInfo = (noOfPlayers, lobbyId) => {
+        const lobbyDetailsContainer = getLobbyDetailsContainer();
+        const noOfPlayersContainer = getNoOfPlayersContainer();
+        lobbyDetailsContainer.innerText = `Room id: ${lobbyId}`;
+        noOfPlayersContainer.innerText = `Number of players: ${noOfPlayers}`;
+      };
+
+      const isNewData = (prevLobbyDetails, currentLobbyDetails) =>
+        prevLobbyDetails.length !== currentLobbyDetails.length;
+
+      const main = () => {
+        showLoader();
+
+        let currentLobbyDetails = [];
+
+        const storeAndRenderLobbyDetails = ({
+          players,
+          noOfPlayers,
+          lobbyId
+        }) => {
+          currentLobbyDetails = players;
+          renderLobbyInfo(noOfPlayers, lobbyId);
+          renderLobbyPlayers(players);
+        };
+
+        getLobbyDetails().then(storeAndRenderLobbyDetails);
+
+        const pollingInterval = setInterval(() => {
+          getLobbyDetails().then(
+            ({ isFull, players, noOfPlayers, lobbyId }) => {
+              if (isNewData(currentLobbyDetails, players))
+                storeAndRenderLobbyDetails({ players, noOfPlayers, lobbyId });
+
+              if (isFull) {
+                clearInterval(pollingInterval);
+                sendGamePageRequest();
+              }
+            }
+          );
+        }, 500);
+      };
+
+      window.onload = main;
+    </script>
+    <script src="/scripts/loader.js"></script>
+    <script src="/scripts/html-generator.js"></script>
+    <link rel="stylesheet" href="/styles/lobby.css" />
+  </head>
+
+  <body>
+    <main id="page-wrapper">
+      <header class="page-header">
+        <h1>Please wait for other players to join</h1>
+        <div class="loader"></div>
+      </header>
+
+      <div class="lobby-details">
+        <div id="no-of-players"></div>
+        <div id="lobby-id"></div>
+      </div>
+      <section class="waiting-area"></section>
+    </main>
+  </body>
+</html>

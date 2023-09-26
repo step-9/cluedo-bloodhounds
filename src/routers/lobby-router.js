@@ -2,7 +2,10 @@ const express = require("express");
 const {
   handleJoinRequest,
   serveLobbyPage,
-  serveLobbyDetails
+  serveLobbyDetails,
+  handleHostRequest,
+  serveSpecificLobbyPage,
+  serveSpecificLobbyDetails
 } = require("../handlers/lobby-handler");
 
 const createLobbyRouter = () => {
@@ -12,6 +15,9 @@ const createLobbyRouter = () => {
   lobbyRouter.post("/join", handleJoinRequest);
   lobbyRouter.get("/details", serveLobbyDetails);
 
+  lobbyRouter.post("/host", handleHostRequest);
+  lobbyRouter.get("/:lobbyId", serveSpecificLobbyPage);
+  lobbyRouter.get("/:lobbyId/details", serveSpecificLobbyDetails);
   return lobbyRouter;
 };
 

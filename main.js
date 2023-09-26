@@ -2,6 +2,7 @@ const { createApp } = require("./src/app");
 const Lobby = require("./src/models/lobby");
 const { cycler } = require("./src/models/dice-roller");
 const { createTestRouter } = require("./src/routers/testing-router");
+const Lobbies = require("./src/models/lobbies");
 
 const getDiceCombinationGenerator = () => {
   const rolls = [
@@ -17,8 +18,9 @@ const getDiceCombinationGenerator = () => {
 const injectDependencies = app => {
   const maxPlayers = +process.env.MAX_PLAYERS || 3;
   const lobby = new Lobby({ maxPlayers });
+  const lobbies = new Lobbies();
   const diceCombinationGenerator = getDiceCombinationGenerator();
-  app.context = { lobby, diceCombinationGenerator };
+  app.context = { lobby, lobbies, diceCombinationGenerator };
 };
 
 const setupTestEnv = app => {

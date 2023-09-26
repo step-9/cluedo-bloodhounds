@@ -12,7 +12,7 @@
         { "title": "dagger", "type": "weapon" },
         { "title": "dagger", "type": "weapon" }
       ],
-      " permissions": {
+      "permissions": {
         "accuse": true,
         "rollDice": true,
         "movePawn": false,

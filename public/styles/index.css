@@ -17,7 +17,7 @@
   gap: 1em;
 }
 
-#join-game-btn {
+.home-page-btn {
   background-color: rgba(0, 0, 0, 0.527);
   border: 2px solid white;
   border-radius: 5px;
@@ -26,17 +26,17 @@
   font-size: 1.5em;
 }
 
-#join-game-btn:hover {
+.home-page-btn:hover {
   cursor: pointer;
   box-shadow: 0 0 15px 2px white;
 }
 
-#join-game-confirm-btn {
+.home-page-confirm-btn {
   color: white;
   background-color: rgb(11, 72, 91);
 }
 
-#close-join-game-dialog {
+.home-page-cancel-btn {
   color: white;
   background-color: rgb(55, 26, 26);
 }
@@ -61,14 +61,14 @@
   box-shadow: 0 0 15px 2px white;
 }
 
-#join-game-input-name {
+.input-box {
   font-size: 1.1em;
   padding: 0.3em;
   width: 80%;
   border-radius: 5px;
 }
 
-#join-game-dialog {
+.home-page-dialog {
   width: 23%;
   height: 35%;
   margin: 15em auto;
@@ -79,7 +79,7 @@
   box-shadow: 0px 0px 15px 5px hsl(0, 0%, 80%);
 }
 
-#join-game-dialog:modal {
+.home-page-dialog:modal {
   display: flex;
   flex-direction: column;
   justify-content: space-around;

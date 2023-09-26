@@ -2,6 +2,7 @@ const request = require("supertest");
 const { describe, it, beforeEach } = require("node:test");
 const { createApp } = require("../../src/app");
 const Lobby = require("../../src/models/lobby");
+const Lobbies = require("../../src/models/lobbies");
 
 describe("POST /join", () => {
   let app, lobby;
@@ -82,6 +83,33 @@ describe("GET /lobby/details", () => {
       .expect(200)
       .expect("content-type", /application\/json/)
       .expect({ isFull: true, lobbyDetails: [{ name: "gourab", playerId: 1 }] })
+      .end(done);
+  });
+});
+
+describe("POST /lobby/host", () => {
+  it("should allow a player to host a game", (_, done) => {
+    const app = createApp();
+    const lobbies = new Lobbies();
+    app.context = { lobbies };
+
+    request(app)
+      .post("/lobby/host")
+      .send({ name: "Gourab", noOfPlayers: 3 })
+      .expect(201)
+      .expect("content-type", /application\/json/)
+      .end(done);
+  });
+});
+
+describe("GET /lobby/1", () => {
+  it("should serve the lobby page", (_, done) => {
+    const app = createApp();
+
+    request(app)
+      .get("/lobby/1")
+      .expect(200)
+      .expect("content-type", /text\/html/)
       .end(done);
   });
 });
