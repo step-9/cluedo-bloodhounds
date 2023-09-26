@@ -277,9 +277,11 @@ class GameController {
 
   #denySuspicion() {
     this.#gameService.sendDenySuspicionReq().then(() =>
-      this.#gameService.getInitialData().then(({ room, canSuspect }) => {
-        this.#highlightPassage(room, canSuspect);
-      })
+      this.#gameService
+        .getInitialData()
+        .then(({ room, canSuspect, canMovePawn }) => {
+          this.#highlightPassage(room, canSuspect, canMovePawn);
+        })
     );
   }
 
