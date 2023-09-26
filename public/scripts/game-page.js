@@ -6,7 +6,8 @@ const main = () => {
   const clueSheetBtn = document.querySelector("#clue-chart-btn");
   const clueChartContainer = document.querySelector(".clue-chart-container");
 
-  renderClueChart();
+  const clueChart = new ClueChart({ clueChartContainer });
+  clueChart.render();
 
   const gameService = new GameService();
   const popupView = new PopupView({ middlePane, generateElement });
