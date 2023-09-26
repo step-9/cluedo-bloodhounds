@@ -1,4 +1,3 @@
-const fs = require("fs");
 const { startGame } = require("../game-setup");
 const Lobby = require("../models/lobby");
 

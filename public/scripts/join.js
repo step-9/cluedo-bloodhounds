@@ -24,7 +24,7 @@ const getJoinGameNameInputBox = () =>
 const getHostGameNameInputBox = () =>
   document.querySelector("#host-game-input-name");
 
-const getHostGameNoOfPlayersInputBox = () =>
+const getNoOfPlayersInputBox = () =>
   document.querySelector("#host-game-input-players");
 
 const read = inputBox => {
@@ -70,7 +70,7 @@ const sendHostGameRequest = requestInfo => {
 const setupHostInputBox = () => {
   const confirmBtn = getHostGameConfirmBtn();
   const nameInputBox = getHostGameNameInputBox();
-  const noOfPlayersInputBox = getHostGameNoOfPlayersInputBox();
+  const noOfPlayersInputBox = getNoOfPlayersInputBox();
 
   confirmBtn.onclick = () => {
     const name = read(nameInputBox);
