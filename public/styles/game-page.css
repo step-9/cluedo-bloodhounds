@@ -160,7 +160,7 @@ body {
 
 #cards-container .card {
   cursor: pointer;
-  transition: scale 500ms ease;
+  transition: scale 150ms ease;
 }
 
 #cards-container .card:hover {
@@ -170,6 +170,7 @@ body {
 }
 
 #cards-container {
+  width: 80%;
   height: 80%;
   display: grid;
   grid-template-rows: 5% 80%;
@@ -234,7 +235,7 @@ body {
   background-color: hsl(30, 45%, 69%);
   color: #1b1b1b;
   opacity: 1;
-  transition: all 750ms ease;
+  transition: all 500ms ease;
   align-self: center;
   box-shadow: 0 0 40px black;
 }
