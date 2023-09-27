@@ -25,7 +25,7 @@ body {
   display: grid;
   grid-template-columns: 1.2fr auto 1.8fr;
   background-image: linear-gradient(rgb(0, 0, 0, 0.7), rgb(0, 0, 0, 0.3)),
-    url("/images/game-page-bg.jpeg");
+    url("/images/game-page-bg-86.jpeg");
   background-size: cover;
 }
 
