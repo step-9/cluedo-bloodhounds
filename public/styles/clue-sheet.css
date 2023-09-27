@@ -5,7 +5,7 @@
 
   & h3 {
     padding-left: 0.5em;
-    padding-bottom: 1em;
+    padding-bottom: 0.7em;
     color: #571717;
     text-transform: capitalize;
     letter-spacing: 1px;
@@ -22,6 +22,8 @@
 .character-identifier * {
   height: 1em;
   aspect-ratio: 1/1;
+  padding: 0.1em;
+  margin: 0.4em;
   border: 1px solid rgb(46, 46, 46);
   border-radius: 50%;
 }
@@ -145,4 +147,47 @@
 
 .cross {
   box-shadow: 0 0 5px red;
+}
+
+#inference-container {
+  display: grid;
+  padding: 0 2em 0 0;
+}
+
+#clue-chart-btn {
+  position: absolute;
+  padding: 0.2em 0.4em;
+  z-index: 2;
+  cursor: pointer;
+  right: -60px;
+  transform: rotate(-90deg);
+  align-self: center;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid hsl(30, 45%, 80%);
+  color: hsl(30, 45%, 80%);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  background-color: #752525;
+  outline: none;
+  font-weight: 600;
+  text-shadow: 0 0 5px black;
+  text-wrap: nowrap;
+}
+
+.clue-chart-container {
+  position: fixed;
+  border-radius: 5px;
+  font-size: 0.9em;
+  right: 40px;
+  background-color: hsl(30, 45%, 69%);
+  color: #1b1b1b;
+  opacity: 1;
+  transition: all 500ms ease;
+  align-self: center;
+  box-shadow: 0 0 40px black;
+}
+
+.collapse {
+  transform: translateX(200%);
+  opacity: 0;
 }
