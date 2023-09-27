@@ -19,6 +19,7 @@ const createPlayers = playersInfo => {
 
 const handleGameStateRequest = (req, res) => {
   const body = req.body;
+  const { gameId } = req.params;
   const { initialPositions, playersInfo } = _.isEmpty(body) ? gameState : body;
 
   const players = createPlayers(playersInfo);
@@ -30,13 +31,13 @@ const handleGameStateRequest = (req, res) => {
 
   const game = Game.load(newState);
 
-  req.app.context.game = game;
+  req.app.context.games[gameId] = game;
   res.end();
 };
 
 const createTestRouter = () => {
   const testRouter = express.Router();
-  testRouter.patch("/game-state", handleGameStateRequest);
+  testRouter.patch("/:gameId/game-state", handleGameStateRequest);
   return testRouter;
 };
 

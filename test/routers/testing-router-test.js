@@ -8,10 +8,10 @@ describe("PATCH /game-state", () => {
   it("should load a specific game state", (context, done) => {
     const app = createApp();
     app.use("/test", createTestRouter());
-    app.context = {};
+    app.context = { games: {} };
 
     request(app)
-      .patch("/test/game-state")
+      .patch("/test/1/game-state")
       .send(gameState)
       .expect(200)
       .end(done);
@@ -20,8 +20,8 @@ describe("PATCH /game-state", () => {
   it("should load the default game state", (context, done) => {
     const app = createApp();
     app.use("/test", createTestRouter());
-    app.context = {};
+    app.context = {games: {}};
 
-    request(app).patch("/test/game-state").expect(200).end(done);
+    request(app).patch("/test/1/game-state").expect(200).end(done);
   });
 });
