@@ -64,7 +64,7 @@
 .input-box {
   font-size: 1.1em;
   padding: 0.3em;
-  width: 80%;
+  width: 100%;
   border-radius: 5px;
 }
 
@@ -124,6 +124,9 @@ input[type="range"] {
 }
 
 #no-of-players-container {
+  letter-spacing: 0.1em;
+  font-size: 0.9em;
+  font-weight: 300;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -132,8 +135,16 @@ input[type="range"] {
 }
 
 select {
+  cursor: pointer;
   border-radius: 5px;
-  font-size: 1em;
+  font-size: 1.2em;
   text-align: center;
   width: 3em;
+}
+
+.input-section {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
 }

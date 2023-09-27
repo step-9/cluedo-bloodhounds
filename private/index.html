@@ -8,24 +8,25 @@
   <body>
     <main id="page-wrapper">
       <dialog id="host-game-dialog" class="home-page-dialog">
-        <input
-          type="text"
-          name="name"
-          placeholder="username"
-          id="host-game-input-name"
-          class="input-box"
-        />
-
-        <div id="no-of-players-container">
-          <label for="no-of-players" class="name-label"
-            >Number of players:
-          </label>
-          <select name="no-of-players" id="no-of-players">
-            <option value="3" default>3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-          </select>
+        <div class="input-section">
+          <input
+            type="text"
+            name="name"
+            placeholder="Enter Name"
+            id="host-game-input-name"
+            class="input-box"
+          />
+          <div id="no-of-players-container">
+            <label for="no-of-players" class="name-label"
+              >Number of players:
+            </label>
+            <select name="no-of-players" id="no-of-players">
+              <option value="3" default>3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
+          </div>
         </div>
 
         <div class="dialog-btn-container">
@@ -48,20 +49,22 @@
       </dialog>
 
       <dialog id="join-game-dialog" class="home-page-dialog">
-        <input
-          type="text"
-          name="name"
-          placeholder="username"
-          id="join-game-input-name"
-          class="input-box"
-        />
-        <input
-          type="text"
-          name="lobby-id"
-          placeholder="lobby id"
-          id="join-game-input-lobby-id"
-          class="input-box"
-        />
+        <div class="input-section">
+          <input
+            type="text"
+            name="name"
+            placeholder="Enter Name"
+            id="join-game-input-name"
+            class="input-box"
+          />
+          <input
+            type="text"
+            name="lobby-id"
+            placeholder="Enter Lobby Id"
+            id="join-game-input-lobby-id"
+            class="input-box"
+          />
+        </div>
 
         <div class="dialog-btn-container">
           <button

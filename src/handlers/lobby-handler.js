@@ -5,7 +5,7 @@ const sendRoomFullError = (_, res) =>
   res.status(406).send({ error: "Room is Full" });
 
 const sendWrongLobbyIdError = (_, res) =>
-  res.status(406).send({ error: "Wrong Lobby Id" });
+  res.status(406).send({ error: "Invalid Lobby Id" });
 
 const handleJoinRequest = (req, res) => {
   const { lobbies } = req.app.context;
