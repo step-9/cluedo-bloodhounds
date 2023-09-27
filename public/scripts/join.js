@@ -1,14 +1,16 @@
+const KEYS = {
+  CLUE_CHART_DATA: "clue-chart-data",
+  CLUE_CHART_DISABLED: "clue-chart-disabled"
+};
 const getJoinGameBtn = () => document.querySelector("#join-game-btn");
-
 const getJoinGameDialog = () => document.querySelector("#join-game-dialog");
-
 const getCloseBtn = () => document.querySelector("#close-join-game-dialog");
-
 const getJoinGameConfirmBtn = () =>
   document.querySelector("#join-game-confirm-btn");
-
 const getJoinGameInputBox = () =>
   document.querySelector("#join-game-input-name");
+
+const clearStorage = () => Object.values(KEYS).forEach(localStorage.removeItem);
 
 const read = inputBox => {
   const value = inputBox.value;
@@ -59,6 +61,7 @@ const setupCloseDialog = () => {
 };
 
 const main = () => {
+  clearStorage();
   setupJoinGameDialog();
   setupCloseDialog();
   setupNameInputBox();
