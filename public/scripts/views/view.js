@@ -93,8 +93,10 @@ class View {
     const tiles = Object.keys(positions);
     tiles.forEach(tile => {
       const tileElement = document.getElementById(tile);
-      tileElement.onclick = () => this.#listeners.movePawn(tileElement.id);
-      tileElement.classList.add("highlight-tile");
+      if (tileElement) {
+        tileElement.onclick = () => this.#listeners.movePawn(tileElement.id);
+        tileElement.classList.add("highlight-tile");
+      }
     });
   }
 
