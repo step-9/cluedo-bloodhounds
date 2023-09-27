@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A multiplayer cluedo game",
   "main": "main.js",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "node main.js",
     "dev": "node --watch main.js",

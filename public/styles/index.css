@@ -119,10 +119,6 @@ button:hover {
   cursor: pointer;
 }
 
-input[type="range"] {
-  cursor: pointer;
-}
-
 #no-of-players-container {
   letter-spacing: 0.1em;
   font-size: 0.9em;
@@ -147,4 +143,13 @@ select {
   display: flex;
   flex-direction: column;
   gap: 2em;
+}
+
+#error-msg {
+  padding-left: 0.1em;
+  color: red;
+}
+
+.hidden {
+  visibility: hidden;
 }

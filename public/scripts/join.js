@@ -33,6 +33,8 @@ const getHostGameNameInputBox = () =>
 
 const getNoOfPlayersContainer = () => document.querySelector("#no-of-players");
 
+const getErrorMsgContainer = () => document.querySelector("#error-msg");
+
 const clearStorage = () => {
   Object.values(KEYS).forEach(key => localStorage.removeItem(key));
 };
@@ -41,6 +43,12 @@ const read = inputBox => {
   const value = inputBox.value;
   inputBox.value = "";
   return value;
+};
+
+const show = error => {
+  const errorMsgContainer = getErrorMsgContainer();
+  errorMsgContainer.innerText = error;
+  errorMsgContainer.classList.remove("hidden");
 };
 
 const sendJoinLobbyRequest = requestInfo => {
@@ -55,6 +63,14 @@ const setupJoinInputBox = () => {
   const confirmBtn = getJoinGameConfirmBtn();
   const nameInputBox = getJoinGameNameInputBox();
   const lobbyIdInputBox = getJoinGameLobbyIdInputBox();
+  const errorMsgContainer = getErrorMsgContainer();
+
+  [lobbyIdInputBox, nameInputBox].forEach(
+    inputBox =>
+      (inputBox.onchange = () => {
+        errorMsgContainer.classList.add("hidden");
+      })
+  );
 
   confirmBtn.onclick = () => {
     const name = read(nameInputBox);
@@ -65,7 +81,7 @@ const setupJoinInputBox = () => {
     sendJoinLobbyRequest({ name, lobbyId })
       .then(res => res.json())
       .then(({ error, redirectUri }) => {
-        if (error) return alert(error);
+        if (error) return show(error);
         window.location.href = redirectUri;
       });
   };
@@ -101,10 +117,15 @@ const setupHostInputBox = () => {
 const setupJoinGameDialog = () => {
   const joinGameDialog = getJoinGameDialog();
   const joinGameBtn = getJoinGameBtn();
+  const errorMsgContainer = getErrorMsgContainer();
 
   const closeBtn = getJoinGameCloseBtn();
 
-  closeBtn.onclick = () => joinGameDialog.close();
+  closeBtn.onclick = () => {
+    errorMsgContainer.classList.add("hidden");
+
+    joinGameDialog.close();
+  };
 
   joinGameBtn.onclick = () => {
     joinGameDialog.showModal();

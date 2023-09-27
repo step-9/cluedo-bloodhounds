@@ -2,7 +2,7 @@ const { startGame } = require("../game-setup");
 const Lobby = require("../models/lobby");
 
 const sendRoomFullError = (_, res) =>
-  res.status(406).send({ error: "Room is Full" });
+  res.status(406).send({ error: "Lobby is Full" });
 
 const sendWrongLobbyIdError = (_, res) =>
   res.status(406).send({ error: "Invalid Lobby Id" });
