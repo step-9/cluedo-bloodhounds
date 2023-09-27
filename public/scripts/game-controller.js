@@ -128,10 +128,6 @@ class GameController {
     this.#view.renderSuspicionMessage(currentPlayerId);
   }
 
-  #disableClueSheet() {
-    this.#clueChart.disable();
-  }
-
   #showAccusationResult(currentPlayerId) {
     this.#gameService
       .getAccusationResult()
@@ -139,8 +135,10 @@ class GameController {
         this.#updateBoard(currentPlayerId);
         this.#view.hideAllMessages();
         this.#view.disableStrandedPlayers([currentPlayerId]);
+
         const isYourTurn = this.#playerId === currentPlayerId;
-        if (isYourTurn) return this.#disableClueSheet();
+        if (isYourTurn) return this.#clueChart.disable();
+
         this.#view.notifyPlayerStranded(
           this.#playersNames[currentPlayerId],
           accusationCombination
@@ -219,6 +217,10 @@ class GameController {
       });
   }
 
+  #disableClueSheet(strandedPlayerIds) {
+    if (strandedPlayerIds.includes(this.#playerId)) this.#clueChart.disable();
+  }
+
   #renderInitialGameState(initialState) {
     const { currentPlayerId, playerId, canRollDice, canMovePawn } =
       initialState;
@@ -237,6 +239,8 @@ class GameController {
       initialState.characterPositions,
       this.#playerCharacters[currentPlayerId]
     );
+
+    this.#disableClueSheet(initialState.strandedPlayerIds);
 
     this.#view.disableStrandedPlayers(
       initialState.strandedPlayerIds,
