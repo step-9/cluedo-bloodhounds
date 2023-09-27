@@ -360,7 +360,7 @@ class View {
 
     for (let i = 1; i <= 6; i++) {
       dice1Element.classList.remove("show-" + i);
-      
+
       if (dice1Count === i) dice1Element.classList.add("show-" + i);
     }
 
