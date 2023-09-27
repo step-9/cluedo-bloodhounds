@@ -289,14 +289,33 @@ body {
 .popup {
   position: absolute;
   top: 28%;
-  left: 27%;
+  left: 31%;
   width: 550px;
   height: 360px;
 
   border: 2px solid black;
+
   border-radius: 10px;
   background-color: hsla(60, 56%, 91%, 0.956);
-  transition: all 500ms ease-in;
+  transition: all 5s ease-in-out;
+}
+
+.popup[open] {
+  animation: show 500ms ease-in;
+}
+
+@keyframes show {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.popup::backdrop {
+  background-image: linear-gradient(rgba(4, 4, 4, 0.468), rgba(0, 0, 0, 0.583));
+  filter: blur(3em);
 }
 
 .result-container {
