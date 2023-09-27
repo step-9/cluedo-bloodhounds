@@ -339,7 +339,7 @@ class View {
   }
 
   renderButtons(permissions) {
-    const diceElement = this.#bottomPane.querySelector("#dices");
+    const diceElement = this.#bottomPane.querySelector(".dices");
     this.#bottomPane.replaceChildren(diceElement);
     this.setupCurrentPlayerActions({ ...permissions, isYourTurn: true });
   }
