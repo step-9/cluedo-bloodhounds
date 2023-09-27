@@ -33,7 +33,9 @@ const getHostGameNameInputBox = () =>
 
 const getNoOfPlayersContainer = () => document.querySelector("#no-of-players");
 
-const clearStorage = () => Object.values(KEYS).forEach(localStorage.removeItem);
+const clearStorage = () => {
+  Object.values(KEYS).forEach(key => localStorage.removeItem(key));
+};
 
 const read = inputBox => {
   const value = inputBox.value;
@@ -122,11 +124,11 @@ const setupHostGameDialog = () => {
 };
 
 const main = () => {
-  clearStorage();
   setupJoinGameDialog();
   setupHostGameDialog();
   setupJoinInputBox();
   setupHostInputBox();
+  clearStorage();
 };
 
 window.onload = main;
