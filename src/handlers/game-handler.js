@@ -36,14 +36,13 @@ const serveGameState = (req, res) => {
   const { lobbies, games } = req.app.context;
   const { gameId } = req.params;
 
-  const lobby = lobbies.find(+gameId);
   const game = games[gameId];
   const { playerId } = req.cookies;
 
   const gameState = game.state();
   const isYourTurn = +playerId === gameState.currentPlayerId;
 
-  if (gameState.isGameOver) lobby.clear();
+  if (gameState.isGameOver) lobbies.destroy(gameId);
 
   res.json({ isYourTurn, ...gameState });
 };

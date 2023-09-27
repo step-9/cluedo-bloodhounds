@@ -118,3 +118,22 @@ button:hover {
   padding: 0.5em;
   cursor: pointer;
 }
+
+input[type="range"] {
+  cursor: pointer;
+}
+
+#no-of-players-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  color: aliceblue;
+}
+
+select {
+  border-radius: 5px;
+  font-size: 1em;
+  text-align: center;
+  width: 3em;
+}

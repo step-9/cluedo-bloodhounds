@@ -10,6 +10,7 @@ const Game = require("../../src/models/game");
 const Board = require("../../src/models/board");
 const Players = require("../../src/models/players");
 const Player = require("../../src/models/player");
+const Lobbies = require("../../src/models/lobbies");
 
 const createPlayers = () => {
   const gourab = new Player({
@@ -118,20 +119,18 @@ describe("GET /game/1/state", () => {
       .end(done);
   });
 
-  it("Should clear the lobby when game ends", (context, done) => {
+  it("Should destroy the lobby when game ends", (context, done) => {
     const state = context.mock.fn(() => ({
       isGameOver: true,
       currentPlayerId: 1
     }));
-    const status = context.mock.fn(() => ({ isGameStarted: true }));
-    const clear = context.mock.fn();
+    const lobby = {};
 
-    const lobby = { clear, status };
     const game = { state };
     const app = createApp();
     const games = { 1: game };
 
-    const lobbies = { find: context.mock.fn(() => lobby) };
+    const lobbies = new Lobbies({ 1: lobby });
     app.context = { games, lobbies };
 
     request(app)

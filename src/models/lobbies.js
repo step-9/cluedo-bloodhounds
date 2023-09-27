@@ -20,6 +20,10 @@ class Lobbies {
     this.#lobbies[id] = lobby;
     return id;
   }
+
+  destroy(lobbyId) {
+    delete this.#lobbies[lobbyId];
+  }
 }
 
 module.exports = Lobbies;

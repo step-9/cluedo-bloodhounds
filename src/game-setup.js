@@ -84,7 +84,6 @@ const startGame = (lobbyDetails, lobbyId, req) => {
   const game = new Game({ players, cards, killingCombination, board });
   req.app.context.games[lobbyId] = game;
 
-  console.log(req.app.context.games);
   lobby.startGame(game);
 };
 

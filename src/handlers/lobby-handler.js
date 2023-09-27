@@ -54,9 +54,7 @@ const serveSpecificLobbyDetails = (req, res) => {
   const lobby = lobbies.find(lobbyId);
   const { players, isGameStarted, isFull, noOfPlayers } = lobby.status();
 
-  console.log("hello", lobbyId);
   if (isFull && !isGameStarted) {
-    console.log("hi");
     startGame(players, lobbyId, req);
   }
 
