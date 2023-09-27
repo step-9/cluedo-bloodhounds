@@ -23,10 +23,12 @@ const {
   handleDenySuspicionRequest
 } = require("../handlers/game-handler");
 
+const { validatePlayer } = require("../middlewares/player-validator");
+
 const createGameRouter = () => {
   const gameRouter = express.Router();
 
-  gameRouter.get("/:gameId", serveGamePage);
+  gameRouter.get("/:gameId", validatePlayer, serveGamePage);
   gameRouter.get("/:gameId/initial-state", serveInitialGameState);
   gameRouter.get("/:gameId/state", serveGameState);
   gameRouter.get("/:gameId/cards", serveCardsInfo);

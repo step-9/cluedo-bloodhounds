@@ -315,6 +315,10 @@ class Game {
     this.#action = "accusation-cancelled";
     setTimeout(() => (this.#action = this.#lastAction), 600);
   }
+
+  hasPlayer(playerId) {
+    return !!this.#players.findPlayer(playerId);
+  }
 }
 
 module.exports = Game;

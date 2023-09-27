@@ -31,9 +31,28 @@ describe("GET /game/1", () => {
       status: context.mock.fn(() => ({ isGameStarted: false }))
     };
     const lobbies = { find: context.mock.fn(() => lobby) };
-    app.context = { lobbies };
+    app.context = { games: {  }, lobbies };
 
-    request(app).get("/game/1").expect(302).expect("location", "/").end(done);
+    request(app).get("/game/1").expect(303).expect("location", "/").end(done);
+  });
+
+  it("should redirect to homepage when you are not a player of the requested game", (context, done) => {
+    const app = createApp();
+    const lobby = {
+      status: context.mock.fn(() => ({ isGameStarted: false }))
+    };
+
+    const players = createPlayers();
+    const game = new Game({ players, board: {}, killingCombination: {} });
+    const lobbies = { find: context.mock.fn(() => lobby) };
+    app.context = { games: { 1: game }, lobbies };
+
+    request(app)
+      .get("/game/1")
+      .set("Cookie", "playerId=5")
+      .expect(303)
+      .expect("location", "/")
+      .end(done);
   });
 
   it("should serve the game page when the game has started", (context, done) => {
@@ -43,11 +62,15 @@ describe("GET /game/1", () => {
         isGameStarted: true
       }))
     };
+
+    const players = createPlayers();
+    const game = new Game({ players, board: {}, killingCombination: {} });
     const lobbies = { find: context.mock.fn(() => lobby) };
-    app.context = { lobbies };
+    app.context = { games: { 1: game }, lobbies };
 
     request(app)
       .get("/game/1")
+      .set("Cookie", "playerId=1")
       .expect(200)
       .expect("content-type", /text\/html/)
       .end(done);
@@ -70,6 +93,7 @@ describe("GET /game/1/initial-state", () => {
 
     request(app)
       .get("/game/1/initial-state")
+      .set("Cookie", "playerId=1")
       .expect(200)
       .expect("content-type", /application\/json/)
       .end(done);
@@ -91,7 +115,7 @@ describe("GET /game/1/initial-state", () => {
 
     request(app)
       .get("/game/1/initial-state")
-      .expect(302)
+      .expect(303)
       .expect("location", "/")
       .end(done);
   });

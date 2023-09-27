@@ -1,13 +1,8 @@
 const cardsInfo = require("../../resources/cards.json");
 const { rollDice } = require("../models/dice-roller");
-const redirectToHomePage = (_, res) => res.status(302).redirect("/");
+const redirectToHomePage = (_, res) => res.redirect(303, "/");
 
-const serveGamePage = (req, res) => {
-  const { lobbies } = req.app.context;
-  const { gameId } = req.params;
-
-  const lobby = lobbies.find(+gameId);
-  if (!lobby.status().isGameStarted) return redirectToHomePage(req, res);
+const serveGamePage = (_, res) => {
   res.sendFile("game-page.html", { root: "private/pages" });
 };
 
