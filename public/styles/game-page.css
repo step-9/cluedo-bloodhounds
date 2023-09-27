@@ -446,7 +446,7 @@ select {
 
 .invalidated-card {
   transform: scale(1.1);
-  box-shadow: 0 0 10px 5px rgba(25, 202, 25, 0.371);
+  box-shadow: 0 0 10px 10px rgba(25, 202, 25, 0.371);
   border: 2px solid green;
 }
 
@@ -479,7 +479,7 @@ select {
   cursor: not-allowed;
 }
 
-.waiting-msg {
+#waiting-msg {
   display: flex;
   color: white;
 }

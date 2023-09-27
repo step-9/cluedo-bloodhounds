@@ -401,7 +401,7 @@ class PopupView {
   #createWaitingMessageElement() {
     const messageElementTemplate = [
       "div",
-      { class: "waiting-msg" },
+      { id: "waiting-msg" },
       [
         ["p", {}, "Waiting for Invalidation"],
         ["span", { class: "loader" }, ""]
@@ -490,6 +490,9 @@ class PopupView {
   }
 
   renderInvalidation(invalidatorName, invalidatedCardTitle, isYourTurn) {
+    const waitingMsg = document.querySelector("#waiting-msg");
+    waitingMsg?.remove();
+
     let invalidationMsg = `${invalidatorName} invalidated`;
     invalidationMsg += isYourTurn ? invalidatedCardTitle : "";
 
