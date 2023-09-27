@@ -260,10 +260,12 @@ class ClueChart {
   render() {
     const clueChartElement = this.#createClueChartElement();
     this.#clueChartContainer.append(clueChartElement);
+    if (localStorage.getItem("clue-chart-disabled")) return this.disable();
     this.#setupListeners();
   }
 
   disable() {
+    localStorage.setItem("clue-chart-disabled", true);
     this.#clueChartContainer.style.cursor = "not-allowed";
     const children = this.#clueChartContainer.querySelectorAll("*");
     children.forEach(child => {
