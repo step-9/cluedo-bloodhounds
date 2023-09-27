@@ -222,7 +222,7 @@ class PopupView {
   }
 
   renderAccusationResult({ killingCombination, isWon }) {
-    const winningMessage = "You Sucessfully Solved the Murder Mystery";
+    const winningMessage = "You Successfully Solved the Murder Mystery";
     const wrongAccusationMessage = "Your Accusation was Wrong";
     const message = isWon ? winningMessage : wrongAccusationMessage;
 
@@ -398,6 +398,19 @@ class PopupView {
     }
   }
 
+  #createWaitingMessageElement() {
+    const messageElementTemplate = [
+      "div",
+      { class: "waiting-msg" },
+      [
+        ["p", {}, "Waiting for Invalidation"],
+        ["span", { class: "loader" }, ""]
+      ]
+    ];
+
+    return this.#htmlGenerator(messageElementTemplate);
+  }
+
   renderSuspicionCombination({
     suspectorName,
     suspicionCombination,
@@ -408,6 +421,8 @@ class PopupView {
     this.#notificationContainer.oncancel = event => event.preventDefault();
 
     const message = this.#createGameOverMsg(`${suspectorName} Suspected`);
+    let waitingMsg = this.#createWaitingMessageElement();
+
     const cardTitles = (matchingCards || []).map(({ title }) => title);
     const suspectedCards = this.#createCardElements(suspicionCombination);
     const cardsContainer = this.#createCardsContainer("suspicion-combination");
@@ -423,6 +438,7 @@ class PopupView {
     }
 
     if (canInvalidate) {
+      waitingMsg = "";
       confirmBtn = this.#createButton("Confirm", "invalidation-confirm-btn");
       invalidationMsg = this.#htmlGenerator([
         "p",
@@ -459,6 +475,7 @@ class PopupView {
     cardsContainer.append(...suspectedCards);
     this.#notificationContainer.append(
       cardsContainer,
+      waitingMsg,
       invalidationMsg,
       confirmBtn
     );
