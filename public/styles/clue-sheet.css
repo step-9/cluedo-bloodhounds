@@ -34,7 +34,7 @@
 }
 
 .mustard-identifier {
-  background-color: yellow;
+  background-color: rgb(255, 204, 0);
 }
 
 .white-identifier {
@@ -42,19 +42,19 @@
 }
 
 .green-identifier {
-  background-color: green;
+  background-color: rgb(40, 150, 40);
 }
 
 .peacock-identifier {
-  background-color: blue;
+  background-color: rgb(2, 111, 254);
 }
 
 .plum-identifier {
-  background-color: purple;
+  background-color: #870cb0;
 }
 
 .scarlet-identifier {
-  background-color: red;
+  background-color: rgb(255, 50, 36);
 }
 
 .category-header {

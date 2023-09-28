@@ -54,7 +54,7 @@ const renderLobbyPlayers = (playerDetails, noOfPlayers) => {
 
 const renderLobbyInfo = lobbyId => {
   const lobbyDetailsContainer = getLobbyDetailsContainer();
-  lobbyDetailsContainer.innerText = `Room id: ${lobbyId}`;
+  lobbyDetailsContainer.innerText = `Lobby id: ${lobbyId}`;
 };
 
 const isNewData = (prevLobbyDetails, currentLobbyDetails) =>
