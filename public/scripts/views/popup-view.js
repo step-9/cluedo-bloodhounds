@@ -19,12 +19,17 @@ class PopupView {
 
   notifyPlayerStranded(accuserName, accusationCombination) {
     const message = this.#createGameOverMsg(`${accuserName} Stranded!!`);
+    const forMessage = this.#createGameOverMsg("For Accusing...");
 
     const accusedCards = this.#createCardElements(accusationCombination);
     const cardsContainer = this.#createCardsContainer("accusation-combination");
     cardsContainer.append(...accusedCards);
 
-    this.#notificationContainer.replaceChildren(message, cardsContainer);
+    this.#notificationContainer.replaceChildren(
+      message,
+      forMessage,
+      cardsContainer
+    );
     this.#notificationContainer.showModal();
 
     setTimeout(() => {
@@ -532,11 +537,19 @@ class PopupView {
 
   #displayWinner(playerName, killingCombination) {
     const message = this.#createGameOverMsg(`${playerName} Won!!`);
+    const killingCombinationMsg = this.#createGameOverMsg(
+      "Killing Combination is..."
+    );
     const btn = this.#createHomeBtn();
     const secretCards = this.#createCardElements(killingCombination);
     const cardsContainer = this.#createCardsContainer("killing-combination");
     cardsContainer.append(...secretCards);
-    this.#resultContainer.replaceChildren(message, cardsContainer, btn);
+    this.#resultContainer.replaceChildren(
+      message,
+      killingCombinationMsg,
+      cardsContainer,
+      btn
+    );
     this.#resultContainer.showModal();
   }
 
