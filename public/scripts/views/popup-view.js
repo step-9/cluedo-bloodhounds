@@ -382,19 +382,21 @@ class PopupView {
 
   renderSuspicionPrompt({ room, canSuspect, cardsInfo }) {
     const suspicionPrompt = this.#middlePane.querySelector("#suspicion-prompt");
+    const dialog = this.#createSuspicionPromptDialog({
+      room,
+      canSuspect,
+      cardsInfo
+    });
 
     if (room && canSuspect) {
       if (!suspicionPrompt) {
-        const dialog = this.#createSuspicionPromptDialog({
-          room,
-          canSuspect,
-          cardsInfo
-        });
         this.#middlePane.append(dialog);
         dialog.showModal();
         return;
       }
-      suspicionPrompt.showModal();
+      this.#middlePane.removeChild(suspicionPrompt);
+      this.#middlePane.append(dialog);
+      dialog.showModal();
     }
   }
 

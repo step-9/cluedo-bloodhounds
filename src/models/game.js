@@ -125,7 +125,7 @@ class Game {
 
   movePawn(tileCoordinates, playerId) {
     const isCurrentPlayer = playerId === this.#currentPlayer.id;
-    const canMovePawn = this.#currentPlayer.permissions.canMovePawn;
+    const { canMovePawn, canRollDice } = this.#currentPlayer.permissions;
 
     if (!isCurrentPlayer || !canMovePawn) return { isMoved: false };
 
@@ -136,7 +136,8 @@ class Game {
     const { hasMoved, room } = this.#board.updatePosition(
       stepCount,
       currentPlayerCharacter,
-      tileCoordinates
+      tileCoordinates,
+      canRollDice
     );
 
     if (hasMoved) {

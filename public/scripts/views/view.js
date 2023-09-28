@@ -255,14 +255,11 @@ class View {
 
   renderRollDiceButton(isYourTurn, canRollDice) {
     const rollDiceBtnId = "roll-dice-btn";
-    const rollDiceAudio = document.querySelector("#dice-roll-audio");
-    rollDiceAudio.volume = 0.4;
     if (this.#isButtonPresent(rollDiceBtnId)) return;
 
     if (isYourTurn && canRollDice) {
       const rollDiceButton = this.#createButton("Roll Dice", rollDiceBtnId);
       rollDiceButton.onclick = () => {
-        rollDiceAudio.play();
         this.enableMove();
         this.#listeners.rollDice();
         this.#removeRollDiceButton();

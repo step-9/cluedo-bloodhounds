@@ -169,7 +169,7 @@ class Board {
     return null;
   }
 
-  updatePosition(stepCount, currentPlayerCharacter, destination) {
+  updatePosition(stepCount, currentPlayerCharacter, destination, canRollDice) {
     let newPos = { ...destination };
 
     const possiblePositions = this.getPossibleTiles(
@@ -177,11 +177,16 @@ class Board {
       currentPlayerCharacter
     );
 
-    const destinationId = this.#stringifyTile(destination);
+    const currentPos = this.#characterPositions[currentPlayerCharacter];
+    const currentRoom = this.getRoomDetails(currentPos);
 
-    if (possiblePositions[destinationId]) {
-      this.#characterPositions[currentPlayerCharacter] = newPos;
-      return { hasMoved: true };
+    if (currentRoom && canRollDice) {
+      const [_, { passage }] = currentRoom;
+      const isDestinationPassage =
+        passage?.coordinate.x !== destination.x ||
+        passage?.coordinate.y !== destination.y;
+
+      if (isDestinationPassage) return { hasMoved: false };
     }
 
     const connectedRoomDetails = this.#getConnectedRoomDetails(
@@ -194,6 +199,13 @@ class Board {
       newPos = this.#getNextPos(info);
       this.#characterPositions[currentPlayerCharacter] = newPos;
       return { hasMoved: true, room: roomName };
+    }
+
+    const destinationId = this.#stringifyTile(destination);
+
+    if (possiblePositions[destinationId]) {
+      this.#characterPositions[currentPlayerCharacter] = newPos;
+      return { hasMoved: true };
     }
 
     const room = this.getRoomDetails(destination);
