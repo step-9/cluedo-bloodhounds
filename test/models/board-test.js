@@ -168,7 +168,7 @@ describe("Board", () => {
       );
       assert.deepStrictEqual(board.getCharacterPositions().mustard, {
         x: 18,
-        y: 1
+        y: 2
       });
     });
 
@@ -185,7 +185,7 @@ describe("Board", () => {
       );
       assert.deepStrictEqual(board.getCharacterPositions().mustard, {
         x: 1,
-        y: 20
+        y: 22
       });
     });
   });
