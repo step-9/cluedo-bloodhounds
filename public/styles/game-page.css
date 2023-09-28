@@ -256,7 +256,11 @@ body {
   text-shadow: 0 5px 5px black;
 
   border-radius: 10px;
-  background: linear-gradient(110deg, rgb(32, 0, 0) 5%, rgb(178, 14, 14) 100%);
+  
+  background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.45)),
+    url(https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F546107659%2F335217030761%2F1%2Foriginal.20230630-112321?w=600&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C0%2C3000%2C1500&s=137a54ee93e60ec017f764fde1443d0c);
+
+  background-size: cover;
 }
 
 .popup[open] {
@@ -273,7 +277,7 @@ body {
 }
 
 .popup::backdrop {
-  background-image: linear-gradient(rgba(4, 4, 4, 0.468), rgba(0, 0, 0, 0.583));
+  background-image: linear-gradient(rgba(4, 4, 4, 0.45), rgba(0, 0, 0, 0.55));
   filter: blur(3em);
 }
 
@@ -491,17 +495,17 @@ select {
   width: 1em;
   height: 1em;
   animation-fill-mode: both;
-  animation: bblFadInOut 1.8s infinite ease-in-out;
+  animation: bblFadInOut 2s infinite ease-in-out;
 }
 .loader {
   color: #fff;
   font-size: 7px;
   position: relative;
   left: 2.5em;
-  top: -1em;
+  top: -0.5em;
   text-indent: -9999em;
   transform: translateZ(0);
-  animation-delay: -0.32s;
+  animation-delay: -0.5s;
 }
 .loader:before,
 .loader:after {
@@ -509,7 +513,7 @@ select {
   position: absolute;
 }
 .loader:before {
-  animation-delay: -0.16s;
+  animation-delay: -0.25s;
   left: 1.5em;
 }
 .loader:after {
