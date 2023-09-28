@@ -9,7 +9,8 @@ const getDiceCombinationGenerator = () => {
     [5, 4],
     [3, 6],
     [5, 5],
-    [4, 3]
+    [4, 3],
+    [6, 6]
   ];
 
   const diceCombinationGenerator = cycler(rolls);
