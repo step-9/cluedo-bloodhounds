@@ -429,4 +429,8 @@ class View {
 
     this.#popupView.setup();
   }
+
+  removeAllPopups() {
+    this.#popupView.removeAllPopups();
+  }
 }

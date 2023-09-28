@@ -570,4 +570,9 @@ class PopupView {
       "#notification-container"
     );
   }
+
+  removeAllPopups() {
+    const popups = this.#middlePane.querySelectorAll(".popup");
+    popups.forEach(popup => popup.close());
+  }
 }

@@ -460,19 +460,19 @@ select {
 }
 
 .current-player {
-  animation: blink 1s ease infinite;
+  animation: blink 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @keyframes blink {
   0%,
   100% {
+    stroke-width: 90px;
+    stroke-opacity: 1;
+  }
+  50% {
     filter: brightness(1);
     stroke-width: 20px;
     stroke-opacity: 0;
-  }
-  50% {
-    stroke-width: 90px;
-    stroke-opacity: 1;
   }
 }
 

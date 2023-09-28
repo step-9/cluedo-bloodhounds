@@ -100,6 +100,7 @@ class GameController {
     this.#view.highlightCurrentPlayer(currentPlayerId);
 
     if (isYourTurn) {
+      this.#view.removeAllPopups();
       this.#gameService
         .getInitialData()
         .then(({ room, canSuspect, canMovePawn }) => {
