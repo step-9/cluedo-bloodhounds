@@ -5,8 +5,7 @@ const getLobbyDetails = () =>
 
 const getWaitingAreaContainer = () => document.querySelector(".waiting-area");
 const removeAllChilds = container => container.replaceChildren();
-const getLobbyDetailsContainer = () => document.querySelector("#no-of-players");
-const getNoOfPlayersContainer = () => document.querySelector("#lobby-id");
+const getLobbyDetailsContainer = () => document.querySelector("#lobby-id");
 
 const toPlayerCardHtml = ({ name }) => {
   const playerCardTemplate = [
@@ -27,18 +26,35 @@ const sendGamePageRequest = lobbyId => {
   }, 500);
 };
 
-const renderLobbyPlayers = playerDetails => {
+const toAbsentPlayerHtml = () => {
+  const playerCardTemplate = [
+    "div",
+    { class: "card empty-card" },
+    [
+      ["img", { class: "avatar", src: "/svg/lobby-avatar.svg" }],
+      ["div", { class: "title" }, "?"]
+    ]
+  ];
+
+  return generateElement(playerCardTemplate);
+};
+
+const renderLobbyPlayers = (playerDetails, noOfPlayers) => {
   const waitingAreaContainer = getWaitingAreaContainer();
   removeAllChilds(waitingAreaContainer);
   const playerDetailsHtml = playerDetails.map(toPlayerCardHtml);
-  waitingAreaContainer.append(...playerDetailsHtml);
+
+  const noOfRemainingPlayers = noOfPlayers - playerDetails.length;
+  const remainingPlayersHtml = new Array(noOfRemainingPlayers)
+    .fill("")
+    .map(toAbsentPlayerHtml);
+
+  waitingAreaContainer.append(...playerDetailsHtml, ...remainingPlayersHtml);
 };
 
-const renderLobbyInfo = (noOfPlayers, lobbyId) => {
+const renderLobbyInfo = lobbyId => {
   const lobbyDetailsContainer = getLobbyDetailsContainer();
-  const noOfPlayersContainer = getNoOfPlayersContainer();
   lobbyDetailsContainer.innerText = `Room id: ${lobbyId}`;
-  noOfPlayersContainer.innerText = `Number of players: ${noOfPlayers}`;
 };
 
 const isNewData = (prevLobbyDetails, currentLobbyDetails) =>
@@ -49,8 +65,8 @@ const main = () => {
 
   const storeAndRenderLobbyDetails = ({ players, noOfPlayers, lobbyId }) => {
     currentLobbyDetails = players;
-    renderLobbyInfo(noOfPlayers, lobbyId);
-    renderLobbyPlayers(players);
+    renderLobbyInfo(lobbyId);
+    renderLobbyPlayers(players, noOfPlayers);
   };
 
   getLobbyDetails().then(storeAndRenderLobbyDetails);

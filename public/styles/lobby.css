@@ -39,6 +39,7 @@
   background-color: hsl(60, 56%, 91%, 30%);
   display: flex;
   align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   gap: 3em;
   padding: 3em;
@@ -99,6 +100,8 @@
 .lobby-details {
   display: flex;
   gap: 15em;
+  padding: 1em;
+  font-size: 1.2em;
   justify-content: center;
   align-items: center;
 }
@@ -106,4 +109,8 @@
 .lobby-details > * {
   color: white;
   font-size: 1.2em;
+}
+
+.empty-card {
+  filter: grayscale(1);
 }
