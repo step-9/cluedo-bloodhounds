@@ -45,37 +45,37 @@
 }
 
 #mustard-pawn {
-  fill: rgb(253, 211, 43);
-  stroke: rgb(207, 141, 28);
+  fill: rgb(255, 204, 0);
+  stroke: rgb(255, 255, 255);
   stroke-width: 20px;
 }
 
 #scarlet-pawn {
-  fill: rgb(218, 89, 80);
-  stroke: rgb(176, 50, 41);
+  fill: rgb(255, 50, 36);
+  stroke: rgb(255, 255, 255);
   stroke-width: 20px;
 }
 
 #white-pawn {
   fill: white;
-  stroke: rgb(116, 116, 123);
+  stroke: rgb(109, 109, 109);
   stroke-width: 20px;
 }
 
 #green-pawn {
   fill: rgb(40, 150, 40);
-  stroke: hsl(128, 62%, 20%);
+  stroke: hsl(128, 100%, 83%);
   stroke-width: 20px;
 }
 
 #peacock-pawn {
   fill: rgb(2, 111, 254);
-  stroke: rgb(0, 74, 148);
+  stroke: rgb(152, 204, 255);
   stroke-width: 20px;
 }
 
 #plum-pawn {
   fill: #870cb0;
-  stroke: hsl(285, 72%, 29%);
+  stroke: hsl(285, 100%, 88%);
   stroke-width: 20px;
 }
