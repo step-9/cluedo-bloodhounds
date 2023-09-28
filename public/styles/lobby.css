@@ -47,37 +47,41 @@
 }
 
 .card {
-  width: 12%;
-  height: 45%;
+  width: 13%;
+  height: 52%;
+  padding: 1em;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   border: 3px solid rgba(0, 0, 0, 0.721);
   word-break: break-all;
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.511);
-  background: linear-gradient(hsl(350, 60%, 50%), #240b36);
-  background: linear-gradient(#ffcd70c1, #d83f31bc);
+  background: linear-gradient(180deg, #f8dba4c1 15%, rgba(46, 36, 38, 0.712));
   box-shadow:
     4px 4px 10px #ffffff51,
     -4px -4px 10px #5c3a3a46;
 }
 
 .avatar {
+  margin: 1em;
   width: 65%;
-  opacity: 0.8;
+  aspect-ratio: 1;
+  opacity: 0.9;
 }
 
 .title {
-  background-color: rgba(255, 168, 168, 0.373);
+  width: 100%;
+  text-align: center;
+  background-color: rgba(255, 168, 168, 0.124);
   color: rgb(255, 214, 221);
-  text-shadow: 0 2px 3px black;
   font-weight: 400;
   font-size: 1.2em;
+  text-shadow: -1px 1px 4px black;
   letter-spacing: 1px;
   padding: 0.2em 0.8em 0.4em 0.8em;
-  border-radius: 8px;
+  border-radius: 5.5px;
 }
 
 .loader {
