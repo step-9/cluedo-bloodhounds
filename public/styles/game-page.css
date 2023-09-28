@@ -364,7 +364,7 @@ select {
 
 #accuse-form select,
 #suspect-form select {
-  width: 130px;
+  width: 135px;
   height: 30px;
   font-size: 0.8em;
   cursor: pointer;

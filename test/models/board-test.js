@@ -188,5 +188,28 @@ describe("Board", () => {
         y: 22
       });
     });
+
+    it("Should not move if player clicks on a tile when the player hasn't roll a dice", () => {
+      const board = new Board({
+        validTiles,
+        rooms,
+        initialPositions: { mustard: { x: 17, y: 1 } }
+      });
+
+      assert.deepStrictEqual(
+        board.updatePosition(7, "mustard", { x: 16, y: 2 }, true),
+        { hasMoved: false }
+      );
+
+      assert.deepStrictEqual(
+        board.updatePosition(7, "mustard", { x: 22, y: 2 }, true),
+        { hasMoved: false }
+      );
+
+      assert.deepStrictEqual(
+        board.updatePosition(7, "mustard", { x: 22, y: 5 }, true),
+        { hasMoved: true, room: "conservatory" }
+      );
+    });
   });
 });
