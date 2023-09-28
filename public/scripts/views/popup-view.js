@@ -433,6 +433,7 @@ class PopupView {
 
     if (!canAnyoneInvalidate) {
       invalidationMsg = this.#htmlGenerator(["p", {}, "None invalidated"]);
+      waitingMsg = "";
       confirmBtn = this.#createButton("Close", "suspicion-close-btn");
       confirmBtn.onclick = () => this.#notificationContainer.close();
     }
