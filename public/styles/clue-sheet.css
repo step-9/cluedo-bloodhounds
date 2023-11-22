@@ -1,11 +1,12 @@
 .clue-chart-container {
   width: 24%;
+  height: min-content;
   text-transform: capitalize;
   padding: 0.5em;
 
   & h3 {
     padding-left: 0.5em;
-    padding-bottom: 0.7em;
+    padding-bottom: 0.5em;
     color: #571717;
     text-transform: capitalize;
     letter-spacing: 1px;
