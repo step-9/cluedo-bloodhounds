@@ -68,7 +68,7 @@ class View {
   }
 
   updateCharacterPositions(characterPositions, currentPlayerCharacter) {
-    const boardSvg = document.querySelector("#g13");
+    const boardContainer = document.querySelector("#g13");
 
     Object.entries(characterPositions).forEach(([character, { x, y }]) => {
       const pawnName = `${character}-pawn`;
@@ -80,10 +80,15 @@ class View {
       pawnMarker.id = pawnName;
 
       if (character === currentPlayerCharacter) {
-        pawnMarker.classList.add("current-player");
+        const animateElement = pawnMarker.querySelector("animate");
+        animateElement.setAttribute("from", x);
+        animateElement.setAttribute("to", x + 20);
+        console.log(animateElement);
+
+        // pawnMarker.classList.add("current-player");
       }
 
-      boardSvg.append(pawnMarker);
+      boardContainer.append(pawnMarker);
     });
   }
 

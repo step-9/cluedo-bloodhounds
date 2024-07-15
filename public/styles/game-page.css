@@ -1,602 +1,491 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;700&family=Roboto+Slab:wght@300;400;600;700&family=Titillium+Web:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap");
 
-@media screen and (orientation: landscape) {
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Roboto Slab", serif;
-  }
-
-  .center-align {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  body {
-    font-size: 20px;
-    font-family: sans-serif;
-    color: whitesmoke;
-  }
-
-  #page {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: 1.2fr auto 1.8fr;
-    background-image: linear-gradient(rgb(0, 0, 0, 0.7), rgb(0, 0, 0, 0.3)),
-      url("/images/game-page-bg-86.jpeg");
-    background-size: cover;
-  }
-
-  #left-pane {
-    height: 95%;
-    display: grid;
-    padding-top: 2em;
-    gap: 0.5em;
-    grid-template-rows: 10% 90%;
-  }
-
-  #left-pane > header {
-    border-bottom: 2px solid white;
-  }
-
-  #cluedo-logo {
-    width: 100%;
-  }
-
-  #players {
-    padding-top: 3.5em;
-    gap: 0.5em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #middle-pane {
-    width: 100vmin;
-    height: 100vmin;
-    padding: 0 2em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #board {
-    width: 875px;
-  }
-
-  .player-info {
-    height: 100px;
-    width: 100%;
-    display: grid;
-    grid-template-rows: 60% 40%;
-    grid-template-columns: 50% 50%;
-    grid-template-areas:
-      "icon name"
-      "icon message";
-  }
-
-  .icon {
-    grid-area: icon;
-    width: 80px;
-    aspect-ratio: 1/1;
-    align-self: center;
-    justify-self: center;
-    border-radius: 50%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .name {
-    text-transform: capitalize;
-    font-weight: 500;
-    font-size: 1.2em;
-    grid-area: name;
-    align-self: flex-end;
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .message {
-    position: relative;
-    top: 15px;
-    right: 15px;
-    grid-area: message;
-    padding: 10px;
-    font-size: 0.7em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    border-radius: 10px;
-    background-color: white;
-    color: black;
-  }
-
-  .message::before {
-    content: "";
-    width: 0px;
-    height: 0px;
-    position: absolute;
-    border-left: 10px solid white;
-    border-right: 10px solid transparent;
-    border-top: 10px solid white;
-    border-bottom: 10px solid transparent;
-    left: -13px;
-    top: -4px;
-    rotate: 110deg;
-  }
-
-  .hide {
-    display: none;
-  }
-
-  #right-pane {
-    display: grid;
-    grid-template-rows: 5% auto 10%;
-  }
-
-  #help {
-    display: flex;
-    align-items: center;
-    justify-content: right;
-    padding-right: 1em;
-  }
-
-  .card {
-    width: 125px;
-    height: 165px;
-    font-size: 0.9em;
-    text-transform: capitalize;
-    text-align: center;
-    border-radius: 5px;
-    color: black;
-    background-color: #ddd;
-    border: 2px solid rgb(255, 255, 255);
-    background-repeat: no-repeat;
-    background-size: cover;
-    box-shadow: 0 5px 5px black;
-  }
-
-  #cards-container .card {
-    cursor: pointer;
-    transition: scale 150ms ease;
-  }
-
-  #cards-container .card:hover {
-    z-index: 2;
-    scale: 1.2;
-    box-shadow: 0 0 15px 0 black;
-  }
-
-  #cards-container {
-    width: 80%;
-    height: 80%;
-    display: grid;
-    grid-template-rows: 5% 80%;
-    gap: 3em;
-  }
-
-  #cards-container > h3 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom: 1px solid white;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    padding: 1em;
-  }
-
-  #cards {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 2em;
-    align-items: center;
-    justify-content: center;
-    align-content: center;
-  }
-
-  #cards > .card {
-    box-shadow: 1px -8px 8px #222222ae;
-    border: 2px solid white;
-  }
-
-  .highlight {
-    box-shadow: 0px 0px 10px 10px white;
-  }
-
-  #bottom-pane {
-    display: flex;
-    gap: 1em;
-    align-items: center;
-    padding-left: 10%;
-  }
-
-  .button {
-    width: 100px;
-    height: 40px;
-    font-size: 0.8em;
-    color: white;
-    border-radius: 7px;
-  }
-
-  #accuse-btn {
-    border: none;
-    outline: none;
-    background-color: rgb(0, 186, 96);
-  }
-
-  #roll-dice-btn {
-    border: none;
-    outline: none;
-    background-color: rgb(117, 117, 229);
-  }
-
-  #end-turn-btn {
-    border: none;
-    outline: none;
-    background-color: hsl(0, 100%, 65%);
-  }
-
-  .button:hover {
-    cursor: pointer;
-  }
-
-  .popup {
-    position: absolute;
-    top: 28%;
-    left: 31%;
-    width: 550px;
-    height: 360px;
-
-    border: 2px solid black;
-    color: white;
-    text-shadow: 0 5px 5px black;
-
-    border-radius: 10px;
-
-    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.45)),
-      url(https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F546107659%2F335217030761%2F1%2Foriginal.20230630-112321?w=600&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C0%2C3000%2C1500&s=137a54ee93e60ec017f764fde1443d0c);
-
-    background-size: cover;
-  }
-
-  .popup[open] {
-    animation: show 350ms ease-in;
-  }
-
-  @keyframes show {
-    0% {
-      transform: scale(0);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  .popup::backdrop {
-    background-image: linear-gradient(rgba(4, 4, 4, 0.45), rgba(0, 0, 0, 0.55));
-    filter: blur(3em);
-  }
-
-  .result-container {
-    color: white;
-  }
-
-  .result-container:modal {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    padding: 0.5em;
-  }
-
-  .result-container p {
-    text-transform: capitalize;
-  }
-
-  #killing-combination {
-    display: flex;
-    gap: 2em;
-  }
-
-  #accusation-combination,
-  #suspicion-combination {
-    display: flex;
-    gap: 2em;
-  }
-
-  #accusation-popup:modal,
-  #suspicion-popup:modal {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5em;
-    gap: 3em;
-  }
-
-  #accusation-result-message {
-    padding-top: 0.5em;
-  }
-
-  #accusation-result-close-btn,
-  #suspicion-pop-up-close-btn {
-    background-color: orangered;
-  }
-
-  #accusation-result-close-btn:hover {
-    cursor: pointer;
-  }
-
-  #accusation-popup > h3,
-  #suspicion-popup > h3 {
-    color: white;
-  }
-
-  .selections {
-    display: flex;
-    gap: 1.5em;
-  }
-
-  select {
-    text-align: center;
-    border-radius: 6px;
-    text-transform: capitalize;
-    padding: 0.2em;
-  }
-
-  #accusation-popup #buttons,
-  #suspicion-popup #buttons {
-    display: flex;
-    gap: 2em;
-  }
-
-  #accuse-form,
-  #suspect-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3em;
-  }
-
-  #accuse-form select,
-  #suspect-form select {
-    width: 135px;
-    height: 30px;
-    font-size: 0.8em;
-    cursor: pointer;
-  }
-
-  #accuse-confirm-btn,
-  #suspect-confirm-btn {
-    color: white;
-    background-color: rgb(0, 186, 96);
-    border: 2px solid rgb(4, 126, 67);
-  }
-
-  .disable-click {
-    pointer-events: none;
-    cursor: not-allowed;
-  }
-
-  .stranded-player {
-    filter: opacity(0.5);
-  }
-
-  #home {
-    border: none;
-    outline: none;
-    background-color: green;
-  }
-
-  .game-over-msg,
-  .invalidation-msg {
-    color: white;
-    text-shadow: 0 0 0 10px blueviolet;
-    text-transform: capitalize;
-  }
-
-  .matching-card {
-    cursor: pointer;
-    box-shadow: 0 0 10px 5px rgba(25, 202, 25, 0.371);
-  }
-
-  .not-matching-card {
-    filter: grayscale(1);
-    cursor: not-allowed;
-  }
-
-  .matching-card:hover {
-    transform: scale(1.1);
-  }
-
-  #invalidation-confirm-btn {
-    padding: 0.2em;
-    border: none;
-    outline: none;
-    background-color: gray;
-    transition: all 350ms ease-in;
-  }
-
-  #invalidation-confirm-btn.selected-btn {
-    background-color: rgb(0, 186, 96);
-    border: 2px solid rgb(4, 126, 67);
-  }
-
-  #notification-close-btn,
-  #suspicion-close-btn,
-  #accuse-cancel-btn {
-    border: none;
-    outline: none;
-    border-radius: 0.4em;
-    background-color: rgb(254, 60, 68);
-  }
-
-  #suspicion-prompt-btns {
-    display: flex;
-    gap: 2em;
-  }
-
-  #suspicion-prompt-yes-btn {
-    background-color: rgb(0, 186, 96);
-  }
-
-  #suspicion-prompt-no-btn {
-    background-color: rgb(254, 60, 68);
-  }
-
-  .invalidated-card {
-    transform: scale(1.1);
-    box-shadow: 0 0 10px 10px rgba(25, 202, 25, 0.371);
-    border: 2px solid green;
-  }
-
-  .card-selected {
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(0, 128, 0, 0.577);
-  }
-
-  .current-player {
-    animation: blink 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  @keyframes blink {
-    0%,
-    100% {
-      stroke-width: 90px;
-      stroke-opacity: 1;
-    }
-    50% {
-      filter: brightness(1);
-      stroke-width: 20px;
-      stroke-opacity: 0;
-    }
-  }
-
-  #accuse-confirm-btn:disabled,
-  #suspect-confirm-btn:disabled {
-    background-color: dimgrey;
-    border: 2px solid rgb(91, 91, 91);
-    color: linen;
-    opacity: 1;
-    cursor: not-allowed;
-  }
-
-  #waiting-msg {
-    display: flex;
-    color: white;
-  }
-
-  .loader,
-  .loader:before,
-  .loader:after {
-    border-radius: 50%;
-    width: 1em;
-    height: 1em;
-    animation-fill-mode: both;
-    animation: bblFadInOut 2s infinite ease-in-out;
-  }
-  .loader {
-    color: #fff;
-    font-size: 7px;
-    position: relative;
-    left: 2.5em;
-    top: -0.5em;
-    text-indent: -9999em;
-    transform: translateZ(0);
-    animation-delay: -0.5s;
-  }
-  .loader:before,
-  .loader:after {
-    content: "";
-    position: absolute;
-  }
-  .loader:before {
-    animation-delay: -0.25s;
-    left: 1.5em;
-  }
-  .loader:after {
-    left: 3.5em;
-  }
-
-  @keyframes bblFadInOut {
-    0%,
-    80%,
-    100% {
-      box-shadow: 0 2.5em 0 -1.3em;
-    }
-    40% {
-      box-shadow: 0 2.5em 0 0;
-    }
-  }
-
-  .ball-room-card {
-    background-image: url(/images/cards/ball-room-card.png);
-  }
-  .billiard-room-card {
-    background-image: url(/images/cards/billiard-room-card.png);
-  }
-  .candlestick-card {
-    background-image: url(/images/cards/candlestick-card.png);
-  }
-  .conservatory-card {
-    background-image: url(/images/cards/conservatory-card.png);
-  }
-  .dagger-card {
-    background-image: url(/images/cards/dagger-card.png);
-  }
-  .dining-room-card {
-    background-image: url(/images/cards/dining-room-card.png);
-  }
-  .green-card {
-    background-image: url(/images/cards/green-card.png);
-  }
-  .hall-card {
-    background-image: url(/images/cards/hall-card.png);
-  }
-  .kitchen-card {
-    background-image: url(/images/cards/kitchen-card.png);
-  }
-  .lead-pipe-card {
-    background-image: url(/images/cards/lead-pipe-card.png);
-  }
-  .library-card {
-    background-image: url(/images/cards/library-card.png);
-  }
-  .lounge-card {
-    background-image: url(/images/cards/lounge-card.png);
-  }
-  .mustard-card {
-    background-image: url(/images/cards/mustard-card.png);
-  }
-  .peacock-card {
-    background-image: url(/images/cards/peacock-card.png);
-  }
-  .plum-card {
-    background-image: url(/images/cards/plum-card.png);
-  }
-  .revolver-card {
-    background-image: url(/images/cards/revolver-card.png);
-  }
-  .rope-card {
-    background-image: url(/images/cards/rope-card.png);
-  }
-  .scarlet-card {
-    background-image: url(/images/cards/scarlet-card.png);
-  }
-  .spanner-card {
-    background-image: url(/images/cards/spanner-card.png);
-  }
-  .study-card {
-    background-image: url(/images/cards/study-card.png);
-  }
-  .white-card {
-    background-image: url(/images/cards/white-card.png);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto Slab", serif;
+}
+
+.center-align {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body {
+  font-size: 20px;
+  font-family: sans-serif;
+  color: whitesmoke;
+}
+
+#page {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1.2fr auto 1.8fr;
+  background-image: linear-gradient(rgb(0, 0, 0, 0.7), rgb(0, 0, 0, 0.3)),
+    url("/images/game-page-bg.jpeg");
+  background-size: cover;
+}
+
+#left-pane {
+  height: 95%;
+  display: grid;
+  padding-top: 2em;
+  gap: 0.5em;
+  grid-template-rows: 10% 90%;
+}
+
+#left-pane > header {
+  border-bottom: 2px solid white;
+}
+
+#cluedo-logo {
+  width: 100%;
+}
+
+#players {
+  padding-top: 3.5em;
+  gap: 0.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#middle-pane {
+  padding: 0 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#board {
+  width: 875px;
+}
+
+.player-info {
+  height: 100px;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 60% 40%;
+  grid-template-columns: 50% 50%;
+  grid-template-areas:
+    "icon name"
+    "icon message";
+}
+
+.icon {
+  grid-area: icon;
+  width: 80px;
+  aspect-ratio: 1/1;
+  align-self: center;
+  justify-self: center;
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.name {
+  text-transform: capitalize;
+  font-weight: 500;
+  font-size: 1.2em;
+  grid-area: name;
+  align-self: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.message {
+  position: relative;
+  top: 15px;
+  right: 15px;
+  grid-area: message;
+  padding: 10px;
+  font-size: 0.7em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 10px;
+  background-color: white;
+  color: black;
+}
+
+.message::before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 10px solid white;
+  border-right: 10px solid transparent;
+  border-top: 10px solid white;
+  border-bottom: 10px solid transparent;
+  left: -13px;
+  top: -4px;
+  rotate: 110deg;
+}
+
+.hide {
+  display: none;
+}
+
+#right-pane {
+  display: grid;
+  grid-template-rows: 5% auto 10%;
+}
+
+#help {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  padding-right: 1em;
+}
+
+.card {
+  width: 125px;
+  height: 165px;
+  font-size: 0.9em;
+  text-transform: capitalize;
+  text-align: center;
+  border-radius: 5px;
+  color: black;
+  background-color: #ddd;
+  border: 2px solid black;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#cards-container .card {
+  cursor: pointer;
+  transition: scale 150ms ease;
+}
+
+#cards-container .card:hover {
+  z-index: 2;
+  scale: 1.2;
+  box-shadow: 0 0 15px 0 black;
+}
+
+#cards-container {
+  width: 80%;
+  height: 80%;
+  display: grid;
+  grid-template-rows: 5% 80%;
+  gap: 3em;
+}
+
+#cards-container > h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid white;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 1em;
+}
+
+#cards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2em;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+#cards > .card {
+  box-shadow: 1px -8px 8px #222222ae;
+  border: 2px solid white;
+}
+
+#inference-container {
+  display: grid;
+  padding: 0 2em 0 0;
+}
+
+#clue-chart-btn {
+  position: absolute;
+  padding: 0.2em 0.4em;
+  z-index: 2;
+  cursor: pointer;
+  right: -68px;
+  transform: rotate(-90deg);
+  align-self: center;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid hsl(30, 45%, 80%);
+  color: hsl(30, 45%, 80%);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  background-color: #752525;
+  outline: none;
+  font-weight: 600;
+  text-shadow: 0 0 5px black;
+  text-wrap: nowrap;
+}
+
+.clue-chart-container {
+  position: fixed;
+  border-radius: 5px;
+  font-size: 0.9em;
+  right: 40px;
+  background-color: hsl(30, 45%, 69%);
+  color: #1b1b1b;
+  opacity: 1;
+  transition: all 500ms ease;
+  align-self: center;
+  box-shadow: 0 0 40px black;
+}
+
+.collapse {
+  transform: translateX(200%);
+  opacity: 0;
+}
+
+.highlight {
+  box-shadow: 0px 0px 10px 10px white;
+}
+
+#bottom-pane {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  padding-left: 10%;
+}
+
+.button {
+  width: 100px;
+  height: 40px;
+  font-size: 0.8em;
+  color: white;
+  border-radius: 7px;
+}
+
+#accuse-btn {
+  border: none;
+  outline: none;
+  background-color: rgb(0, 186, 96);
+}
+
+#roll-dice-btn {
+  border: none;
+  outline: none;
+  background-color: rgb(117, 117, 229);
+}
+
+#end-turn-btn {
+  border: none;
+  outline: none;
+  background-color: hsl(0, 100%, 65%);
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.popup {
+  position: absolute;
+  top: 28%;
+  left: 27%;
+  width: 550px;
+  height: 360px;
+
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: hsla(60, 56%, 91%, 0.956);
+  transition: all 500ms ease-in;
+}
+
+.result-container {
+  color: black;
+}
+
+.result-container:modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.5em;
+}
+
+.result-container p {
+  text-transform: capitalize;
+}
+
+#killing-combination {
+  display: flex;
+  gap: 2em;
+}
+
+#accusation-combination,
+#suspicion-combination {
+  display: flex;
+  gap: 2em;
+}
+
+#accusation-popup:modal,
+#suspicion-popup:modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em;
+  gap: 3em;
+}
+
+#accusation-result-message {
+  padding-top: 0.5em;
+}
+
+#accusation-result-close-btn,
+#suspicion-pop-up-close-btn {
+  background-color: orangered;
+}
+
+#accusation-result-close-btn:hover {
+  cursor: pointer;
+}
+
+#accusation-popup > h3,
+#suspicion-popup > h3 {
+  color: black;
+}
+
+.selections {
+  display: flex;
+  gap: 1.5em;
+}
+
+select {
+  text-align: center;
+  border-radius: 6px;
+  text-transform: capitalize;
+  padding: 0.2em;
+}
+
+#accusation-popup #buttons,
+#suspicion-popup #buttons {
+  display: flex;
+  gap: 2em;
+}
+
+#accuse-form,
+#suspect-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3em;
+}
+
+#accuse-form select,
+#suspect-form select {
+  width: 130px;
+  height: 30px;
+  font-size: 0.8em;
+  cursor: pointer;
+}
+
+#accuse-confirm-btn,
+#suspect-confirm-btn {
+  color: white;
+  background-color: rgb(0, 186, 96);
+  border: 2px solid rgb(4, 126, 67);
+}
+
+.disable-click {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.stranded-player {
+  filter: opacity(0.3);
+}
+
+#home {
+  border: none;
+  outline: none;
+  background-color: green;
+}
+
+.game-over-msg,
+.invalidation-msg {
+  color: #444;
+  text-shadow: 0 0 0 10px blueviolet;
+  text-transform: capitalize;
+}
+
+.matching-card {
+  cursor: pointer;
+  box-shadow: 0 0 10px 5px rgba(25, 202, 25, 0.371);
+}
+
+.not-matching-card {
+  filter: grayscale(1);
+  cursor: not-allowed;
+}
+
+.matching-card:hover {
+  transform: scale(1.1);
+}
+
+#invalidation-confirm-btn {
+  padding: 0.2em;
+  border: none;
+  outline: none;
+  background-color: gray;
+  transition: all 350ms ease-in;
+}
+
+#invalidation-confirm-btn.selected-btn {
+  background-color: rgb(0, 186, 96);
+  border: 2px solid rgb(4, 126, 67);
+}
+
+#notification-close-btn,
+#suspicion-close-btn,
+#accuse-cancel-btn {
+  border: none;
+  outline: none;
+  border-radius: 0.4em;
+  background-color: rgb(254, 60, 68);
+}
+
+#suspicion-prompt-btns {
+  display: flex;
+  gap: 2em;
+}
+
+#suspicion-prompt-yes-btn {
+  background-color: rgb(0, 186, 96);
+}
+
+#suspicion-prompt-no-btn {
+  background-color: rgb(254, 60, 68);
+}
+
+.invalidated-card {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px 5px rgba(25, 202, 25, 0.371);
+  border: 2px solid green;
+}
+
+.card-selected {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 128, 0, 0.577);
+}
+
+.current-player {
+  animation: hover 1s infinite alternate;
+}
+
+@keyframes hover {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(0, -200px);
   }
 }
